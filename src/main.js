@@ -40,6 +40,9 @@ class LoadEditor {
             let set_cookie = new SetDataCookie("conf_image_switch", this.conf_is);
             set_cookie.build();
         }
+        return console.log(```Cookies for all provided variants and configurations 
+            ${this.conf_is} ${this.conf_ff} ${this.conf_fos} ${this.conf_fs} ${this.conf_annot} set. 
+            You can find them under the names: conf_annotation_slider, *_fullsize, *_fontsize, *_font_family, *_image_switch```);
     }
 
     build() {    
@@ -83,6 +86,8 @@ class LoadEditor {
             // pageUrl();
             // // console.log(`location: ${document.location}, state: ${JSON.stringify(event.state)}`);
         }
+        return console.log(```HTML interface for all provided variants and configurations 
+            ${this.conf_is} ${this.conf_ff} ${this.conf_fos} ${this.conf_fs} ${this.conf_annot} loaded.```);
     }
 };
 
