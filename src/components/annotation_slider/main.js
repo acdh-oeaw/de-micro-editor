@@ -118,7 +118,7 @@ export class AnnotationSlider extends HTMLElement {
     }
 
     render() {
-        let data = this.getAttribute("data-target");
+        let data = "conf_annotation_slider";
         let options = JSON.parse(localStorage.getItem(data));
         const opt = this.getAttribute("opt");
         const variant = options.variants.find((v) => v.opt === opt);

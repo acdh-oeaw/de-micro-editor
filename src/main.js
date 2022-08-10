@@ -24,19 +24,19 @@ class LoadEditor {
             let set_cookie = new SetDataCookie("conf_annotation_slider", this.conf_annot);
             set_cookie.build();
         }
-        if (this.conf_annot) {
+        if (this.conf_fs) {
             let set_cookie = new SetDataCookie("conf_fullsize", this.conf_fs);
             set_cookie.build();
         }
-        if (this.conf_annot) {
+        if (this.conf_fos) {
             let set_cookie = new SetDataCookie("conf_fontsize", this.conf_fos);
             set_cookie.build();
         }
-        if (this.conf_annot) {
+        if (this.conf_ff) {
             let set_cookie = new SetDataCookie("conf_font_family", this.conf_ff);
             set_cookie.build();
         }
-        if (this.conf_annot) {
+        if (this.conf_is) {
             let set_cookie = new SetDataCookie("conf_image_switch", this.conf_is);
             set_cookie.build();
         }
@@ -44,23 +44,42 @@ class LoadEditor {
 
     build() {    
         const update = new UrlSearchParamUpdate();
-        window.customElements.define('full-size', FullSize);
-        window.onload = update.fullSreen();
-        window.customElements.define('image-switch', ImageSwitch);
-        window.onload = update.viewerSwitch();
-        window.customElements.define('font-size', FontSize);
-        window.onload = update.fontSize();
-        window.customElements.define('font-family', FontFamily);
-        window.onload = update.fontFamily();
-        window.customElements.define('annotation-slider', AnnotationSlider);
-        window.onload = update.textFeatures();
-    
+        if (this.conf_annot) {
+            window.customElements.define('annotation-slider', AnnotationSlider);
+            window.onload = update.textFeatures();
+        }
+        if (this.conf_fs) {
+            window.customElements.define('full-size', FullSize);
+            window.onload = update.fullSreen();
+        }
+        if (this.conf_fos) {
+            window.customElements.define('font-size', FontSize);
+            window.onload = update.fontSize();
+        }
+        if (this.conf_ff) {
+            window.customElements.define('font-family', FontFamily);
+            window.onload = update.fontFamily();
+        }
+        if (this.conf_is) {
+            window.customElements.define('image-switch', ImageSwitch);
+            window.onload = update.viewerSwitch();
+        }
         window.onpopstate = () => {
-            update.textFeatures();
-            update.fontFamily();
-            update.fontSize();
-            update.viewerSwitch();
-            update.fullSreen();
+            if (this.conf_annot) {
+                update.textFeatures();
+            }
+            if (this.conf_fs) {
+                update.fullSreen();
+            }
+            if (this.conf_fos) {
+                update.fontSize();
+            }
+            if (this.conf_ff) {
+                update.fontFamily();
+            }
+            if (this.conf_is) {
+                update.viewerSwitch();
+            }
             // pageUrl();
             // // console.log(`location: ${document.location}, state: ${JSON.stringify(event.state)}`);
         }

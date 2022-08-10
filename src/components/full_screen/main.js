@@ -60,7 +60,7 @@ export class FullSize extends HTMLElement {
     }
 
     render() {
-        let data = this.getAttribute("data-target");
+        let data = "conf_fullsize";
         let options = JSON.parse(localStorage.getItem(data));
         let opt = this.getAttribute("opt");
         let variant = options.variants.find((v) => v.opt === opt);

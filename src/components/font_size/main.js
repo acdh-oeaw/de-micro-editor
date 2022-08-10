@@ -52,7 +52,7 @@ export class FontSize extends HTMLElement {
     }
 
     render() {
-        let data = this.getAttribute("data-target");
+        let data = "conf_fontsize";
         let options = JSON.parse(localStorage.getItem(data));
         let opt = this.getAttribute("opt");
         let variant = options.variants.find((v) => v.opt === opt);
