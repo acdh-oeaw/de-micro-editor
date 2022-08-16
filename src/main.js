@@ -3,6 +3,7 @@ const { FullSize }  = require("./components/full_screen/main");
 const { FontSize } = require("./components/font_size/main");
 const { FontFamily } = require("./components/font_family/main");
 const { ImageSwitch } = require("./components/image_switch/main");
+const { ImageLoader } = require("./components/image_loader/main");
 const { UrlSearchParamUpdate } = require("./components/search_params/main");
 const { SetDataCookie } = require("./utils/setCookie");
 // const { sliderConfig } = require("./config/conf_annotation_slider");
@@ -11,12 +12,13 @@ const { SetDataCookie } = require("./utils/setCookie");
 
 class LoadEditor {
 
-    constructor(conf_annot, conf_fs, conf_fos, conf_ff, conf_is) {
+    constructor(conf_annot, conf_fs, conf_fos, conf_ff, conf_is, conf_il) {
         this.conf_annot = conf_annot;
         this.conf_fs = conf_fs;
         this.conf_fos = conf_fos;
         this.conf_ff = conf_ff;
         this.conf_is = conf_is;
+        this.conf_il = conf_il;
     }
 
     cookie() {
@@ -40,13 +42,13 @@ class LoadEditor {
             let set_cookie = new SetDataCookie("conf_image_switch", this.conf_is);
             set_cookie.build();
         }
-        return console.log(```Cookies for all provided variants and configurations 
-            ${this.conf_is} ${this.conf_ff} ${this.conf_fos} ${this.conf_fs} ${this.conf_annot} set. 
-            You can find them under the names: conf_annotation_slider, *_fullsize, *_fontsize, *_font_family, *_image_switch```);
     }
 
     build() {    
         const update = new UrlSearchParamUpdate();
+        if (this.conf_il) {
+            window.customElements.define('image-loader', ImageLoader);
+        }
         if (this.conf_annot) {
             window.customElements.define('annotation-slider', AnnotationSlider);
             window.onload = update.textFeatures();
@@ -86,8 +88,6 @@ class LoadEditor {
             // pageUrl();
             // // console.log(`location: ${document.location}, state: ${JSON.stringify(event.state)}`);
         }
-        return console.log(```HTML interface for all provided variants and configurations 
-            ${this.conf_is} ${this.conf_ff} ${this.conf_fos} ${this.conf_fs} ${this.conf_annot} loaded.```);
     }
 };
 
