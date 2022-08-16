@@ -1,0 +1,9 @@
+//! Built on 2022-06-07
+
+//! Git commit: v3.1.0-1-c1c380f
+
+//! License: http://openseadragon.github.io/license/
+
+//! http://openseadragon.github.io
+
+//! openseadragon 3.1.0
