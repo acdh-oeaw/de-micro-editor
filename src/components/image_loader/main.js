@@ -1,3 +1,5 @@
+const OpenSeadragon = require("openseadragon");
+
 const config = [];
 
 export class ImageLoader extends HTMLElement {
@@ -12,13 +14,9 @@ export class ImageLoader extends HTMLElement {
         this.render();
         let dataTarget = this.getAttribute("data-target");
         if (dataTarget.includes("container_1")){
-            console.log(dataTarget);
-            console.log("connectedCallback");
             // console.log(this.childNodes[1]);
             this.childNodes[1].addEventListener("load", this.loadImage);
         } else {
-            console.log(dataTarget);
-            console.log("connectedCallback");
             const pagination = document.querySelectorAll('.pagination .nav-tabs li a');
             pagination.forEach((el) => {
                 el.addEventListener("click", this.loadImage);
@@ -29,31 +27,30 @@ export class ImageLoader extends HTMLElement {
     loadImage() {
         let id = this.getAttribute("id");
         let variant = config.find((v) => v.opt === id);
-        console.log(variant);
-        let dataTarget = variant.dataTarget;
-        let dataSource = variant.dataSource;
-        console.log(dataTarget);
-        console.log(dataSource);
-        let target = document.getElementById(dataTarget.split('__')[0]);
+        let dataTarget = variant["dataTarget"];
+        let dataSource = variant["dataSource"];
+        // hides static images
+        let targetID0 = dataTarget.split('__')[0];
+        let targetID1 = dataTarget.split('__')[1];
+        let target = document.getElementById(targetID0);
         console.log(target);
+        console.log(targetID0);
         console.log("loadImage");
         console.log(target.childNodes.length);
-        if ( target.childNodes.length == 1 ) {
-            target.style.height = "1000px";
+        if ( target.childNodes.length === 1 ) {
+            target.style.height = "1000px;";
             // OpenSeaDragon Image Viewer
             var imageURL = {type: 'image', url: dataSource};
+            console.log(imageURL);
             var viewer = OpenSeadragon({
-                id: target,
+                id: targetID0,
                 prefixUrl: 'https://cdnjs.cloudflare.com/ajax/libs/openseadragon/3.1.0/images/',
-                // sequenceMode: true,
-                // showReferenceStrip: true,
-                // showNavigator: true,
-                // imageLoaderLimit: 10,
                 tileSources: imageURL
             });
-            // hides static images
-            // document.getElementById(dataTarget.split('__')[1]).style.display = "none";
-    
+
+            // remove static images
+            document.getElementById(targetID1).remove();
+
             // hide loading spinner if image fully loaded status changes
             // see issue: https://github.com/openseadragon/openseadragon/issues/1262
             viewer.addHandler('open', function() {
