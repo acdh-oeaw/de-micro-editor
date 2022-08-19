@@ -12,49 +12,40 @@ export class ImageLoader extends HTMLElement {
 
     connectedCallback() {
         this.render();
-        let dataTarget = this.getAttribute("data-target");
-        if (dataTarget.includes("container_1")){
-            // console.log(this.childNodes[1]);
-            this.childNodes[1].addEventListener("load", this.loadImage);
-        } else {
-            const pagination = document.querySelectorAll('.pagination .nav-tabs li a');
-            pagination.forEach((el) => {
-                el.addEventListener("click", this.loadImage);
-            });
-        }
+        let pagination = document.querySelectorAll('.pagination .nav-tabs li a');
+        pagination.forEach((el) => {
+            el.addEventListener("click", this.loadImage);
+        });
     }
 
     loadImage() {
         let id = this.getAttribute("id");
-        let variant = config.find((v) => v.opt === id);
+        let imgID = id.replace("link", "img");
+        let variant = config.find((v) => v.opt === imgID);
         let dataTarget = variant["dataTarget"];
         let dataSource = variant["dataSource"];
         // hides static images
         let targetID0 = dataTarget.split('__')[0];
         let targetID1 = dataTarget.split('__')[1];
+        // remove static images
+        if (document.getElementById(targetID1)) {
+            document.getElementById(targetID1).remove();
+        }
         let target = document.getElementById(targetID0);
-        console.log(target);
-        console.log(targetID0);
-        console.log("loadImage");
-        console.log(target.childNodes.length);
-        if ( target.childNodes.length === 1 ) {
-            target.style.height = "1000px;";
+        if ( target.childNodes.length === 0 ) {
+            target.style.height = "1000px";
             // OpenSeaDragon Image Viewer
-            var imageURL = {type: 'image', url: dataSource};
-            console.log(imageURL);
-            var viewer = OpenSeadragon({
+            let imageURL = {type: 'image', url: dataSource};
+            let viewer = OpenSeadragon({
                 id: targetID0,
                 prefixUrl: 'https://cdnjs.cloudflare.com/ajax/libs/openseadragon/3.1.0/images/',
                 tileSources: imageURL
             });
 
-            // remove static images
-            document.getElementById(targetID1).remove();
-
             // hide loading spinner if image fully loaded status changes
             // see issue: https://github.com/openseadragon/openseadragon/issues/1262
             viewer.addHandler('open', function() {
-                var tiledImage = viewer.world.getItemAt(0);
+                let tiledImage = viewer.world.getItemAt(0);
                 if (tiledImage.getFullyLoaded()) {
                     hideLoading();
                 } else {
@@ -63,7 +54,7 @@ export class ImageLoader extends HTMLElement {
             });
             function hideLoading() {
                 // var container = $(osd_container_id).attr("id");  
-                var spinnerID = "spinner_" + target;
+                let spinnerID = "spinner_" + targetID0;
                 if ( document.getElementById(spinnerID) ) {
                     // console.log(spinnerID);
                     document.getElementById(spinnerID).remove();
@@ -71,6 +62,45 @@ export class ImageLoader extends HTMLElement {
             };
         }
     }
+
+    // pageSync() {    
+    //     const url = new URL(window.location.href);
+    //     const urlParam = new URLSearchParams(url.search);
+    //     const citation_url = document.getElementById("citation-url");
+        
+    //     // get selected href
+    //     var href = this.getAttribute('href');
+    //     var dataTab = this.getAttribute('data-tab');
+    
+    //     urlParam.set("page", href.replace('#paginate-', ''));
+    //     var state = {"page": href.replace('#paginate-', '')};
+    //     window.history.pushState(state, '', `?${urlParam}`);
+    //     citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
+    //     citation_url.setAttribute("href", window.location.href);
+    
+    //     // set all nav tabs to inactive
+    //     var link = document.querySelectorAll(`.pagination .nav-tabs li a[data-tab="${dataTab}"]`);
+    //     link.forEach(function(el) {
+    //         el.classList.remove('active');
+    //     });
+    
+    //     // get all nav tabs matching the href and set to active
+    //     var ref = document.querySelectorAll(`.pagination .nav-tabs li a[href="${href}"]`);
+    //     ref.forEach(function(el) {
+    //         el.classList.add('active');
+    //     });
+    
+    //     // active tab
+    //     var tab = document.querySelectorAll(`.pagination-tab.tab-pane[data-tab="${dataTab}"]`);
+    //     tab.forEach(function(el) {
+    //         el.classList.remove('active');
+    //     });
+    //     var tab_ref = document.querySelectorAll(`.pagination-tab.tab-pane${href}`);
+    //     tab_ref.forEach(function(el) {
+    //         el.classList.add('active');
+    //         el.classList.add('show');
+    //     });
+    // }
 
     render() {
         let opt = this.getAttribute("opt");
@@ -81,9 +111,6 @@ export class ImageLoader extends HTMLElement {
             "dataTarget": dataTarget,
             "dataSource": dataSource
         });
-        let pos = opt.split('_');
-        let position = pos[pos.length - 1];
-        let resize = `onload="$( document ).ready(resize('${position}'))`;
         this.innerHTML = `
             <img id="${opt}" src="${dataSource}"></img>
         `;

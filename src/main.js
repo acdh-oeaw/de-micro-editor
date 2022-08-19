@@ -48,6 +48,7 @@ class LoadEditor {
         const update = new UrlSearchParamUpdate();
         if (this.conf_il) {
             window.customElements.define('image-loader', ImageLoader);
+            window.onload = update.pageUrl();
         }
         if (this.conf_annot) {
             window.customElements.define('annotation-slider', AnnotationSlider);
@@ -85,8 +86,9 @@ class LoadEditor {
             if (this.conf_is) {
                 update.viewerSwitch();
             }
-            // pageUrl();
-            // // console.log(`location: ${document.location}, state: ${JSON.stringify(event.state)}`);
+            if (this.conf_il) {
+                update.pageUrl();
+            }
         }
     }
 };
