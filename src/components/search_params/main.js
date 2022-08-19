@@ -288,78 +288,88 @@ export class UrlSearchParamUpdate {
     pageUrl() {
         const url = new URL(window.location.href);
         const urlParam = new URLSearchParams(url.search);
-        const _current = urlParam.get('page');
+        var _current = urlParam.get('page');
         // const item = document.querySelector('.pagination .nav-tabs .nav-item .nav-link.active');
         // const href = item.getAttribute('href').replace('#', '');
-        const citation_url = document.getElementById("citation-url");
+        let citation_url = document.getElementById("citation-url");
         if (_current == null) {
             urlParam.set('page', "1");
+            _current = urlParam.get('page');
+        }
+        // deactivate all tabs
+        const tabs = document.querySelectorAll(`.pagination-tab.tab-pane[data-tab="paginate"]`);
+        tabs.forEach(function(el) {
+            el.classList.remove('active');
+            el.classList.add('fade');
+        });
+        // deactivate pagination links
+        const link = document.querySelectorAll('.pagination .nav-tabs .nav-item .nav-link');
+        let pgOpt = [];
+        link.forEach(function(el) {
+            el.classList.remove('active');
+            el.classList.remove('show');
+            let id = el.getAttribute("id").split('_');
+            let idNo = id[id.length - 1];
+            pgOpt.push(idNo);
+        });
+        // check if page url param is valid
+        if (!pgOpt.includes(_current)) {
+            console.log(`page=${_current} is not a selectable option.`);
+            urlParam.set("page", "1");
+            _current = urlParam.get('page');
+        }
+        // activate tab base on urlparams
+        const tab = document.getElementById(`paginate-${_current}`);
+        tab.classList.remove('fade');
+        tab.classList.add('active');
+        tab.classList.add('show'); 
+        // get all nav tabs matching href tabs based on urlparams and set to active
+        const linkActive = document.querySelectorAll(`.pagination .nav-tabs li a[href="#paginate-${_current}"]`);
+        linkActive.forEach(function(el) {
+            el.classList.add('active');
+            el.classList.add('show');
+        });
+        // create OSD container
+        let _container_id = `envelope_container_${_current}`
+        const _container = document.getElementById(_container_id);
+        let _image_type = "";
+        if (_container) {
+            _image_type = "envelope";
         } else {
-            // deactivate all tabs
-            let tabs = document.querySelectorAll(`.pagination-tab.tab-pane[data-tab="paginate"]`);
-            tabs.forEach(function(el) {
-                el.classList.remove('active');
-                el.classList.add('fade');
+            _image_type = "sheet";
+        }
+        let _osd_container_id = `${_image_type}_container_${_current}`;
+        let _osd_container_id2 = `${_image_type}_container2_${_current}`;
+        let osd_container = document.getElementById(_osd_container_id);
+        let osd_container_2 = document.getElementById(_osd_container_id2);
+        if ( osd_container_2 ) {
+            osd_container.style.height = "1000px";
+            let image = document.getElementById(`${_image_type}_img_${_current}`);
+            let image_src = image.getAttribute('src');
+            let image_url = {type: 'image', url: image_src};
+            let viewer = OpenSeadragon({
+                id: _osd_container_id,
+                prefixUrl: 'https://cdnjs.cloudflare.com/ajax/libs/openseadragon/3.1.0/images/',
+                tileSources: image_url
             });
-            // activate tab base on urlparams
-            const tab = document.getElementById(`paginate-${_current}`);
-            tab.classList.remove('fade');
-            tab.classList.add('active');
-            tab.classList.add('show');
-            // deactivate pagination links
-            const link = document.querySelectorAll('.pagination .nav-tabs .nav-item .nav-link');
-            link.forEach(function(el) {
-                el.classList.remove('active');
-                el.classList.remove('show');
+            // hides static images
+            osd_container_2.remove();
+    
+            // hide loading spinner if image fully loaded status changes
+            // see issue: https://github.com/openseadragon/openseadragon/issues/1262
+            viewer.addHandler('open', function() {
+                let tiledImage = viewer.world.getItemAt(0);
+                if (tiledImage.getFullyLoaded()) {
+                    hideLoading(_osd_container_id);
+                } else {
+                    tiledImage.addOnceHandler('fully-loaded-change', function() {
+                        let spinnerID2 = "spinner_" + _osd_container_id;
+                        if ( document.getElementById(spinnerID2) ) {
+                            document.getElementById(spinnerID2).remove();
+                        }
+                    });
+                }
             });
-            // get all nav tabs matching href tabs based on urlparams and set to active
-            let linkActive = document.querySelectorAll(`.pagination .nav-tabs li a[href="#paginate-${_current}"]`);
-            linkActive.forEach(function(el) {
-                el.classList.add('active');
-                el.classList.add('show');
-            });
-            // create OSD container
-            let _container_id = `envelope_container_${_current}`
-            let _container = document.getElementById(_container_id);
-            let _image_type = "";
-            if (_container) {
-                _image_type = "envelope";
-            } else {
-                _image_type = "sheet";
-            }
-            let _osd_container_id = `${_image_type}_container_${_current}`;
-            let _osd_container_id2 = `${_image_type}_container2_${_current}`;
-            let osd_container = document.getElementById(_osd_container_id);
-            let osd_container_2 = document.getElementById(_osd_container_id2);
-            if ( osd_container_2 ) {
-                osd_container.style.height = "1000px";
-                let image = document.getElementById(`${_image_type}_img_${_current}`);
-                let image_src = image.getAttribute('src');
-                let image_url = {type: 'image', url: image_src};
-                let viewer = OpenSeadragon({
-                    id: _osd_container_id,
-                    prefixUrl: 'https://cdnjs.cloudflare.com/ajax/libs/openseadragon/3.1.0/images/',
-                    tileSources: image_url
-                });
-                // hides static images
-                osd_container_2.remove();
-        
-                // hide loading spinner if image fully loaded status changes
-                // see issue: https://github.com/openseadragon/openseadragon/issues/1262
-                viewer.addHandler('open', function() {
-                    let tiledImage = viewer.world.getItemAt(0);
-                    if (tiledImage.getFullyLoaded()) {
-                        hideLoading(_osd_container_id);
-                    } else {
-                        tiledImage.addOnceHandler('fully-loaded-change', function() {
-                            let spinnerID2 = "spinner_" + _osd_container_id;
-                            if ( document.getElementById(spinnerID2) ) {
-                                document.getElementById(spinnerID2).remove();
-                            }
-                        });
-                    }
-                });
-            }
         }
         window.history.replaceState({}, '', `?${urlParam}`);
         citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
