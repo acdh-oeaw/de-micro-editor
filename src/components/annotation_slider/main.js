@@ -10,10 +10,8 @@ export class AnnotationSlider extends HTMLElement {
 
     connectedCallback() {
         this.render();
-        setTimeout(() => {
-            this.childNodes[3].childNodes[1].addEventListener("click", this.textFeatures);
-            // console.log(this.childNodes[3].childNodes[1]);
-        }, 500);
+        this.childNodes[3].childNodes[1].addEventListener("click", this.textFeatures);
+        // console.log(this.childNodes[3].childNodes[1]);
     }
 
     textFeatures() {

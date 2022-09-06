@@ -42,6 +42,10 @@ class LoadEditor {
             let set_cookie = new SetDataCookie("conf_image_switch", this.conf_is);
             set_cookie.build();
         }
+        if (this.conf_il) {
+            let set_cookie = new SetDataCookie("conf_image_loader", this.conf_il);
+            set_cookie.build();
+        }
     }
 
     build() {    
