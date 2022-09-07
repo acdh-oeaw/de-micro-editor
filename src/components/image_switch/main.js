@@ -68,7 +68,7 @@ export class ImageSwitch extends HTMLElement {
             let facs = viewer.querySelectorAll("*")[0];
             // console.log(facs);
             facs.style.width = `${viewer.offsetWidth}px`;
-            facs.style.height = `${viewer.offsetHeight}px`;
+            facs.style.height = variant.image_size;
             this.classList.add(active);
         }
         var stateName = variant.opt;

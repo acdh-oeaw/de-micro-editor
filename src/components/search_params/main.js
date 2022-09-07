@@ -188,6 +188,7 @@ export class UrlSearchParamUpdate {
                 el.style.maxWidth = "50%";
                 el.classList.add(active);
             });
+            document.getElementById(opt).classList.add(active); 
         }
         if (urlParam.get(urlparam) == "off") {
             document.querySelectorAll(`.${hide}`).forEach((el) => {
@@ -206,7 +207,8 @@ export class UrlSearchParamUpdate {
             const viewer = document.querySelector(`.${parent}.${active} .${hide}`);
             const facs = viewer.querySelectorAll("*")[0];
             facs.style.width = `${viewer.offsetWidth}px`;
-            facs.style.height = `${viewer.offsetHeight}px`;
+            facs.style.height = variant.image_size;
+            document.getElementById(opt).classList.remove(active); 
         }
         window.history.replaceState({}, '', `${location.pathname}?${urlParam}`);
         citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
