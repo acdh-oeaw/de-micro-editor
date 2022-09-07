@@ -33,32 +33,32 @@ export class AnnotationSlider extends HTMLElement {
             if ( this.classList.contains(active) ) {
                 this.classList.remove(active);
                 variants.forEach((el) => {
-                    let color = el.color;
-                    let html_class = el.html_class;
-                    let css_class = el.css_class;
-                    let hide = el.hide;
-                    removeMarkup(html_class, css_class, color, hide, style);
-                    document.getElementById(el.opt_slider).classList.remove(color);
                     if (document.getElementById(el.opt).checked === true) {
+                        let color = el.color;
+                        let html_class = el.html_class;
+                        let css_class = el.css_class;
+                        let hide = el.hide;
+                        removeMarkup(html_class, css_class, color, hide, style);
+                        document.getElementById(el.opt_slider).classList.remove(color);
                         document.getElementById(el.opt).checked = false;
                         document.getElementById(el.opt).classList.remove(active);
+                        urlParam.set(el.opt, "off");
                     }
-                    urlParam.set(el.opt, "off");
                 });
             } else {
                 this.classList.add(active);
                 variants.forEach((el) => {
-                    let color = el.color;
-                    let html_class = el.html_class;
-                    let css_class = el.css_class;
-                    let hide = el.hide;
-                    addMarkup(html_class, css_class, color, hide, style);
-                    document.getElementById(el.opt_slider).classList.add(color);
                     if (document.getElementById(el.opt).checked === false) {
+                        let color = el.color;
+                        let html_class = el.html_class;
+                        let css_class = el.css_class;
+                        let hide = el.hide;
+                        addMarkup(html_class, css_class, color, hide, style);
+                        document.getElementById(el.opt_slider).classList.add(color);
                         document.getElementById(el.opt).checked = true;
                         document.getElementById(el.opt).classList.add(active);
+                        urlParam.set(el.opt, "on");
                     }
-                    urlParam.set(el.opt, "on");
                 });
             }
         } else if (typeof all !== "boolean") {

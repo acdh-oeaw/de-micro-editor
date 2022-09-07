@@ -69,7 +69,7 @@ export class ImageSwitch extends HTMLElement {
             // console.log(facs);
             facs.style.width = `${viewer.offsetWidth}px`;
             facs.style.height = `${viewer.offsetHeight}px`;
-            this.classList.add(active); 
+            this.classList.add(active);
         }
         var stateName = variant.opt;
         var stateParam = urlParam.get(variant.opt);

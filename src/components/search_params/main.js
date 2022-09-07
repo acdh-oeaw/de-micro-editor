@@ -241,19 +241,6 @@ export class UrlSearchParamUpdate {
                 console.log(`${variants[v].opt}=${urlParam.get(variants[v].opt)} is not a selectable option.`);
                 urlParam.set(variants[v].opt, "off");
             }
-            else if (urlParam.get(variants[v].opt) === "off") {
-                const color = variants[v].color;
-                const html_class = variants[v].html_class;
-                const css_class = variants[v].css_class;
-                const hide = variants[v].hide;
-                removeMarkup(html_class, css_class, color, hide, style);
-                const slider = document.getElementById(variants[v].opt_slider);
-                slider.classList.remove(color);
-                if (document.getElementById(variants[v].opt).checked === true) {
-                    document.getElementById(variants[v].opt).checked = false;
-                    document.getElementById(variants[v].opt).classList.remove(active);
-                }
-            }
             else if (urlParam.get(variants[v].opt) === "on") {
                 count_active += 1;
                 let color = variants[v].color;
