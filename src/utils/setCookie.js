@@ -6,7 +6,7 @@ export class SetDataCookie {
     }
 
     build() {
-        localStorage.setItem(this.name, JSON.stringify(this.config));
+        sessionStorage.setItem(this.name, JSON.stringify(this.config));
     }
 
 }

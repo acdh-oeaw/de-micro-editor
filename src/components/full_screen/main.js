@@ -16,7 +16,7 @@ export class FullSize extends HTMLElement {
 
     fullScreen() {
         let data = "conf_fullsize";
-        let options = JSON.parse(localStorage.getItem(data));
+        let options = JSON.parse(sessionStorage.getItem(data));
         let url = new URL(window.location.href);
         let urlParam = new URLSearchParams(url.search);
         let active = options.active_class;
@@ -61,7 +61,7 @@ export class FullSize extends HTMLElement {
 
     render() {
         let data = "conf_fullsize";
-        let options = JSON.parse(localStorage.getItem(data));
+        let options = JSON.parse(sessionStorage.getItem(data));
         let opt = this.getAttribute("opt");
         let variant = options.variants.find((v) => v.opt === opt);
         let rendered_element = options.rendered_element;

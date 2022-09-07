@@ -12,7 +12,7 @@ export class ImageLoader extends HTMLElement {
 
     render() {
         let data = "conf_image_loader";
-        let options = JSON.parse(localStorage.getItem(data));
+        let options = JSON.parse(sessionStorage.getItem(data));
         let url = options.url;
         let url_param = options.url_param;
         let pos = this.getAttribute("pos");

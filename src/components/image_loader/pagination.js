@@ -17,7 +17,7 @@ export class EditionPagination extends HTMLElement {
 
     updateImgPage() {
         let data = "conf_ed_pagination";
-        let options = JSON.parse(localStorage.getItem(data));
+        let options = JSON.parse(sessionStorage.getItem(data));
 
         // get urlparam
         const url = new URL(window.location.href);

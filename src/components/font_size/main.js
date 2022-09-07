@@ -16,7 +16,7 @@ export class FontSize extends HTMLElement {
 
     fontSize() {
         let data = "conf_fontsize";
-        let options = JSON.parse(localStorage.getItem(data));
+        let options = JSON.parse(sessionStorage.getItem(data));
         let url = new URL(window.location.href);
         let urlParam = new URLSearchParams(url.search);
         let id = this.getAttribute("id");
@@ -53,7 +53,7 @@ export class FontSize extends HTMLElement {
 
     render() {
         let data = "conf_fontsize";
-        let options = JSON.parse(localStorage.getItem(data));
+        let options = JSON.parse(sessionStorage.getItem(data));
         let opt = this.getAttribute("opt");
         let variant = options.variants.find((v) => v.opt === opt);
         let size = variant.sizes;

@@ -16,7 +16,7 @@ export class ImageSwitch extends HTMLElement {
 
     viewerSwitch() {
         let data = "conf_image_switch";
-        let options = JSON.parse(localStorage.getItem(data));
+        let options = JSON.parse(sessionStorage.getItem(data));
         let url = new URL(window.location.href);
         let urlParam = new URLSearchParams(url.search);
         let id = this.getAttribute("id");
@@ -82,7 +82,7 @@ export class ImageSwitch extends HTMLElement {
 
     render() {
         let data = "conf_image_switch";
-        let options = JSON.parse(localStorage.getItem(data));
+        let options = JSON.parse(sessionStorage.getItem(data));
         let opt = this.getAttribute("opt");
         let variant = options.variants.find((v) => v.opt === opt);
         let rendered_element = options.rendered_element;

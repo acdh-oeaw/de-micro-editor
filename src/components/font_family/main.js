@@ -16,7 +16,7 @@ export class FontFamily extends HTMLElement {
 
     fontFamily() {
         let data = "conf_font_family";
-        let options = JSON.parse(localStorage.getItem(data));
+        let options = JSON.parse(sessionStorage.getItem(data));
         let url = new URL(window.location.href);
         let urlParam = new URLSearchParams(url.search);
         let id = this.getAttribute("id");
@@ -52,7 +52,7 @@ export class FontFamily extends HTMLElement {
 
     render() {
         let data = "conf_font_family";
-        let options = JSON.parse(localStorage.getItem(data));
+        let options = JSON.parse(sessionStorage.getItem(data));
         let opt = this.getAttribute("opt");
         let variant = options.variants.find((v) => v.opt === opt);
         let family = variant.fonts;

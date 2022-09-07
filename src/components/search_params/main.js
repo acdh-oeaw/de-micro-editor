@@ -7,7 +7,7 @@ export class UrlSearchParamUpdate {
         let el = document.getElementsByTagName('full-size');
         let data = "conf_fullsize";
         let opt = el[0].getAttribute("opt");
-        let options = JSON.parse(localStorage.getItem(data));
+        let options = JSON.parse(sessionStorage.getItem(data));
         if (!options) {
             alert("Please turn on cookies to display content!")
         }
@@ -54,7 +54,7 @@ export class UrlSearchParamUpdate {
     fontSize() {
         let el = document.getElementsByTagName('font-size');
         let data = "conf_fontsize";
-        let options = JSON.parse(localStorage.getItem(data));
+        let options = JSON.parse(sessionStorage.getItem(data));
         if (!options) {
             alert("Please turn on cookies to display content!")
         }
@@ -104,7 +104,7 @@ export class UrlSearchParamUpdate {
     fontFamily() {
         let el = document.getElementsByTagName('font-family');
         let data = "conf_font_family";
-        let options = JSON.parse(localStorage.getItem(data));
+        let options = JSON.parse(sessionStorage.getItem(data));
         if (!options) {
             alert("Please turn on cookies to display content!")
         }
@@ -154,7 +154,7 @@ export class UrlSearchParamUpdate {
         let el = document.getElementsByTagName('image-switch');
         let data = "conf_image_switch";
         let opt = el[0].getAttribute("opt");
-        let options = JSON.parse(localStorage.getItem(data));
+        let options = JSON.parse(sessionStorage.getItem(data));
         if (!options) {
             alert("Please turn on cookies to display content!")
         }
@@ -215,7 +215,7 @@ export class UrlSearchParamUpdate {
 
     textFeatures() {
         let data = "conf_annotation_slider";
-        let options = JSON.parse(localStorage.getItem(data));
+        let options = JSON.parse(sessionStorage.getItem(data));
         if (!options) {
             alert(`Please turn on cookies to display content.\n
                 Or check if configuration files path match data-target and data-path property.`)
@@ -287,7 +287,7 @@ export class UrlSearchParamUpdate {
 
     pageUrl() {
         let data = "conf_image_loader";
-        let options = JSON.parse(localStorage.getItem(data));
+        let options = JSON.parse(sessionStorage.getItem(data));
 
         // get url params
         const url = new URL(window.location.href);
@@ -305,7 +305,7 @@ export class UrlSearchParamUpdate {
         const tabs = document.querySelectorAll(`${options.pag_tab}[data-tab="paginate"]`);
         tabs.forEach(function(el) {
             el.classList.remove(options.active_class);
-            el.classList.add('fade');
+            el.classList.add(options.inactive_class);
         });
 
         // deactivate pagination links
@@ -313,7 +313,7 @@ export class UrlSearchParamUpdate {
         let pgOpt = [];
         link.forEach(function(el) {
             el.classList.remove(options.active_class);
-            el.classList.remove('show');
+            el.classList.remove(options.bootstrap_class);
             let id = el.getAttribute("id").split('_');
             let idNo = id[id.length - 1];
             pgOpt.push(idNo);
@@ -328,15 +328,15 @@ export class UrlSearchParamUpdate {
 
         // activate tab base on urlparams
         const tab = document.getElementById(`paginate-${_current}`);
-        tab.classList.remove('fade');
+        tab.classList.remove(options.inactive_class);
         tab.classList.add(options.active_class);
-        tab.classList.add('show'); 
+        tab.classList.add(options.bootstrap_class); 
 
         // get all nav tabs matching href tabs based on urlparams and set to active
         const linkActive = document.querySelectorAll(`${options.pag_link}[href="#paginate-${_current}"]`);
         linkActive.forEach(function(el) {
             el.classList.add(options.active_class);
-            el.classList.add('show');
+            el.classList.add(options.bootstrap_class);
         });
 
         // create OSD container
