@@ -4,6 +4,7 @@ const { FontSize } = require("./components/font_size/main");
 const { FontFamily } = require("./components/font_family/main");
 const { ImageSwitch } = require("./components/image_switch/main");
 const { ImageLoader } = require("./components/image_loader/main");
+const { EditionPagination } = require("./components/image_loader/pagination");
 const { UrlSearchParamUpdate } = require("./components/search_params/main");
 const { SetDataCookie } = require("./utils/setCookie");
 // const { sliderConfig } = require("./config/conf_annotation_slider");
@@ -12,13 +13,14 @@ const { SetDataCookie } = require("./utils/setCookie");
 
 class LoadEditor {
 
-    constructor(conf_annot, conf_fs, conf_fos, conf_ff, conf_is, conf_il) {
+    constructor(conf_annot, conf_fs, conf_fos, conf_ff, conf_is, conf_il, conf_pl) {
         this.conf_annot = conf_annot;
         this.conf_fs = conf_fs;
         this.conf_fos = conf_fos;
         this.conf_ff = conf_ff;
         this.conf_is = conf_is;
         this.conf_il = conf_il;
+        this.conf_pl = conf_pl;
     }
 
     cookie() {
@@ -46,10 +48,18 @@ class LoadEditor {
             let set_cookie = new SetDataCookie("conf_image_loader", this.conf_il);
             set_cookie.build();
         }
+        if (this.conf_pl) {
+            let set_cookie = new SetDataCookie("conf_ed_pagination", this.conf_pl);
+            set_cookie.build();
+        }
     }
 
     build() {    
         const update = new UrlSearchParamUpdate();
+        if (this.conf_pl) {
+            window.customElements.define('edition-pagination', EditionPagination);
+            // window.onload = update.pageUrl();
+        }
         if (this.conf_il) {
             window.customElements.define('image-loader', ImageLoader);
             window.onload = update.pageUrl();

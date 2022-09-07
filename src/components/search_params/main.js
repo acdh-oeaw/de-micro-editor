@@ -286,64 +286,73 @@ export class UrlSearchParamUpdate {
     }
 
     pageUrl() {
+        let data = "conf_image_loader";
+        let options = JSON.parse(localStorage.getItem(data));
+
+        // get url params
         const url = new URL(window.location.href);
         const urlParam = new URLSearchParams(url.search);
-        var _current = urlParam.get('page');
+        var _current = urlParam.get(options.urlparam);
         // const item = document.querySelector('.pagination .nav-tabs .nav-item .nav-link.active');
         // const href = item.getAttribute('href').replace('#', '');
-        let citation_url = document.getElementById("citation-url");
+        let citation_url = document.getElementById(options.chg_citation);
         if (_current == null) {
-            urlParam.set('page', "1");
-            _current = urlParam.get('page');
+            urlParam.set(options.urlparam, "1");
+            _current = urlParam.get(options.urlparam);
         }
+
         // deactivate all tabs
-        const tabs = document.querySelectorAll(`.pagination-tab.tab-pane[data-tab="paginate"]`);
+        const tabs = document.querySelectorAll(`${options.pag_tab}[data-tab="paginate"]`);
         tabs.forEach(function(el) {
-            el.classList.remove('active');
+            el.classList.remove(options.active_class);
             el.classList.add('fade');
         });
+
         // deactivate pagination links
-        const link = document.querySelectorAll('.pagination .nav-tabs .nav-item .nav-link');
+        const link = document.querySelectorAll(options.pag_link);
         let pgOpt = [];
         link.forEach(function(el) {
-            el.classList.remove('active');
+            el.classList.remove(options.active_class);
             el.classList.remove('show');
             let id = el.getAttribute("id").split('_');
             let idNo = id[id.length - 1];
             pgOpt.push(idNo);
         });
+
         // check if page url param is valid
         if (!pgOpt.includes(_current)) {
-            console.log(`page=${_current} is not a selectable option.`);
-            urlParam.set("page", "1");
-            _current = urlParam.get('page');
+            console.log(`${options.urlparam}=${_current} is not a selectable option.`);
+            urlParam.set(options.urlparam, "1");
+            _current = urlParam.get(options.urlparam);
         }
+
         // activate tab base on urlparams
         const tab = document.getElementById(`paginate-${_current}`);
         tab.classList.remove('fade');
-        tab.classList.add('active');
+        tab.classList.add(options.active_class);
         tab.classList.add('show'); 
+
         // get all nav tabs matching href tabs based on urlparams and set to active
-        const linkActive = document.querySelectorAll(`.pagination .nav-tabs li a[href="#paginate-${_current}"]`);
+        const linkActive = document.querySelectorAll(`${options.pag_link}[href="#paginate-${_current}"]`);
         linkActive.forEach(function(el) {
-            el.classList.add('active');
+            el.classList.add(options.active_class);
             el.classList.add('show');
         });
+
         // create OSD container
-        let _container_id = `envelope_container_${_current}`
-        const _container = document.getElementById(_container_id);
-        let _image_type = "";
-        if (_container) {
-            _image_type = "envelope";
-        } else {
-            _image_type = "sheet";
+        let i = 0;
+        while (i < options.img_types.length) {
+            if (document.getElementById(`${options.img_types[i]}_${options.osd_target}_${_current}`)) {
+                var _image_type = options.img_types[i];
+            }
+            i++;
         }
-        let _osd_container_id = `${_image_type}_container_${_current}`;
-        let _osd_container_id2 = `${_image_type}_container2_${_current}`;
+        let _osd_container_id = `${_image_type}_${options.osd_target}_${_current}`;
+        let _osd_container_id2 = `${_image_type}_${options.img_source}_${_current}`;
         let osd_container = document.getElementById(_osd_container_id);
         let osd_container_2 = document.getElementById(_osd_container_id2);
         if ( osd_container_2 ) {
-            osd_container.style.height = "1000px";
+            osd_container.style.height = options.img_size;
             let image = document.getElementById(`${_image_type}_img_${_current}`);
             let image_src = image.getAttribute('src');
             let image_url = {type: 'image', url: image_src};
@@ -352,6 +361,7 @@ export class UrlSearchParamUpdate {
                 prefixUrl: 'https://cdnjs.cloudflare.com/ajax/libs/openseadragon/3.1.0/images/',
                 tileSources: image_url
             });
+
             // hides static images
             osd_container_2.remove();
     
@@ -371,10 +381,13 @@ export class UrlSearchParamUpdate {
                 }
             });
         }
+
+        // update state
         window.history.replaceState({}, '', `?${urlParam}`);
         citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
         citation_url.setAttribute("href", window.location.href);
-    
+
+        // hide loder function
         function hideLoading(id) { 
             let spinnerID2 = "spinner_" + id;
             if ( document.getElementById(spinnerID2) ) {
