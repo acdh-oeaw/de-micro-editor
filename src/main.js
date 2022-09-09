@@ -5,6 +5,7 @@ const { FontFamily } = require("./components/font_family/main");
 const { ImageSwitch } = require("./components/image_switch/main");
 const { ImageLoader } = require("./components/image_loader/main");
 const { EditionPagination } = require("./components/image_loader/pagination");
+const { WindowResize } = require("./components/image_loader/resize");
 const { UrlSearchParamUpdate } = require("./components/search_params/main");
 const { SetDataCookie } = require("./utils/setCookie");
 // const { sliderConfig } = require("./config/conf_annotation_slider");
@@ -84,6 +85,7 @@ class LoadEditor {
             window.customElements.define('image-switch', ImageSwitch);
             window.onload = update.viewerSwitch();
         }
+        window.customElements.define('window-resize', WindowResize);
         window.onpopstate = () => {
             if (this.conf_annot) {
                 update.textFeatures();

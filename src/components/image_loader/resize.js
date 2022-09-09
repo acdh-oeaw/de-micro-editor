@@ -1,4 +1,4 @@
-var config = {}
+const config = []
 
 export class WindowResize extends HTMLElement {
 
@@ -10,66 +10,68 @@ export class WindowResize extends HTMLElement {
 
     connectedCallback() {
         this.render();
+        this.childNodes[1].childNodes[1].addEventListener("mousedown", this.resize);
     }
 
     resize() {
-        let isResizing = false,
-        lastDownX = 0;
+        var isResizing = true;
 
-
-        let container = document.querySelectorAll(`#container-resize-${position}`),
-            left_container = document.querySelectorAll(`#text-resize-${position}`),
-            right_container = document.querySelectorAll(`#img-resize-${position}`),
-            handle = document.querySelectorAll(`#img-expand-${position}`),
-            viewer = document.querySelectorAll(`#viewer-${position}`).children('div'),
-            text = document.querySelectorAll(left_container).children('div');
-        
-        handle.addEventListener('mousedown', function (e) {
-            isResizing = true;
-            lastDownX = e.clientX;
-        });
+        let id = this.getAttribute("id").replace("act-", "");
+        let variant = config.find((v) => `${v.opt}-${v.pos}` === id);
+        let container = document.getElementById(`container-resize-${variant["pos"]}`);
+        let left_container = document.getElementById(`text-resize-${variant["pos"]}`);
+        let right_container = document.getElementById(`img-resize-${variant["pos"]}`);
+        let handle = document.getElementById(`${variant["opt"]}-${variant["pos"]}`);
+        let viewer = document.getElementById(`viewer-${variant["pos"]}`).childNodes[0];
+        let text = left_container.childNodes[0];
 
         document.addEventListener('mousemove', function (e) {
             // we don't want to do anything if we aren't resizing.
             if (!isResizing) 
                 return;
-            
-            let offsetLeft = container.width() - (e.clientX + container.offset().left);
-            let offsetRight = container.width() - handle.val();
 
-            if (handle.val() < 936) {
-                left_container.css('max-width', `${container.width() - offsetLeft}px`);
-                right_container.css('max-width', `${offsetLeft}px`);
+            let offsetLeft = container.offsetWidth - (e.clientX);
+            let offsetRight = container.offsetWidth - handle.value;
+            let w = window.innerWidth;
+            if (handle.value < ((w / 2) - 10)) {
+                left_container.style.maxWidth = `${container.offsetWidth - offsetLeft}px`;
+                right_container.style.maxWidth = `${offsetLeft}px`;
                 viewer.style.width = `${offsetLeft}px`;
                 viewer.style.height = `${offsetLeft}px`;
-            } else if (handle.val() > 936) {
-                left_container.style.width = `${handle.val()}px`;
-                text.style.width = `${handle.val()}px`;
-                right_container.style.width = `${offsetRight}px`;
+            } else if (handle.value > ((w / 2) + 10)) {
+                left_container.style.maxWidth = `${handle.value}px`;
+                text.style.width = `${handle.value}px`;
+                right_container.style.maxWidth = `${offsetRight}px`;
                 viewer.style.width = `${offsetRight}px`;
                 viewer.style.height = `${offsetRight}px`;
-            } else if (handle.val() === 936) {
-                left_container.css('max-width', '50%');
-                text.css('width', '50%');
-                right_container.css('max-width', '50%');
+            } else if (handle.value === ((w / 2) + 9) || handle.value === ((w / 2) - 9)) {
+                left_container.style.maxWidth = '50%';
+                text.style.width = '50%';
+                right_container.style.maxWidth = '50%';
                 viewer.style.width = `${right_container.offsetWidth}px`;
                 viewer.style.height = `${right_container.offsetHeight}px`;
             }
             
 
-            }).addEventListener('mouseup', function () {
-                // stop resizing
-                isResizing = false;
-            });
+        });
+
+        document.addEventListener('mouseup', function () {
+            // stop resizing
+            isResizing = false;
+        });
     }
 
     render() {
-        let data = "conf_image_loader";
-        let options = JSON.parse(sessionStorage.getItem(data));
+        let w = window.innerWidth;
+        let opt = this.getAttribute("opt");
         let pos = this.getAttribute("pos");
+        config.push({
+            "opt": opt,
+            "pos": pos
+        });
         this.innerHTML = `
-            <div class="expand-wrapper text-center hide-reading">            
-                <input title="change size" id="img-expand-${pos}" type="range" min="1" max="1870" value="936" class="slider"/>
+            <div class="expand-wrapper text-center hide-reading">
+                <input title="change size" id="resizing-${pos}" type="range" min="0" max="${w}" value="${w / 2}" class="slider"/>
             </div>
         `;
     }
