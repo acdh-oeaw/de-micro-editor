@@ -17,7 +17,7 @@ or
 
 In HTML:
 
-`<script src="https://unpkg.com/de-micro-editor@0.0.1/dist/de-editor.min.js"></script>`
+`<script src="https://unpkg.com/de-micro-editor@0.1.0/dist/de-editor.min.js"></script>`
 
 ## Custom Elements (HTML)
 The package renders 7 different custom elements and creates eventlisteners to triggers defined functions. Each custom element takes and attribute `opt` which connects the element with a specific configurations parameter variant (see configuration description below). The window-resize element also takes an attribute `pos` which specifies a specific window to resize. The edition-pagination element uses attributes like `pos facs and data-type` to access window, element ids like images and data-type for further specification. The last two attributes are optional.
