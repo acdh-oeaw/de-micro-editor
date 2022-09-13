@@ -16,7 +16,6 @@ export class UrlSearchParamUpdate {
         let variant = options.variants.find((v) => v.opt === opt);
         let hide = variant.hide.class_to_hide;
         let urlparam = variant.urlparam;
-        let citation_url = document.getElementById(variant.chg_citation);
         let svg_show = `
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fullscreen" viewBox="0 0 16 16">
                 <path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"/>
@@ -27,6 +26,7 @@ export class UrlSearchParamUpdate {
                 <path d="M5.5 0a.5.5 0 0 1 .5.5v4A1.5 1.5 0 0 1 4.5 6h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 10 4.5v-4a.5.5 0 0 1 .5-.5zM0 10.5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 6 11.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zm10 1a1.5 1.5 0 0 1 1.5-1.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4z"/>
             </svg>
         `;
+
         if (urlParam.get(urlparam) == null) {
             urlParam.set(urlparam, "off");
         }
@@ -47,8 +47,13 @@ export class UrlSearchParamUpdate {
             });
         }
         window.history.replaceState({}, '', `${location.pathname}?${urlParam}`);
-        citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
-        citation_url.setAttribute("href", window.location.href);
+
+        let citation_url = document.getElementById(variant.chg_citation);
+        if (citation_url) {
+            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
+            citation_url.setAttribute("href", window.location.href);
+        }
+        
     }
 
     fontSize() {
@@ -97,8 +102,12 @@ export class UrlSearchParamUpdate {
             } 
         }
         window.history.replaceState({}, '', `${location.pathname}?${urlParam}`);
-        citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
-        citation_url.setAttribute("href", window.location.href);
+        
+        if (citation_url) {
+            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
+            citation_url.setAttribute("href", window.location.href);
+        }
+        
     }
 
     fontFamily() {
@@ -146,11 +155,15 @@ export class UrlSearchParamUpdate {
             } 
         }
         window.history.replaceState({}, '', `${location.pathname}?${urlParam}`);
-        citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
-        citation_url.setAttribute("href", window.location.href);
+        if (citation_url) {
+            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
+            citation_url.setAttribute("href", window.location.href);
+        }
+        
     }
 
     viewerSwitch() {
+
         let el = document.getElementsByTagName('image-switch');
         let data = "conf_image_switch";
         let opt = el[0].getAttribute("opt");
@@ -160,6 +173,7 @@ export class UrlSearchParamUpdate {
         }
         let url = new URL(window.location.href);
         let urlParam = new URLSearchParams(url.search);
+
         // let opt = options
         let variant = options.variants.find((v) => v.opt === opt);
         let active = options.active_class;
@@ -167,7 +181,6 @@ export class UrlSearchParamUpdate {
         let show = variant.hide.class_to_show;
         let parent = variant.hide.class_parent;
         let urlparam = variant.urlparam;
-        let citation_url = document.getElementById(variant.chg_citation);
         if (urlParam.get(urlparam) == null) {
             urlParam.set(urlparam, "on");
         }
@@ -203,6 +216,7 @@ export class UrlSearchParamUpdate {
                 el.style.maxWidth = "100%";
                 el.classList.remove(active);
             });
+
             // works only with one image viewer
             const viewer = document.querySelector(`.${parent}.${active} .${hide}`);
             const facs = viewer.querySelectorAll("*")[0];
@@ -211,8 +225,13 @@ export class UrlSearchParamUpdate {
             document.getElementById(opt).classList.remove(active); 
         }
         window.history.replaceState({}, '', `${location.pathname}?${urlParam}`);
-        citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
-        citation_url.setAttribute("href", window.location.href);
+
+        let citation_url = document.getElementById(variant.chg_citation);
+        if (citation_url) {
+            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
+            citation_url.setAttribute("href", window.location.href);
+        }
+        
     }
 
     textFeatures() {
@@ -257,15 +276,33 @@ export class UrlSearchParamUpdate {
                     document.getElementById(variants[v].opt).classList.add(active);
                 }
             }
+            else if (urlParam.get(variants[v].opt) === "off") {
+                let color = variants[v].color;
+                let html_class = variants[v].html_class;
+                let css_class = variants[v].css_class;
+                let hide = variants[v].hide;
+                removeMarkup(html_class, css_class, color, hide, style);
+                let slider = document.getElementById(variants[v].opt_slider);
+                slider.classList.remove(color);
+                if (document.getElementById(variants[v].opt).checked === true) {
+                    document.getElementById(variants[v].opt).checked = false;
+                    document.getElementById(variants[v].opt).classList.remove(active);
+                }
+            }
             if (variants[v].chg_citation) {
                 var citation_url = document.getElementById(variants[v].chg_citation);
             }
-            if (count_active === variants.length) {
-                if (document.getElementById(variantAll[0].opt).checked === false) {
-                    document.getElementById(variantAll[0].opt).checked = true;
-                    document.getElementById(variantAll[0].opt).classList.add(active);
-                }
-            };
+        }
+        if (count_active == variants.length) {
+            if (document.getElementById(variantAll[0].opt).checked === false) {
+                document.getElementById(variantAll[0].opt).checked = true;
+                document.getElementById(variantAll[0].opt).classList.add(active);
+            }
+        } else {
+            if (document.getElementById(variantAll[0].opt).checked === true) {
+                document.getElementById(variantAll[0].opt).checked = false;
+                document.getElementById(variantAll[0].opt).classList.remove(active);
+            }
         }
         window.history.replaceState({}, '', `${location.pathname}?${urlParam}`);
         if (citation_url) {
@@ -284,7 +321,6 @@ export class UrlSearchParamUpdate {
         var _current = urlParam.get(options.urlparam);
         // const item = document.querySelector('.pagination .nav-tabs .nav-item .nav-link.active');
         // const href = item.getAttribute('href').replace('#', '');
-        let citation_url = document.getElementById(options.chg_citation);
         if (_current == null) {
             urlParam.set(options.urlparam, "1");
             _current = urlParam.get(options.urlparam);
@@ -373,8 +409,11 @@ export class UrlSearchParamUpdate {
 
         // update state
         window.history.replaceState({}, '', `?${urlParam}`);
-        citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
-        citation_url.setAttribute("href", window.location.href);
+        let citation_url = document.getElementById(options.chg_citation);
+        if (citation_url) {
+            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
+            citation_url.setAttribute("href", window.location.href);
+        }
 
         // hide loder function
         function hideLoading(id) { 
