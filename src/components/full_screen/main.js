@@ -23,7 +23,7 @@ export class FullSize extends HTMLElement {
         let id = this.getAttribute("id");
         let variant = options.variants.find((v) => v.opt === id);
         let hide = variant.hide.class_to_hide;
-        let citation_url = document.getElementById(variant.chg_citation);
+
         let urlparam = variant.urlparam;
         let svg_show = `
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fullscreen" viewBox="0 0 16 16">
@@ -55,8 +55,13 @@ export class FullSize extends HTMLElement {
         var state = {};
         state[stateName] = stateParam;
         window.history.pushState(state, '', `${location.pathname}?${urlParam}`);
-        citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
-        citation_url.setAttribute("href", window.location.href);
+
+        let citation_url = document.getElementById(variant.chg_citation);
+        if (citation_url) {
+            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
+            citation_url.setAttribute("href", window.location.href);
+        }
+
     }
 
     render() {

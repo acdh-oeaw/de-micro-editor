@@ -33,8 +33,8 @@ export class EditionPagination extends HTMLElement {
         state[options.urlparam] = href.replace(/[^0-9]+/, '')
         window.history.pushState(state, '', `?${urlParam}`);
 
-        if (options.chg_citation) {
-            var citation_url = document.getElementById(options.chg_citation);
+        var citation_url = document.getElementById(options.chg_citation);
+        if (citation_url) {
             citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
             citation_url.setAttribute("href", window.location.href);
         }

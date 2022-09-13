@@ -181,6 +181,9 @@ export class UrlSearchParamUpdate {
         let show = variant.hide.class_to_show;
         let parent = variant.hide.class_parent;
         let urlparam = variant.urlparam;
+        let fade = variant.fade;
+        let column_small = [variant.column_small["class"], variant.column_small["percent"]];
+        let column_full = [variant.column_full["class"], variant.column_full["percent"]];
         if (urlParam.get(urlparam) == null) {
             urlParam.set(urlparam, "on");
         }
@@ -190,30 +193,30 @@ export class UrlSearchParamUpdate {
         }
         if (urlParam.get(urlparam) == "on") {
             document.querySelectorAll(`.${hide}`).forEach((el) => {
-                el.classList.remove("fade");
-                el.classList.add("col-md-6");
-                el.style.maxWidth = "50%";
+                el.classList.remove(fade);
+                el.classList.add(column_small[0]);
+                el.style.maxWidth = column_small[1];
                 el.classList.add(active);
             });
             document.querySelectorAll(`.${show}`).forEach((el) => {
-                el.classList.add("col-md-6");
-                el.classList.remove("col-md-12");
-                el.style.maxWidth = "50%";
+                el.classList.add(column_small[0]);
+                el.classList.remove(column_full[0]);
+                el.style.maxWidth = column_small[1];
                 el.classList.add(active);
             });
             document.getElementById(opt).classList.add(active); 
         }
         if (urlParam.get(urlparam) == "off") {
             document.querySelectorAll(`.${hide}`).forEach((el) => {
-                el.classList.add("fade");
-                el.classList.remove("col-md-6");
-                el.style.maxWidth = "100%";
+                el.classList.add(fade);
+                el.classList.remove(column_small[0]);
+                el.style.maxWidth = column_full[1];
                 el.classList.remove(active);
             });
             document.querySelectorAll(`.${show}`).forEach((el) => {
-                el.classList.remove("col-md-6");
-                el.classList.add("col-md-12");
-                el.style.maxWidth = "100%";
+                el.classList.remove(column_small[0]);
+                el.classList.add(column_full[0]);
+                el.style.maxWidth = column_full[1];
                 el.classList.remove(active);
             });
 

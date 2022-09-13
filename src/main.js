@@ -8,105 +8,115 @@ const { EditionPagination } = require("./components/image_loader/pagination");
 const { WindowResize } = require("./components/image_loader/resize");
 const { UrlSearchParamUpdate } = require("./components/search_params/main");
 const { SetDataCookie } = require("./utils/setCookie");
-// const { sliderConfig } = require("./config/conf_annotation_slider");
 
 "use strict";
 
 class LoadEditor {
 
-    constructor(conf_annot, conf_fs, conf_fos, conf_ff, conf_is, conf_il, conf_pl) {
-        this.conf_annot = conf_annot;
-        this.conf_fs = conf_fs;
-        this.conf_fos = conf_fos;
-        this.conf_ff = conf_ff;
-        this.conf_is = conf_is;
-        this.conf_il = conf_il;
-        this.conf_pl = conf_pl;
-    }
+    constructor(options) {
 
-    cookie() {
+        // define configuration options
+        this.conf_annot = options.aot;
+        this.conf_fs = options.fs;
+        this.conf_fos = options.fos;
+        this.conf_ff = options.ff;
+        this.conf_is = options.is;
+        this.conf_il = options.il;
+        this.conf_ep = options.ep;
+        this.conf_wr = options.wr;
+
+        // initialize imported functions
+        this.aot = AnnotationSlider;
+        this.fs = FullSize;
+        this.fos = FontSize;
+        this.ff = FontFamily;
+        this.is = ImageSwitch;
+        this.il = ImageLoader;
+        this.ep = EditionPagination;
+        this.wr = WindowResize;
+        this.up = new UrlSearchParamUpdate();
+
+        // set cookies if config options is available
         if (this.conf_annot) {
-            let set_cookie = new SetDataCookie("conf_annotation_slider", this.conf_annot);
-            set_cookie.build();
+            this.set_cookie_aot = new SetDataCookie("conf_annotation_slider", this.conf_annot).build();
         }
         if (this.conf_fs) {
-            let set_cookie = new SetDataCookie("conf_fullsize", this.conf_fs);
-            set_cookie.build();
+            this.set_cookie_fs = new SetDataCookie("conf_fullsize", this.conf_fs).build();
         }
         if (this.conf_fos) {
-            let set_cookie = new SetDataCookie("conf_fontsize", this.conf_fos);
-            set_cookie.build();
+            this.set_cookie_fos = new SetDataCookie("conf_fontsize", this.conf_fos).build();
         }
         if (this.conf_ff) {
-            let set_cookie = new SetDataCookie("conf_font_family", this.conf_ff);
-            set_cookie.build();
+            this.set_cookie_ff = new SetDataCookie("conf_font_family", this.conf_ff).build();
         }
         if (this.conf_is) {
-            let set_cookie = new SetDataCookie("conf_image_switch", this.conf_is);
-            set_cookie.build();
+            this.set_cookie_is = new SetDataCookie("conf_image_switch", this.conf_is).build();
         }
         if (this.conf_il) {
-            let set_cookie = new SetDataCookie("conf_image_loader", this.conf_il);
-            set_cookie.build();
+            this.set_cookie_il = new SetDataCookie("conf_image_loader", this.conf_il).build();
         }
-        if (this.conf_pl) {
-            let set_cookie = new SetDataCookie("conf_ed_pagination", this.conf_pl);
-            set_cookie.build();
+        if (this.conf_ep) {
+            this.set_cookie_ep = new SetDataCookie("conf_ed_pagination", this.conf_ep).build();
         }
-    }
 
-    build() {    
-        const update = new UrlSearchParamUpdate();
-        if (this.conf_pl) {
-            window.customElements.define('edition-pagination', EditionPagination);
-            // window.onload = update.pageUrl();
+        // defines custom elements and assigns a class
+        // renders html node and adds function
+        // window onload triggers paramUrl functions
+        if (this.conf_ep) {
+            window.customElements.define('edition-pagination', this.ep);
         }
         if (this.conf_il) {
-            window.customElements.define('image-loader', ImageLoader);
-            window.onload = update.pageUrl();
+            window.customElements.define('image-loader', this.il);
+            window.onload = this.up.pageUrl();
         }
         if (this.conf_annot) {
-            window.customElements.define('annotation-slider', AnnotationSlider);
-            window.onload = update.textFeatures();
+            window.customElements.define('annotation-slider', this.aot);
+            window.onload = this.up.textFeatures();
         }
         if (this.conf_fs) {
-            window.customElements.define('full-size', FullSize);
-            window.onload = update.fullSreen();
+            window.customElements.define('full-size', this.fs);
+            window.onload = this.up.fullSreen();
         }
         if (this.conf_fos) {
-            window.customElements.define('font-size', FontSize);
-            window.onload = update.fontSize();
+            window.customElements.define('font-size', this.fos);
+            window.onload = this.up.fontSize();
         }
         if (this.conf_ff) {
-            window.customElements.define('font-family', FontFamily);
-            window.onload = update.fontFamily();
+            window.customElements.define('font-family', this.ff);
+            window.onload = this.up.fontFamily();
         }
         if (this.conf_is) {
-            window.customElements.define('image-switch', ImageSwitch);
-            window.onload = update.viewerSwitch();
+            window.customElements.define('image-switch', this.is);
+            window.onload = this.up.viewerSwitch();
         }
-        window.customElements.define('window-resize', WindowResize);
+        if (this.conf_wr) {
+            window.customElements.define('window-resize', this.wr);
+        }
+
+        // onpopstate = browser back and forward button to recognize classes
         window.onpopstate = () => {
             if (this.conf_annot) {
-                update.textFeatures();
+                this.up.textFeatures();
             }
             if (this.conf_fs) {
-                update.fullSreen();
+                this.up.fullSreen();
             }
             if (this.conf_fos) {
-                update.fontSize();
+                this.up.fontSize();
             }
             if (this.conf_ff) {
-                update.fontFamily();
+                this.up.fontFamily();
             }
             if (this.conf_is) {
-                update.viewerSwitch();
+                this.up.viewerSwitch();
             }
             if (this.conf_il) {
-                update.pageUrl();
+                this.up.pageUrl();
             }
         }
+
     }
+
 };
 
 module.exports = LoadEditor;

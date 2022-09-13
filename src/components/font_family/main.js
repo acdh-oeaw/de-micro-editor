@@ -24,7 +24,6 @@ export class FontFamily extends HTMLElement {
         let p_change = variant.paragraph;
         let p_class = variant.p_class;
         let family = variant.fonts;
-        let citation_url = document.getElementById(variant.chg_citation);
         let urlparam = variant.urlparam;
         var value = this.value;
         if ( urlParam.get(urlparam) !== value ) {
@@ -46,8 +45,13 @@ export class FontFamily extends HTMLElement {
         var state = {};
         state[stateName] = stateParam;
         window.history.pushState(state, '', `${location.pathname}?${urlParam}`);
-        citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
-        citation_url.setAttribute("href", window.location.href);
+
+        let citation_url = document.getElementById(variant.chg_citation);
+        if (citation_url) {
+            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
+            citation_url.setAttribute("href", window.location.href);
+        }
+       
     }
 
     render() {
