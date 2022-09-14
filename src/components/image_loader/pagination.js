@@ -39,10 +39,11 @@ export class EditionPagination extends HTMLElement {
             citation_url.setAttribute("href", window.location.href);
         }
         
-        // set all nav tabs to inactive
-        var link = document.querySelectorAll(`${options.pag_link}[data-tab="${dataTab}"]`);
+        // set all nav links to inactive
+        var link = document.querySelectorAll(`${options.pag_link}`);
         link.forEach(function(el) {
             el.classList.remove(options.active_class);
+            el.classList.remove(options.bootstrap_class);
         });
 
         // get all nav tabs matching the href and set to active
@@ -119,7 +120,7 @@ export class EditionPagination extends HTMLElement {
         });
         this.innerHTML = `
             <a title="Tab ${pos}"
-                class="nav-link active"
+                class="nav-link pagination-link active"
                 data-toggle="tab"
                 data-tab="paginate"
                 id="${data_type}_link_${pos}"
