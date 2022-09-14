@@ -4,7 +4,7 @@ const webpack = require('webpack');
 
 module.exports = {
     entry: {
-        app: './src/main.js',
+        app: './index.js',
     },
     output: {
         filename: 'de-editor.min.js',

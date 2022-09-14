@@ -38,14 +38,20 @@ export class AnnotationSlider extends HTMLElement {
                         let html_class = el.html_class;
                         let css_class = el.css_class;
                         let hide = el.hide;
-                        removeMarkup(html_class, css_class, color, hide, style);
-                        document.getElementById(el.opt_slider).classList.remove(color);
+                        let selected = removeMarkup(html_class, css_class, color, hide, style);
+                        let slider = document.getElementById(el.opt_slider);
+                        slider.classList.remove(color);
+                        slider.removeAttribute("data");
+                        slider.classList.remove("slider-number");
                         document.getElementById(el.opt).checked = false;
                         document.getElementById(el.opt).classList.remove(active);
                         urlParam.set(el.opt, "off");
                     }
                 });
+                this.removeAttribute("data");
+                this.classList.remove("slider-number");
             } else {
+                let count = 0;
                 this.classList.add(active);
                 variants.forEach((el) => {
                     if (document.getElementById(el.opt).checked === false) {
@@ -53,13 +59,19 @@ export class AnnotationSlider extends HTMLElement {
                         let html_class = el.html_class;
                         let css_class = el.css_class;
                         let hide = el.hide;
-                        addMarkup(html_class, css_class, color, hide, style);
-                        document.getElementById(el.opt_slider).classList.add(color);
+                        let selected = addMarkup(html_class, css_class, color, hide, style);
+                        let slider = document.getElementById(el.opt_slider);
+                        slider.classList.add(color);
+                        slider.setAttribute("data", selected);
+                        slider.classList.add("slider-number");
                         document.getElementById(el.opt).checked = true;
                         document.getElementById(el.opt).classList.add(active);
                         urlParam.set(el.opt, "on");
+                        count += parseInt(selected);
                     }
                 });
+                this.setAttribute("data", count);
+                this.classList.add("slider-number");
             }
         } else if (typeof all !== "boolean") {
             console.log(`Type of variant config. "features.all" must be Boolean (true or false)`);
@@ -71,14 +83,20 @@ export class AnnotationSlider extends HTMLElement {
             let hide = variant.hide;
             if ( this.classList.contains(active) ) {
                 this.classList.remove(active);
-                removeMarkup(html_class, css_class, color, hide, style);
-                document.getElementById(variant.opt_slider).classList.remove(color);
+                let selected = removeMarkup(html_class, css_class, color, hide, style);
+                let slider = document.getElementById(variant.opt_slider);
+                slider.classList.remove(color);
+                slider.removeAttribute("data");
+                slider.classList.remove("slider-number");
                 this.classList.remove(color);
                 urlParam.set(variant.opt, "off");
             } else {
                 this.classList.add(active);
-                addMarkup(html_class, css_class, color, hide, style);
-                document.getElementById(variant.opt_slider).classList.add(color);
+                let selected = addMarkup(html_class, css_class, color, hide, style);
+                let slider = document.getElementById(variant.opt_slider);
+                slider.classList.add(color);
+                slider.setAttribute("data", selected);
+                slider.classList.add("slider-number");
                 this.classList.add(color);
                 urlParam.set(variant.opt, "on");
             }
