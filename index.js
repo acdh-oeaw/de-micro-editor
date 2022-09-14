@@ -1,13 +1,13 @@
-const { AnnotationSlider } = require("./components/annotation_slider/main");
-const { FullSize }  = require("./components/full_screen/main");
-const { FontSize } = require("./components/font_size/main");
-const { FontFamily } = require("./components/font_family/main");
-const { ImageSwitch } = require("./components/image_switch/main");
-const { ImageLoader } = require("./components/image_loader/main");
-const { EditionPagination } = require("./components/image_loader/pagination");
-const { WindowResize } = require("./components/image_loader/resize");
-const { UrlSearchParamUpdate } = require("./components/search_params/main");
-const { SetDataCookie } = require("./utils/setCookie");
+const { AnnotationSlider } = require("./src/components/annotation_slider/main");
+const { FullSize }  = require("./src/components/full_screen/main");
+const { FontSize } = require("./src/components/font_size/main");
+const { FontFamily } = require("./src/components/font_family/main");
+const { ImageSwitch } = require("./src/components/image_switch/main");
+const { ImageLoader } = require("./src/components/image_loader/main");
+const { EditionPagination } = require("./src/components/image_loader/pagination");
+const { WindowResize } = require("./src/components/image_loader/resize");
+const { UrlSearchParamUpdate } = require("./src/components/search_params/main");
+const { SetDataCookie } = require("./src/utils/setCookie");
 
 "use strict";
 

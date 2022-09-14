@@ -1,5 +1,6 @@
 export function removeMarkup(html_class, css_class, color, hide, style) {
-    document.querySelectorAll(`.${html_class}`).forEach((el) => {
+    var selected = document.querySelectorAll(`.${html_class}`);
+    selected.forEach((el) => {
         if (typeof css_class === "object") {
             css_class.forEach((css) => {
                 if (el.classList.contains(css)) {
@@ -17,10 +18,12 @@ export function removeMarkup(html_class, css_class, color, hide, style) {
             el.style.display = "none";
         }
     });
+    return String(selected.length);
 };
 
 export function addMarkup(html_class, css_class, color, hide, style) {
-    document.querySelectorAll(`.${html_class}`).forEach((el) => {
+    var selected = document.querySelectorAll(`.${html_class}`);
+    selected.forEach((el) => {
         if (typeof css_class === "object") {
             css_class.forEach((css) => {
                 if (el.classList.contains(css)) {
@@ -38,4 +41,5 @@ export function addMarkup(html_class, css_class, color, hide, style) {
             el.style.display = "inline";
         }
     });
+    return String(selected.length);
 };

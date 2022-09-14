@@ -257,6 +257,7 @@ export class UrlSearchParamUpdate {
         let style = options.span_element;
         let active = options.active_class;
         let count_active = 0;
+        let count = 0;
         for (let v in variants) {
             if (urlParam.get(variants[v].opt) === null) {
                 urlParam.set(variants[v].opt, "off");
@@ -271,8 +272,11 @@ export class UrlSearchParamUpdate {
                 let html_class = variants[v].html_class;
                 let css_class = variants[v].css_class;
                 let hide = variants[v].hide;
-                addMarkup(html_class, css_class, color, hide, style);
+                let selected = addMarkup(html_class, css_class, color, hide, style);
                 let slider = document.getElementById(variants[v].opt_slider);
+                slider.setAttribute("data", selected);
+                count += parseInt(selected);
+                slider.classList.add("slider-number");
                 slider.classList.add(color);
                 if (document.getElementById(variants[v].opt).checked === false) {
                     document.getElementById(variants[v].opt).checked = true;
@@ -284,9 +288,11 @@ export class UrlSearchParamUpdate {
                 let html_class = variants[v].html_class;
                 let css_class = variants[v].css_class;
                 let hide = variants[v].hide;
-                removeMarkup(html_class, css_class, color, hide, style);
+                let selected = removeMarkup(html_class, css_class, color, hide, style);
                 let slider = document.getElementById(variants[v].opt_slider);
                 slider.classList.remove(color);
+                slider.removeAttribute("data");
+                slider.classList.remove("slider-number");
                 if (document.getElementById(variants[v].opt).checked === true) {
                     document.getElementById(variants[v].opt).checked = false;
                     document.getElementById(variants[v].opt).classList.remove(active);
@@ -298,13 +304,19 @@ export class UrlSearchParamUpdate {
         }
         if (count_active == variants.length) {
             if (document.getElementById(variantAll[0].opt).checked === false) {
-                document.getElementById(variantAll[0].opt).checked = true;
-                document.getElementById(variantAll[0].opt).classList.add(active);
+                let slider_all = document.getElementById(variantAll[0].opt);
+                slider_all.checked = true;
+                slider_all.classList.add(active);
+                slider_all.classList.add("slider-number");
+                slider_all.setAttribute("data", String(count));
             }
         } else {
             if (document.getElementById(variantAll[0].opt).checked === true) {
-                document.getElementById(variantAll[0].opt).checked = false;
-                document.getElementById(variantAll[0].opt).classList.remove(active);
+                let slider_all = document.getElementById(variantAll[0].opt);
+                slider_all.checked = false;
+                slider_all.classList.remove(active);
+                slider_all.removeAttribute("data");
+                slider_all.classList.remove("slider-number");
             }
         }
         window.history.replaceState({}, '', `${location.pathname}?${urlParam}`);

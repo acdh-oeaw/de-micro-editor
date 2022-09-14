@@ -1,8 +1,8 @@
 {
   "name": "de-micro-editor",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Digital Edition Editor building blocks",
-  "module": "src/main.js",
+  "module": "index.js",
   "scripts": {
     "start": "webpack serve --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js"
@@ -11,7 +11,7 @@
     "type": "git",
     "url": "https://github.com/acdh-oeaw/de-micro-editor.git"
   },
-  "keywords": [],
+  "keywords": ["Digital Edition", "JavaScript", "Editor", "Text Annotation"],
   "author": "Daniel Stoxreiter",
   "license": "MIT",
   "bugs": {

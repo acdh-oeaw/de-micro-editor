@@ -1,7 +1,7 @@
 # Digital Edition Micro-Editor
 
 ## Introduction
-The package offers building blocks for manipulating text annotation options of Digital Editions. I comes with binary on/off features to highlight text with css classes.
+The package offers building blocks for manipulating text annotation options of Digital Editions. It comes with binary on/off features to highlight text with css classes.
 Furthermore, a build in OSD image viewer offers better representation of facsimiles. The Micro-Editor comes with some more options like: choosing font family and font size as well as full-screen mode and image switch `(on/off)`.
 
 ## Installation
@@ -9,18 +9,18 @@ Furthermore, a build in OSD image viewer offers better representation of facsimi
 
 In JS:
 
-`const { LoadEditor } = require("de-micro-editor/src/main");`
+`const { LoadEditor } = require("de-micro-editor");`
 
 or
 
-`import { LoadEditor } from "de-micro-editor/src/main";`
+`import { LoadEditor } from "de-micro-editor";`
 
 In HTML:
 
 `<script src="https://unpkg.com/de-micro-editor@0.1.0/dist/de-editor.min.js"></script>`
 
 ## Custom Elements (HTML)
-The package renders 7 different custom elements and creates eventlisteners to triggers defined functions. Each custom element takes and attribute `opt` which connects the element with a specific configurations parameter variant (see configuration description below). The window-resize element also takes an attribute `pos` which specifies a specific window to resize. The edition-pagination element uses attributes like `pos facs and data-type` to access window, element ids like images and data-type for further specification. The last two attributes are optional.
+The package renders 7 different custom elements and creates event listeners to triggers defined functions. Each custom element takes an attribute `opt` which connects the element with a specific configurations parameter variant (see configuration description below). The window-resize element also takes an attribute `pos` which specifies a specific window to resize. The edition-pagination element uses attributes like `pos facs and data-type` to access window, element ids like images and data-type for further specification. The last two attributes are optional.
 
 ```
 <annotation-slider opt="break"></annotation-slider>
@@ -50,7 +50,7 @@ var editor = new LoadEditor({...});
 
 ## Configuration Options
 ### class aot
-Defines option for element annotation-slider. If a configuration is present if loads parameters and stores it as session cookies. Default: null. 
+Options for element annotation-slider. If a configuration is present it loads parameters and stores it as session cookies. Default: null. 
 ### Example of class aot:
 All string values can be replaced and the "variants array" can hold multiple objects.
 ```
