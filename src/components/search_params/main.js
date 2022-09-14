@@ -350,7 +350,6 @@ export class UrlSearchParamUpdate {
 
         // deactivate pagination links
         let link = document.querySelectorAll(`${options.pag_link}`);
-        console.log(link);
         let pgOpt = [];
         link.forEach(function(el) {
             el.classList.remove(options.active_class);
