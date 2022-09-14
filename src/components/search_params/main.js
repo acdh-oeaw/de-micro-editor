@@ -342,21 +342,24 @@ export class UrlSearchParamUpdate {
         }
 
         // deactivate all tabs
-        const tabs = document.querySelectorAll(`${options.pag_tab}[data-tab="paginate"]`);
+        let tabs = document.querySelectorAll(`${options.pag_tab}[data-tab="paginate"]`);
         tabs.forEach(function(el) {
             el.classList.remove(options.active_class);
             el.classList.add(options.inactive_class);
         });
 
         // deactivate pagination links
-        const link = document.querySelectorAll(options.pag_link);
+        let link = document.querySelectorAll(`${options.pag_link}`);
         let pgOpt = [];
         link.forEach(function(el) {
             el.classList.remove(options.active_class);
             el.classList.remove(options.bootstrap_class);
-            let id = el.getAttribute("id").split('_');
-            let idNo = id[id.length - 1];
-            pgOpt.push(idNo);
+            let id = el.getAttribute("id");
+            if (id) {
+                let idn = id.split('_');
+                let idNo = idn[idn.length - 1];
+                pgOpt.push(idNo);
+            }
         });
 
         // check if page url param is valid
@@ -367,13 +370,13 @@ export class UrlSearchParamUpdate {
         }
 
         // activate tab base on urlparams
-        const tab = document.getElementById(`paginate-${_current}`);
+        let tab = document.getElementById(`paginate-${_current}`);
         tab.classList.remove(options.inactive_class);
         tab.classList.add(options.active_class);
         tab.classList.add(options.bootstrap_class); 
 
         // get all nav tabs matching href tabs based on urlparams and set to active
-        const linkActive = document.querySelectorAll(`${options.pag_link}[href="#paginate-${_current}"]`);
+        let linkActive = document.querySelectorAll(`${options.pag_link}[href="#paginate-${_current}"]`);
         linkActive.forEach(function(el) {
             el.classList.add(options.active_class);
             el.classList.add(options.bootstrap_class);

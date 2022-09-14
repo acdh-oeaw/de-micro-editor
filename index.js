@@ -24,6 +24,7 @@ class LoadEditor {
         this.conf_il = options.il;
         this.conf_ep = options.ep;
         this.conf_wr = options.wr;
+        this.conf_up = true;
 
         // initialize imported functions
         this.aot = AnnotationSlider;
@@ -67,27 +68,39 @@ class LoadEditor {
         }
         if (this.conf_il) {
             window.customElements.define('image-loader', this.il);
-            window.onload = this.up.pageUrl();
+            if (this.conf_up) {
+                window.onload = this.up.pageUrl();
+            }
         }
         if (this.conf_annot) {
             window.customElements.define('annotation-slider', this.aot);
-            window.onload = this.up.textFeatures();
+            if (this.conf_up) {
+                window.onload = this.up.textFeatures();
+            }
         }
         if (this.conf_fs) {
             window.customElements.define('full-size', this.fs);
-            window.onload = this.up.fullSreen();
+            if (this.conf_up) {
+                window.onload = this.up.fullSreen();
+            }
         }
         if (this.conf_fos) {
             window.customElements.define('font-size', this.fos);
-            window.onload = this.up.fontSize();
+            if (this.conf_up) {
+                window.onload = this.up.fontSize();
+            }
         }
         if (this.conf_ff) {
             window.customElements.define('font-family', this.ff);
-            window.onload = this.up.fontFamily();
+            if (this.conf_up) {
+                window.onload = this.up.fontFamily();
+            }
         }
         if (this.conf_is) {
             window.customElements.define('image-switch', this.is);
-            window.onload = this.up.viewerSwitch();
+            if (this.conf_up) {
+                window.onload = this.up.viewerSwitch();
+            }
         }
         if (this.conf_wr) {
             window.customElements.define('window-resize', this.wr);
@@ -95,22 +108,22 @@ class LoadEditor {
 
         // onpopstate = browser back and forward button to recognize classes
         window.onpopstate = () => {
-            if (this.conf_annot) {
+            if (this.conf_annot && this.conf_up) {
                 this.up.textFeatures();
             }
-            if (this.conf_fs) {
+            if (this.conf_fs && this.conf_up) {
                 this.up.fullSreen();
             }
-            if (this.conf_fos) {
+            if (this.conf_fos && this.conf_up) {
                 this.up.fontSize();
             }
-            if (this.conf_ff) {
+            if (this.conf_ff && this.conf_up) {
                 this.up.fontFamily();
             }
-            if (this.conf_is) {
+            if (this.conf_is && this.conf_up) {
                 this.up.viewerSwitch();
             }
-            if (this.conf_il) {
+            if (this.conf_il && this.conf_up) {
                 this.up.pageUrl();
             }
         }
