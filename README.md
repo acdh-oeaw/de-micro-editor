@@ -4,6 +4,11 @@
 The package offers building blocks for manipulating text annotation options of Digital Editions. It comes with binary on/off features to highlight text with css classes.
 Furthermore, a build in OSD image viewer offers better representation of facsimiles. The Micro-Editor comes with some more options like: choosing font family and font size as well as full-screen mode and image switch `(on/off)`.
 
+## Projects currently using the package
+
+* [AMP](https://amp.acdh.oeaw.ac.at/amp-transcript__0022.html)
+* [Freud HKA](https://freud-digital.github.io/frd-static/sfe-1904-002.html?break=off&person=off&place=off&keyword=off&dream=off&text-variant=off&editorial-notes=off&fullscreen=off&fontsize=default&font=default)
+
 ## Installation
 `npm install de-micro-editor`
 
