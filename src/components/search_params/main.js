@@ -327,6 +327,8 @@ export class UrlSearchParamUpdate {
     }
 
     pageUrl() {
+
+        // get session cookies as parameters
         let data = "conf_image_loader";
         let options = JSON.parse(sessionStorage.getItem(data));
 

@@ -16,7 +16,7 @@ class LoadEditor {
     constructor(options) {
 
         // define configuration options
-        this.conf_annot = options.aot;
+        this.conf_aot = options.aot;
         this.conf_fs = options.fs;
         this.conf_fos = options.fos;
         this.conf_ff = options.ff;
@@ -38,8 +38,8 @@ class LoadEditor {
         this.up = new UrlSearchParamUpdate();
 
         // set cookies if config options is available
-        if (this.conf_annot) {
-            this.set_cookie_aot = new SetDataCookie("conf_annotation_slider", this.conf_annot).build();
+        if (this.conf_aot) {
+            this.set_cookie_aot = new SetDataCookie("conf_annotation_slider", this.conf_aot).build();
         }
         if (this.conf_fs) {
             this.set_cookie_fs = new SetDataCookie("conf_fullsize", this.conf_fs).build();
@@ -72,7 +72,7 @@ class LoadEditor {
                 window.onload = this.up.pageUrl();
             }
         }
-        if (this.conf_annot) {
+        if (this.conf_aot) {
             window.customElements.define('annotation-slider', this.aot);
             if (this.conf_up) {
                 window.onload = this.up.textFeatures();
@@ -108,7 +108,7 @@ class LoadEditor {
 
         // onpopstate = browser back and forward button to recognize classes
         window.onpopstate = () => {
-            if (this.conf_annot && this.conf_up) {
+            if (this.conf_aot && this.conf_up) {
                 this.up.textFeatures();
             }
             if (this.conf_fs && this.conf_up) {
