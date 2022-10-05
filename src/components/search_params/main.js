@@ -356,9 +356,9 @@ export class UrlSearchParamUpdate {
         link.forEach(function(el) {
             el.classList.remove(options.active_class);
             el.classList.remove(options.bootstrap_class);
-            let id = el.getAttribute("id");
-            if (id) {
-                let idn = id.split('_');
+            let el_id = el.getAttribute("id");
+            if (el_id) {
+                let idn = el_id.split('_');
                 let idNo = idn[idn.length - 1];
                 pgOpt.push(idNo);
             }

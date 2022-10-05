@@ -8,10 +8,8 @@ export class FullSize extends HTMLElement {
 
     connectedCallback() {
         this.render();
-        setTimeout(() => {
-            // console.log(this.childNodes[3]);
-            this.childNodes[3].addEventListener("click", this.fullScreen);
-        }, 500);
+        // console.log(this.childNodes[3]);
+        this.childNodes[3].addEventListener("click", this.fullScreen);
     }
 
     fullScreen() {

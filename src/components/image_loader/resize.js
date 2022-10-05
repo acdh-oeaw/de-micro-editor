@@ -16,7 +16,7 @@ export class WindowResize extends HTMLElement {
     resize() {
         var isResizing = true;
 
-        let id = this.getAttribute("id").replace("act-", "");
+        let id = this.getAttribute("id");
         let variant = config.find((v) => `${v.opt}-${v.pos}` === id);
         let container = document.getElementById(`container-resize-${variant["pos"]}`);
         let left_container = document.getElementById(`text-resize-${variant["pos"]}`);
@@ -71,7 +71,7 @@ export class WindowResize extends HTMLElement {
         });
         this.innerHTML = `
             <div class="expand-wrapper text-center hide-reading">
-                <input title="change size" id="resizing-${pos}" type="range" min="0" max="${w}" value="${w / 2}" class="slider"/>
+                <input title="change size" id="${opt}-${pos}" type="range" min="0" max="${w}" value="${w / 2}" class="slider"/>
             </div>
         `;
     }
