@@ -23,6 +23,7 @@ export class AnnotationSlider extends HTMLElement {
 
         // get current url parameters
         let url = new URL(window.location.href);
+        let hash = url.hash;
         let urlParam = new URLSearchParams(url.search);
 
         // get id of rendered html element. opt value of custom element is used as ID.
@@ -197,7 +198,7 @@ export class AnnotationSlider extends HTMLElement {
             } 
         }
         // window.history.replaceState(state, '', `?${urlParam}`);
-        window.history.pushState(state, '', `?${urlParam}`);
+        window.history.pushState(state, '', `?${urlParam}${hash}`);
 
         // try to find elment holding an ID matching the 'chg_citation' string value
         if (variant.chg_citation) {
@@ -208,7 +209,7 @@ export class AnnotationSlider extends HTMLElement {
         // url holding new url params
         if (citation_url) {
             citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
-            citation_url.setAttribute("href", window.location.href);
+            citation_url.setAttribute("href", `${window.location.href}`);
         }
     }
 

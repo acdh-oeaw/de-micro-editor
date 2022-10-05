@@ -86,7 +86,6 @@ class LoadEditor {
         if (this.conf_ep) {
             try {
                 window.customElements.define('edition-pagination', EditionPagination);
-                console.log("EditionPagination loaded");
             } catch (e) {
                 console.log(e);
             }
@@ -94,10 +93,8 @@ class LoadEditor {
         if (this.conf_il) {
             try {
                 window.customElements.define('image-loader', ImageLoader);
-                console.log("ImageLoader loaded");
                 if (this.conf_up) {
                     window.onload = this.up.pageUrl();
-                    console.log("ImageLoader onload");
                 }
             } catch (e) {
                 console.log(e);
@@ -106,10 +103,8 @@ class LoadEditor {
         if (this.conf_aot) {
             try {
                 window.customElements.define('annotation-slider', AnnotationSlider);
-                console.log("AnnotationSlider loaded");
                 if (this.conf_up) {
                     window.onload = this.up.textFeatures();
-                    console.log("AnnotationSlider onload");
                 }
             } catch (e) {
                 console.log(e);
@@ -118,10 +113,8 @@ class LoadEditor {
         if (this.conf_fs) {
             try {
                 window.customElements.define('full-size', FullSize);
-                console.log("FullSize loaded");
                 if (this.conf_up) {
                     window.onload = this.up.fullSreen();
-                    console.log("FullSize onload");
                 }
             } catch (e) {
                 console.log(e);
@@ -130,10 +123,8 @@ class LoadEditor {
         if (this.conf_fos) {
             try {
                 window.customElements.define('font-size', FontSize);
-                console.log("FontSize loaded");
                 if (this.conf_up) {
                     window.onload = this.up.fontSize();
-                    console.log("FontSize onload");
                 }
             } catch (e) {
                 console.log(e);
@@ -142,10 +133,8 @@ class LoadEditor {
         if (this.conf_ff) {
             try {
                 window.customElements.define('font-family', FontFamily);
-                console.log("FontFamily loaded");
                 if (this.conf_up) {
                     window.onload = this.up.fontFamily();
-                    console.log("FontFamily onload");
                 }
             } catch (e) {
                 console.log(e);
@@ -154,10 +143,8 @@ class LoadEditor {
         if (this.conf_is) {
             try {
                 window.customElements.define('image-switch', ImageSwitch);
-                console.log("image switch loaded");
                 if (this.conf_up) {
                     window.onload = this.up.viewerSwitch();
-                    console.log("image switch onload");
                 }
                 
             } catch (e) {
@@ -167,7 +154,6 @@ class LoadEditor {
         if (this.conf_wr) {
             try {
                 window.customElements.define('window-resize', WindowResize);
-                console.log("window resize loaded");
             } catch (e) {
                 console.log(e);
             }

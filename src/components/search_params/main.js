@@ -11,7 +11,12 @@ export class UrlSearchParamUpdate {
         if (!options) {
             alert("Please turn on cookies to display content!")
         }
-        let url = new URL(window.location.href);
+        let loc = window.location;
+        console.log(loc);
+        let hash = window.location.hash;
+        console.log(hash);
+        let url = new URL(loc.href);
+        console.log(url);
         let urlParam = new URLSearchParams(url.search);
         let variant = options.variants.find((v) => v.opt === opt);
         let hide = variant.hide.class_to_hide;
@@ -50,8 +55,8 @@ export class UrlSearchParamUpdate {
 
         let citation_url = document.getElementById(variant.chg_citation);
         if (citation_url) {
-            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
-            citation_url.setAttribute("href", window.location.href);
+            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}${hash}`;
+            citation_url.setAttribute("href", `${window.location.href}${hash}`);
         }
         
     }
@@ -63,7 +68,8 @@ export class UrlSearchParamUpdate {
         if (!options) {
             alert("Please turn on cookies to display content!")
         }
-        let url = new URL(window.location.href);
+        let hash = location.hash;
+        let url = new URL(location.href);
         let urlParam = new URLSearchParams(url.search);
         let variants = options.variants;
         for (let v in variants) {
@@ -104,8 +110,8 @@ export class UrlSearchParamUpdate {
         window.history.replaceState({}, '', `${location.pathname}?${urlParam}`);
         
         if (citation_url) {
-            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
-            citation_url.setAttribute("href", window.location.href);
+            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}${hash}`;
+            citation_url.setAttribute("href", `${window.location.href}${hash}`);
         }
         
     }
@@ -117,7 +123,8 @@ export class UrlSearchParamUpdate {
         if (!options) {
             alert("Please turn on cookies to display content!")
         }
-        let url = new URL(window.location.href);
+        let hash = location.hash;
+        let url = new URL(location.href);
         let urlParam = new URLSearchParams(url.search);
         let variants = options.variants;
         for (let v in variants) {
@@ -156,8 +163,8 @@ export class UrlSearchParamUpdate {
         }
         window.history.replaceState({}, '', `${location.pathname}?${urlParam}`);
         if (citation_url) {
-            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
-            citation_url.setAttribute("href", window.location.href);
+            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}${hash}`;
+            citation_url.setAttribute("href", `${window.location.href}${hash}`);
         }
         
     }
@@ -171,7 +178,8 @@ export class UrlSearchParamUpdate {
         if (!options) {
             alert("Please turn on cookies to display content!")
         }
-        let url = new URL(window.location.href);
+        let hash = location.hash;
+        let url = new URL(location.href);
         let urlParam = new URLSearchParams(url.search);
 
         // let opt = options
@@ -231,8 +239,8 @@ export class UrlSearchParamUpdate {
 
         let citation_url = document.getElementById(variant.chg_citation);
         if (citation_url) {
-            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
-            citation_url.setAttribute("href", window.location.href);
+            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}${hash}`;
+            citation_url.setAttribute("href", `${window.location.href}${hash}`);
         }
         
     }
@@ -244,7 +252,8 @@ export class UrlSearchParamUpdate {
             alert(`Please turn on cookies to display content.\n
                 Or check if configuration files path match data-target and data-path property.`)
         }
-        let url = new URL(window.location.href);
+        let hash = location.hash;
+        let url = new URL(location.href);
         let urlParam = new URLSearchParams(url.search);
         var variantAll = options.variants.filter((v) => v.features.all === true);
         let variants = options.variants.filter((v) => v.features.all === false);
@@ -321,8 +330,8 @@ export class UrlSearchParamUpdate {
         }
         window.history.replaceState({}, '', `${location.pathname}?${urlParam}`);
         if (citation_url) {
-            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
-            citation_url.setAttribute("href", window.location.href);
+            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}${hash}`;
+            citation_url.setAttribute("href", `${window.location.href}${hash}`);
         }
     }
 
@@ -333,8 +342,9 @@ export class UrlSearchParamUpdate {
         let options = JSON.parse(sessionStorage.getItem(data));
 
         // get url params
-        const url = new URL(window.location.href);
-        const urlParam = new URLSearchParams(url.search);
+        let hash = location.hash;
+        let url = new URL(location.href);
+        let urlParam = new URLSearchParams(url.search);
         var _current = urlParam.get(options.urlparam);
         // const item = document.querySelector('.pagination .nav-tabs .nav-item .nav-link.active');
         // const href = item.getAttribute('href').replace('#', '');
@@ -350,7 +360,8 @@ export class UrlSearchParamUpdate {
             el.classList.add(options.inactive_class);
         });
 
-        // deactivate pagination links
+        // deactivate pagination linksshow metadata
+
         let link = document.querySelectorAll(`${options.pag_link}`);
         let pgOpt = [];
         link.forEach(function(el) {
@@ -431,8 +442,8 @@ export class UrlSearchParamUpdate {
         window.history.replaceState({}, '', `?${urlParam}`);
         let citation_url = document.getElementById(options.chg_citation);
         if (citation_url) {
-            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
-            citation_url.setAttribute("href", window.location.href);
+            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}${hash}`;
+            citation_url.setAttribute("href", `${window.location.href}${hash}`);
         }
 
         // hide loder function
