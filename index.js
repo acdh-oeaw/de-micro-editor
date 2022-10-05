@@ -27,104 +27,195 @@ class LoadEditor {
         this.conf_up = true;
 
         // initialize imported functions
-        this.aot = AnnotationSlider;
-        this.fs = FullSize;
-        this.fos = FontSize;
-        this.ff = FontFamily;
-        this.is = ImageSwitch;
-        this.il = ImageLoader;
-        this.ep = EditionPagination;
-        this.wr = WindowResize;
         this.up = new UrlSearchParamUpdate();
 
         // set cookies if config options is available
         if (this.conf_aot) {
-            this.set_cookie_aot = new SetDataCookie("conf_annotation_slider", this.conf_aot).build();
+            try {
+                this.set_cookie_aot = new SetDataCookie("conf_annotation_slider", this.conf_aot).build();
+            } catch (e) {
+                console.log(e);
+            }
         }
         if (this.conf_fs) {
-            this.set_cookie_fs = new SetDataCookie("conf_fullsize", this.conf_fs).build();
+            try {
+                this.set_cookie_fs = new SetDataCookie("conf_fullsize", this.conf_fs).build();
+            } catch (e) {
+                console.log(e);
+            }
         }
         if (this.conf_fos) {
-            this.set_cookie_fos = new SetDataCookie("conf_fontsize", this.conf_fos).build();
+            try {
+                this.set_cookie_fos = new SetDataCookie("conf_fontsize", this.conf_fos).build();
+            } catch (e) {
+                console.log(e);
+            }
         }
         if (this.conf_ff) {
-            this.set_cookie_ff = new SetDataCookie("conf_font_family", this.conf_ff).build();
+            try {
+                this.set_cookie_ff = new SetDataCookie("conf_font_family", this.conf_ff).build();
+            } catch (e) {
+                console.log(e);
+            }
         }
         if (this.conf_is) {
-            this.set_cookie_is = new SetDataCookie("conf_image_switch", this.conf_is).build();
+            try {
+                this.set_cookie_is = new SetDataCookie("conf_image_switch", this.conf_is).build();
+            } catch (e) {
+                console.log(e);
+            }
         }
         if (this.conf_il) {
-            this.set_cookie_il = new SetDataCookie("conf_image_loader", this.conf_il).build();
+            try {
+                this.set_cookie_il = new SetDataCookie("conf_image_loader", this.conf_il).build();
+            } catch (e) {
+                console.log(e);
+            }
         }
         if (this.conf_ep) {
-            this.set_cookie_ep = new SetDataCookie("conf_ed_pagination", this.conf_ep).build();
+            try {
+                this.set_cookie_ep = new SetDataCookie("conf_ed_pagination", this.conf_ep).build();
+            } catch (e) {
+                console.log(e);
+            }
         }
 
         // defines custom elements and assigns a class
         // renders html node and adds function
         // window onload triggers paramUrl functions
         if (this.conf_ep) {
-            window.customElements.define('edition-pagination', this.ep);
+            try {
+                window.customElements.define('edition-pagination', EditionPagination);
+                console.log("EditionPagination loaded");
+            } catch (e) {
+                console.log(e);
+            }
         }
         if (this.conf_il) {
-            window.customElements.define('image-loader', this.il);
-            if (this.conf_up) {
-                window.onload = this.up.pageUrl();
+            try {
+                window.customElements.define('image-loader', ImageLoader);
+                console.log("ImageLoader loaded");
+                if (this.conf_up) {
+                    window.onload = this.up.pageUrl();
+                    console.log("ImageLoader onload");
+                }
+            } catch (e) {
+                console.log(e);
             }
         }
         if (this.conf_aot) {
-            window.customElements.define('annotation-slider', this.aot);
-            if (this.conf_up) {
-                window.onload = this.up.textFeatures();
+            try {
+                window.customElements.define('annotation-slider', AnnotationSlider);
+                console.log("AnnotationSlider loaded");
+                if (this.conf_up) {
+                    window.onload = this.up.textFeatures();
+                    console.log("AnnotationSlider onload");
+                }
+            } catch (e) {
+                console.log(e);
             }
         }
         if (this.conf_fs) {
-            window.customElements.define('full-size', this.fs);
-            if (this.conf_up) {
-                window.onload = this.up.fullSreen();
+            try {
+                window.customElements.define('full-size', FullSize);
+                console.log("FullSize loaded");
+                if (this.conf_up) {
+                    window.onload = this.up.fullSreen();
+                    console.log("FullSize onload");
+                }
+            } catch (e) {
+                console.log(e);
             }
         }
         if (this.conf_fos) {
-            window.customElements.define('font-size', this.fos);
-            if (this.conf_up) {
-                window.onload = this.up.fontSize();
+            try {
+                window.customElements.define('font-size', FontSize);
+                console.log("FontSize loaded");
+                if (this.conf_up) {
+                    window.onload = this.up.fontSize();
+                    console.log("FontSize onload");
+                }
+            } catch (e) {
+                console.log(e);
             }
         }
         if (this.conf_ff) {
-            window.customElements.define('font-family', this.ff);
-            if (this.conf_up) {
-                window.onload = this.up.fontFamily();
+            try {
+                window.customElements.define('font-family', FontFamily);
+                console.log("FontFamily loaded");
+                if (this.conf_up) {
+                    window.onload = this.up.fontFamily();
+                    console.log("FontFamily onload");
+                }
+            } catch (e) {
+                console.log(e);
             }
         }
         if (this.conf_is) {
-            window.customElements.define('image-switch', this.is);
-            if (this.conf_up) {
-                window.onload = this.up.viewerSwitch();
+            try {
+                window.customElements.define('image-switch', ImageSwitch);
+                console.log("image switch loaded");
+                if (this.conf_up) {
+                    window.onload = this.up.viewerSwitch();
+                    console.log("image switch onload");
+                }
+                
+            } catch (e) {
+                console.log(e);
             }
         }
         if (this.conf_wr) {
-            window.customElements.define('window-resize', this.wr);
+            try {
+                window.customElements.define('window-resize', WindowResize);
+                console.log("window resize loaded");
+            } catch (e) {
+                console.log(e);
+            }
         }
 
         // onpopstate = browser back and forward button to recognize classes
         window.onpopstate = () => {
             if (this.conf_aot && this.conf_up) {
-                this.up.textFeatures();
+                try {
+                    this.up.textFeatures();
+                } catch (e) {
+                    console.log(e);
+                }
             }
             if (this.conf_fs && this.conf_up) {
-                this.up.fullSreen();
+                try {
+                    this.up.fullSreen();
+                } catch (e) {
+                    console.log(e);
+                }
             }
             if (this.conf_fos && this.conf_up) {
-                this.up.fontSize();
+                try {
+                    this.up.fontSize();
+                } catch (e) {
+                    console.log(e);
+                }
             }
             if (this.conf_ff && this.conf_up) {
-                this.up.fontFamily();
+                try {
+                    this.up.fontFamily();
+                } catch (e) {
+                    console.log(e);
+                }
             }
             if (this.conf_is && this.conf_up) {
-                this.up.viewerSwitch();
+                try {
+                    this.up.viewerSwitch();
+                } catch (e) {
+                    console.log(e);
+                }
             }
             if (this.conf_il && this.conf_up) {
-                this.up.pageUrl();
+                try {
+                    this.up.pageUrl();
+                } catch (e) {
+                    console.log(e);
+                }
             }
         }
 

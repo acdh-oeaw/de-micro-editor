@@ -8,10 +8,8 @@ export class FontFamily extends HTMLElement {
 
     connectedCallback() {
         this.render();
-        setTimeout(() => {
-            // console.log(this.childNodes[3]);
-            this.childNodes[3].addEventListener("change", this.fontFamily);
-        }, 500);
+        // console.log(this.childNodes[3]);
+        this.childNodes[3].addEventListener("change", this.fontFamily);
     }
 
     fontFamily() {
