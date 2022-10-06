@@ -31,12 +31,12 @@ export class EditionPagination extends HTMLElement {
         urlParam.set(options.urlparam, href.replace(/[^0-9]+/, ''));
         var state = {};
         state[options.urlparam] = href.replace(/[^0-9]+/, '')
-        window.history.pushState(state, '', `?${urlParam}`);
+        window.history.pushState(state, '', `?${urlParam}${location.hash}`);
 
         var citation_url = document.getElementById(options.chg_citation);
         if (citation_url) {
-            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
-            citation_url.setAttribute("href", window.location.href);
+            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}${location.hash}`;
+            citation_url.setAttribute("href", `${window.location.href}${location.hash}`);
         }
         
         // set all nav links to inactive

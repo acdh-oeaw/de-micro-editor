@@ -198,7 +198,7 @@ export class AnnotationSlider extends HTMLElement {
             } 
         }
         // window.history.replaceState(state, '', `?${urlParam}`);
-        window.history.pushState(state, '', `?${urlParam}${hash}`);
+        window.history.pushState(state, '', `?${urlParam}${location.hash}`);
 
         // try to find elment holding an ID matching the 'chg_citation' string value
         if (variant.chg_citation) {
@@ -208,8 +208,8 @@ export class AnnotationSlider extends HTMLElement {
         // if an ID was in HTML DOM the element inner html is updated with and updated
         // url holding new url params
         if (citation_url) {
-            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}`;
-            citation_url.setAttribute("href", `${window.location.href}`);
+            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}${location.hash}`;
+            citation_url.setAttribute("href", `${window.location.href}${location.hash}`);
         }
     }
 

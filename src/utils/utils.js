@@ -67,3 +67,38 @@ export function addMarkup(html_class, css_class, color, hide, style) {
     });
     return String(selected.length);
 };
+
+export function uptState(hist, cit, state, href) {
+
+    if (hist) {
+        // update url and state of history
+        window.history.replaceState({}, '', href);
+        console.log("hist");
+        console.log(window.history);
+        console.log(location.href);
+    } 
+    
+    if (state) {
+        window.history.pushState(state, '', href);
+        console.log("state");
+        console.log(state);
+        console.log(window.history);
+    }
+
+    if (cit) {
+        // update citations url with current url
+        cit.innerHTML = href;
+        cit.setAttribute("href", href);
+        console.log("cit");
+        console.log(cit.innerHTML);
+        console.log(href);
+    }
+
+}
+
+export function hideLoading(id) { 
+    let spinnerID2 = "spinner_" + id;
+    if ( document.getElementById(spinnerID2) ) {
+        document.getElementById(spinnerID2).remove();
+    }
+}

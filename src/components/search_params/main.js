@@ -51,12 +51,13 @@ export class UrlSearchParamUpdate {
                 options.rendered_element.svg = svg_hide;
             });
         }
-        window.history.replaceState({}, '', `${location.pathname}?${urlParam}`);
 
         let citation_url = document.getElementById(variant.chg_citation);
+        window.history.replaceState({}, '', `${location.pathname}?${urlParam}${location.hash}`);
+        
         if (citation_url) {
-            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}${hash}`;
-            citation_url.setAttribute("href", `${window.location.href}${hash}`);
+            citation_url.innerHTML = `${window.location.href}${location.hash}`;
+            citation_url.setAttribute("href", `${window.location.href}${location.hash}`);
         }
         
     }
@@ -107,11 +108,11 @@ export class UrlSearchParamUpdate {
                 
             } 
         }
-        window.history.replaceState({}, '', `${location.pathname}?${urlParam}`);
+        window.history.replaceState({}, '', `${location.pathname}?${urlParam}${location.hash}`);
         
         if (citation_url) {
-            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}${hash}`;
-            citation_url.setAttribute("href", `${window.location.href}${hash}`);
+            citation_url.innerHTML = `${window.location.href}${location.hash}`;
+            citation_url.setAttribute("href", `${window.location.href}${location.hash}`);
         }
         
     }
@@ -161,10 +162,11 @@ export class UrlSearchParamUpdate {
                 
             } 
         }
-        window.history.replaceState({}, '', `${location.pathname}?${urlParam}`);
+        window.history.replaceState({}, '', `${location.pathname}?${urlParam}${location.hash}`);
+        
         if (citation_url) {
-            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}${hash}`;
-            citation_url.setAttribute("href", `${window.location.href}${hash}`);
+            citation_url.innerHTML = `${window.location.href}${location.hash}`;
+            citation_url.setAttribute("href", `${window.location.href}${location.hash}`);
         }
         
     }
@@ -235,12 +237,13 @@ export class UrlSearchParamUpdate {
             facs.style.height = variant.image_size;
             document.getElementById(opt).classList.remove(active); 
         }
-        window.history.replaceState({}, '', `${location.pathname}?${urlParam}`);
 
         let citation_url = document.getElementById(variant.chg_citation);
+        window.history.replaceState({}, '', `${location.pathname}?${urlParam}${location.hash}`);
+        
         if (citation_url) {
-            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}${hash}`;
-            citation_url.setAttribute("href", `${window.location.href}${hash}`);
+            citation_url.innerHTML = `${window.location.href}${location.hash}`;
+            citation_url.setAttribute("href", `${window.location.href}${location.hash}`);
         }
         
     }
@@ -328,10 +331,11 @@ export class UrlSearchParamUpdate {
                 slider_all.classList.remove("slider-number");
             }
         }
-        window.history.replaceState({}, '', `${location.pathname}?${urlParam}`);
+        window.history.replaceState({}, '', `${location.pathname}?${urlParam}${location.hash}`);
+        
         if (citation_url) {
-            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}${hash}`;
-            citation_url.setAttribute("href", `${window.location.href}${hash}`);
+            citation_url.innerHTML = `${window.location.href}${location.hash}`;
+            citation_url.setAttribute("href", `${window.location.href}${location.hash}`);
         }
     }
 
@@ -439,11 +443,12 @@ export class UrlSearchParamUpdate {
         }
 
         // update state
-        window.history.replaceState({}, '', `?${urlParam}`);
         let citation_url = document.getElementById(options.chg_citation);
+        window.history.replaceState({}, '', `${location.pathname}?${urlParam}${location.hash}`);
+        
         if (citation_url) {
-            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}${hash}`;
-            citation_url.setAttribute("href", `${window.location.href}${hash}`);
+            citation_url.innerHTML = `${window.location.href}${location.hash}`;
+            citation_url.setAttribute("href", `${window.location.href}${location.hash}`);
         }
 
         // hide loder function
