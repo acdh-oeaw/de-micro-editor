@@ -1,3 +1,5 @@
+const { uptState } = require("../../utils/utils");
+
 export class FontFamily extends HTMLElement {
 
     "use strict";
@@ -42,13 +44,15 @@ export class FontFamily extends HTMLElement {
         var stateParam = urlParam.get(variant.opt);
         var state = {};
         state[stateName] = stateParam;
-        window.history.pushState(state, '', `${location.pathname}?${urlParam}${location.hash}`);
 
         let citation_url = document.getElementById(variant.chg_citation);
-        if (citation_url) {
-            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}${location.hash}`;
-            citation_url.setAttribute("href", `${window.location.href}${location.hash}`);
-        }
+        let href = `?${urlParam}${location.hash}`;
+        uptState({
+            "hist": false,
+            "cit": citation_url,
+            "state": state,
+            "href": href
+        });
        
     }
 

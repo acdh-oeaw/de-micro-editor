@@ -1,4 +1,5 @@
 const OpenSeadragon = require("openseadragon");
+const { uptState } = require("../../utils/utils");
 
 const config = [];
 
@@ -31,13 +32,15 @@ export class EditionPagination extends HTMLElement {
         urlParam.set(options.urlparam, href.replace(/[^0-9]+/, ''));
         var state = {};
         state[options.urlparam] = href.replace(/[^0-9]+/, '')
-        window.history.pushState(state, '', `?${urlParam}${location.hash}`);
 
-        var citation_url = document.getElementById(options.chg_citation);
-        if (citation_url) {
-            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}${location.hash}`;
-            citation_url.setAttribute("href", `${window.location.href}${location.hash}`);
-        }
+        let citation_url = document.getElementById(options.chg_citation);
+        let hrefState = `?${urlParam}${location.hash}`;
+        uptState({
+            "hist": false,
+            "cit": citation_url,
+            "state": state,
+            "href": hrefState
+        });
         
         // set all nav links to inactive
         var link = document.querySelectorAll(`${options.pag_link}`);

@@ -1,4 +1,4 @@
-const { addMarkup, removeMarkup } = require("../../utils/utils");
+const { addMarkup, removeMarkup, uptState, hideLoading } = require("../../utils/utils");
 const OpenSeadragon = require("openseadragon");
 
 export class UrlSearchParamUpdate {
@@ -11,12 +11,7 @@ export class UrlSearchParamUpdate {
         if (!options) {
             alert("Please turn on cookies to display content!")
         }
-        let loc = window.location;
-        console.log(loc);
-        let hash = window.location.hash;
-        console.log(hash);
-        let url = new URL(loc.href);
-        console.log(url);
+        let url = new URL(location.href);
         let urlParam = new URLSearchParams(url.search);
         let variant = options.variants.find((v) => v.opt === opt);
         let hide = variant.hide.class_to_hide;
@@ -53,12 +48,13 @@ export class UrlSearchParamUpdate {
         }
 
         let citation_url = document.getElementById(variant.chg_citation);
-        window.history.replaceState({}, '', `${location.pathname}?${urlParam}${location.hash}`);
-        
-        if (citation_url) {
-            citation_url.innerHTML = `${window.location.href}${location.hash}`;
-            citation_url.setAttribute("href", `${window.location.href}${location.hash}`);
-        }
+        let href = `${location.pathname}?${urlParam}${location.hash}`;
+        uptState({
+            "hist": true,
+            "cit": citation_url,
+            "state": false,
+            "href": href
+        });
         
     }
 
@@ -69,7 +65,6 @@ export class UrlSearchParamUpdate {
         if (!options) {
             alert("Please turn on cookies to display content!")
         }
-        let hash = location.hash;
         let url = new URL(location.href);
         let urlParam = new URLSearchParams(url.search);
         let variants = options.variants;
@@ -108,12 +103,13 @@ export class UrlSearchParamUpdate {
                 
             } 
         }
-        window.history.replaceState({}, '', `${location.pathname}?${urlParam}${location.hash}`);
-        
-        if (citation_url) {
-            citation_url.innerHTML = `${window.location.href}${location.hash}`;
-            citation_url.setAttribute("href", `${window.location.href}${location.hash}`);
-        }
+        let href = `${location.pathname}?${urlParam}${location.hash}`;
+        uptState({
+            "hist": true,
+            "cit": citation_url,
+            "state": false,
+            "href": href
+        });
         
     }
 
@@ -124,7 +120,6 @@ export class UrlSearchParamUpdate {
         if (!options) {
             alert("Please turn on cookies to display content!")
         }
-        let hash = location.hash;
         let url = new URL(location.href);
         let urlParam = new URLSearchParams(url.search);
         let variants = options.variants;
@@ -162,12 +157,13 @@ export class UrlSearchParamUpdate {
                 
             } 
         }
-        window.history.replaceState({}, '', `${location.pathname}?${urlParam}${location.hash}`);
-        
-        if (citation_url) {
-            citation_url.innerHTML = `${window.location.href}${location.hash}`;
-            citation_url.setAttribute("href", `${window.location.href}${location.hash}`);
-        }
+        let href = `${location.pathname}?${urlParam}${location.hash}`;
+        uptState({
+            "hist": true,
+            "cit": citation_url,
+            "state": false,
+            "href": href
+        });
         
     }
 
@@ -180,7 +176,6 @@ export class UrlSearchParamUpdate {
         if (!options) {
             alert("Please turn on cookies to display content!")
         }
-        let hash = location.hash;
         let url = new URL(location.href);
         let urlParam = new URLSearchParams(url.search);
 
@@ -239,12 +234,13 @@ export class UrlSearchParamUpdate {
         }
 
         let citation_url = document.getElementById(variant.chg_citation);
-        window.history.replaceState({}, '', `${location.pathname}?${urlParam}${location.hash}`);
-        
-        if (citation_url) {
-            citation_url.innerHTML = `${window.location.href}${location.hash}`;
-            citation_url.setAttribute("href", `${window.location.href}${location.hash}`);
-        }
+        let href = `${location.pathname}?${urlParam}${location.hash}`;
+        uptState({
+            "hist": true,
+            "cit": citation_url,
+            "state": false,
+            "href": href
+        });
         
     }
 
@@ -255,7 +251,6 @@ export class UrlSearchParamUpdate {
             alert(`Please turn on cookies to display content.\n
                 Or check if configuration files path match data-target and data-path property.`)
         }
-        let hash = location.hash;
         let url = new URL(location.href);
         let urlParam = new URLSearchParams(url.search);
         var variantAll = options.variants.filter((v) => v.features.all === true);
@@ -331,12 +326,13 @@ export class UrlSearchParamUpdate {
                 slider_all.classList.remove("slider-number");
             }
         }
-        window.history.replaceState({}, '', `${location.pathname}?${urlParam}${location.hash}`);
-        
-        if (citation_url) {
-            citation_url.innerHTML = `${window.location.href}${location.hash}`;
-            citation_url.setAttribute("href", `${window.location.href}${location.hash}`);
-        }
+        let href = `${location.pathname}?${urlParam}${location.hash}`;
+        uptState({
+            "hist": true,
+            "cit": citation_url,
+            "state": false,
+            "href": href
+        });
     }
 
     pageUrl() {
@@ -346,7 +342,6 @@ export class UrlSearchParamUpdate {
         let options = JSON.parse(sessionStorage.getItem(data));
 
         // get url params
-        let hash = location.hash;
         let url = new URL(location.href);
         let urlParam = new URLSearchParams(url.search);
         var _current = urlParam.get(options.urlparam);
@@ -444,20 +439,14 @@ export class UrlSearchParamUpdate {
 
         // update state
         let citation_url = document.getElementById(options.chg_citation);
-        window.history.replaceState({}, '', `${location.pathname}?${urlParam}${location.hash}`);
-        
-        if (citation_url) {
-            citation_url.innerHTML = `${window.location.href}${location.hash}`;
-            citation_url.setAttribute("href", `${window.location.href}${location.hash}`);
-        }
+        let href = `${location.pathname}?${urlParam}${location.hash}`;
+        uptState({
+            "hist": true,
+            "cit": citation_url,
+            "state": false,
+            "href": href
+        });
 
-        // hide loder function
-        function hideLoading(id) { 
-            let spinnerID2 = "spinner_" + id;
-            if ( document.getElementById(spinnerID2) ) {
-                document.getElementById(spinnerID2).remove();
-            }
-        }
     }
 
 }

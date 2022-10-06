@@ -1,4 +1,4 @@
-const { addMarkup, removeMarkup } = require("../../utils/utils");
+const { addMarkup, removeMarkup, uptState } = require("../../utils/utils");
 
 export class AnnotationSlider extends HTMLElement {
 
@@ -197,20 +197,16 @@ export class AnnotationSlider extends HTMLElement {
                 state[key] = value;
             } 
         }
-        // window.history.replaceState(state, '', `?${urlParam}`);
-        window.history.pushState(state, '', `?${urlParam}${location.hash}`);
 
         // try to find elment holding an ID matching the 'chg_citation' string value
-        if (variant.chg_citation) {
-            var citation_url = document.getElementById(variant.chg_citation);
-        }
-
-        // if an ID was in HTML DOM the element inner html is updated with and updated
-        // url holding new url params
-        if (citation_url) {
-            citation_url.innerHTML = `${location.hostname}${location.pathname}?${urlParam}${location.hash}`;
-            citation_url.setAttribute("href", `${window.location.href}${location.hash}`);
-        }
+        let citation_url = document.getElementById(variant.chg_citation);
+        let href = `?${urlParam}${location.hash}`;
+        uptState({
+            "hist": false,
+            "cit": citation_url,
+            "state": state,
+            "href": href
+        });
     }
 
     // function to render HTML element inside the custom element

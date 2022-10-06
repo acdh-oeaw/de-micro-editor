@@ -68,37 +68,27 @@ export function addMarkup(html_class, css_class, color, hide, style) {
     return String(selected.length);
 };
 
-export function uptState(hist, cit, state, href) {
+export function uptState(options) {
 
-    if (hist) {
+    if (options.hist) {
         // update url and state of history
-        window.history.replaceState({}, '', href);
-        console.log("hist");
-        console.log(window.history);
-        console.log(location.href);
+        window.history.replaceState({}, '', options.href);
     } 
     
-    if (state) {
-        window.history.pushState(state, '', href);
-        console.log("state");
-        console.log(state);
-        console.log(window.history);
+    if (options.state) {
+        window.history.pushState(options.state, '', options.href);
     }
 
-    if (cit) {
-        // update citations url with current url
-        cit.innerHTML = href;
-        cit.setAttribute("href", href);
-        console.log("cit");
-        console.log(cit.innerHTML);
-        console.log(href);
+    if (options.cit) {
+        options.cit.innerHTML = options.href;
+        options.cit.setAttribute("href", options.href);
     }
 
 }
 
 export function hideLoading(id) { 
-    let spinnerID2 = "spinner_" + id;
-    if ( document.getElementById(spinnerID2) ) {
-        document.getElementById(spinnerID2).remove();
+    let spinnerID = "spinner_" + id;
+    if ( document.getElementById(spinnerID) ) {
+        document.getElementById(spinnerID).remove();
     }
 }
