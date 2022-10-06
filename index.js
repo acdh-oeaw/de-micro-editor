@@ -205,6 +205,23 @@ class LoadEditor {
             }
         }
 
+        window.onload = () => {
+                    
+            if (window.location.hash == '') {
+                return false;
+            }
+            
+            let el = document.querySelector(window.location.hash);
+            
+            if (el !== null) {
+            
+                el.scrollIntoView({ behavior: 'smooth' });
+                el.style.backgroundColor = "#FFFCA1";
+            
+            }
+        
+        }
+
     }
 
 };
