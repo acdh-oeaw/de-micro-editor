@@ -48,7 +48,7 @@ export class UrlSearchParamUpdate {
         }
 
         let citation_url = document.getElementById(variant.chg_citation);
-        let href = `${location.pathname}?${urlParam}${location.hash}`;
+        let href = `?${urlParam}${location.hash}`;
         uptState({
             "hist": true,
             "cit": citation_url,
@@ -103,7 +103,7 @@ export class UrlSearchParamUpdate {
                 
             } 
         }
-        let href = `${location.pathname}?${urlParam}${location.hash}`;
+        let href = `?${urlParam}${location.hash}`;
         uptState({
             "hist": true,
             "cit": citation_url,
@@ -157,7 +157,7 @@ export class UrlSearchParamUpdate {
                 
             } 
         }
-        let href = `${location.pathname}?${urlParam}${location.hash}`;
+        let href = `?${urlParam}${location.hash}`;
         uptState({
             "hist": true,
             "cit": citation_url,
@@ -234,7 +234,7 @@ export class UrlSearchParamUpdate {
         }
 
         let citation_url = document.getElementById(variant.chg_citation);
-        let href = `${location.pathname}?${urlParam}${location.hash}`;
+        let href = `?${urlParam}${location.hash}`;
         uptState({
             "hist": true,
             "cit": citation_url,
@@ -326,7 +326,7 @@ export class UrlSearchParamUpdate {
                 slider_all.classList.remove("slider-number");
             }
         }
-        let href = `${location.pathname}?${urlParam}${location.hash}`;
+        let href = `?${urlParam}${location.hash}`;
         uptState({
             "hist": true,
             "cit": citation_url,
@@ -439,7 +439,7 @@ export class UrlSearchParamUpdate {
 
         // update state
         let citation_url = document.getElementById(options.chg_citation);
-        let href = `${location.pathname}?${urlParam}${location.hash}`;
+        let href = `?${urlParam}${location.hash}`;
         uptState({
             "hist": true,
             "cit": citation_url,

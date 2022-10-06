@@ -80,7 +80,7 @@ export function uptState(options) {
     }
 
     if (options.cit) {
-        options.cit.innerHTML = options.href;
+        options.cit.innerHTML =  `${location.hostname}${location.pathname}${options.href}`;
         options.cit.setAttribute("href", options.href);
     }
 
