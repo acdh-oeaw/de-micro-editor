@@ -19,7 +19,7 @@ export class ImageLoader extends HTMLElement {
         let data_type = this.getAttribute("data-type");
         let dataSource = this.getAttribute("data-source");
         this.innerHTML = `
-            <img id="${data_type}_img_${pos}" src="${url}${dataSource}${url_param}"></img>
+            <span id="${data_type}_img_${pos}" data-src="${url}${dataSource}${url_param}">Enable JavaScript to load image!</span>
         `;
     }
 

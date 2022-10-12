@@ -409,7 +409,7 @@ export class UrlSearchParamUpdate {
         if ( osd_container_2 ) {
             osd_container.style.height = options.img_size;
             let image = document.getElementById(`${_image_type}_img_${_current}`);
-            let image_src = image.getAttribute('src');
+            let image_src = image.getAttribute('data-src');
             let image_url = {type: 'image', url: image_src};
             let viewer = OpenSeadragon({
                 id: _osd_container_id,
