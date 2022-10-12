@@ -431,22 +431,32 @@ class LoadEditor {
         window.onload = () => {
                     
             if (window.location.hash == '') {
+
                 return false;
+
+            } else {
+
+                var el = document.querySelector(window.location.hash);
+            
+                if (el !== null) {
+                
+                    el.scrollIntoView({ behavior: 'smooth' });
+                    el.style.backgroundColor = "#FFFCA1";
+
+                    setTimeout(function() {
+    
+                        el.style.backgroundColor = "transparent";
+    
+                    }, 10000);
+                
+                }
+
             }
             
-            let el = document.querySelector(window.location.hash);
-            
-            if (el !== null) {
-            
-                el.scrollIntoView({ behavior: 'smooth' });
-                el.style.backgroundColor = "#FFFCA1";
-            
-            }
-        
         }
 
     }
 
-};
+}
 
 module.exports = LoadEditor;
