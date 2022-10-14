@@ -13,7 +13,29 @@ const { SetDataCookie } = require("./src/utils/setCookie");
 
 class LoadEditor {
 
-    constructor(options) {
+    aot: object | boolean;
+    fs: object | boolean;
+    fos: object | boolean;
+    ff: object | boolean;
+    is: object | boolean;
+    il: object | boolean;
+    ep: object | boolean;
+    wr: object | boolean;
+    up: object | boolean;
+    upc: any;
+
+
+    constructor(options: {
+        aot: object | boolean,
+        fs: object | boolean,
+        fos: object | boolean,
+        ff: object | boolean,
+        is: object | boolean,
+        il: object | boolean,
+        ep: object | boolean,
+        wr: object | boolean,
+        up: object | boolean
+    }) {
 
         /*
         define configuration options
@@ -22,13 +44,9 @@ class LoadEditor {
         if one or several keys are not available, only these keys will hold default values
         */
         if (options && "aot" in options) {
-            if (typeof options.aot == "object") {
-                this.conf_aot = options.aot;
-            } else {
-                this.conf_aot = false
-            }
+            this.aot = options.aot;
         } else {
-            this.conf_aot = {
+            this.aot = {
                 title: "Text Annotations",
                 variants: [
                     {
@@ -57,13 +75,9 @@ class LoadEditor {
             }
         }
         if (options && "fs" in options) {
-            if (typeof options.fs == "object") {
-                this.conf_fs = options.fs;
-            } else {
-                this.conf_fs = false
-            }
+            this.fs = options.fs;
         } else {
-            this.conf_fs = {
+            this.fs = {
                 name: "Change to fullscreen",
                 variants:  [
                     {
@@ -86,13 +100,9 @@ class LoadEditor {
             }
         }
         if (options && "fos" in options) {
-            if (typeof options.fos == "object") {
-                this.conf_fos = options.fos;
-            } else {
-                this.conf_fos = false
-            }
+            this.fos = options.fos;
         } else {
-            this.conf_fos = {
+            this.fos = {
                 name: "Change font size",
                 variants:  [
                     {
@@ -117,13 +127,9 @@ class LoadEditor {
             }
         }
         if (options && "ff" in options) {
-            if (typeof options.ff == "object") {
-                this.conf_ff = options.ff;
-            } else {
-                this.conf_ff = false
-            }
+            this.ff = options.ff;
         } else {
-            this.conf_ff = {
+            this.ff = {
                 name: "Change font family",
                 variants:  [
                     {
@@ -147,13 +153,9 @@ class LoadEditor {
             }
         }
         if (options && "is" in options) {
-            if (typeof options.is == "object") {
-                this.conf_is = options.is;
-            } else {
-                this.conf_is = false
-            }
+            this.is = options.is;
         } else {
-            this.conf_is = {
+            this.is = {
                 name: "enable/disable image viewer",
                 variants:  [
                     {
@@ -188,13 +190,9 @@ class LoadEditor {
             }
         }
         if (options && "il" in options) {
-            if (typeof options.il == "object") {
-                this.conf_il = options.il;
-            } else {
-                this.conf_il = false
-            }
+            this.il = options.il;
         } else {
-            this.conf_il = {
+            this.il = {
                 name: "load images in OSD viewer",
                 opt: "image-loader",
                 title: "Faksimiles",
@@ -214,13 +212,9 @@ class LoadEditor {
             }
         }
         if (options && "ep" in options) {
-            if (typeof options.ep == "object") {
-                this.conf_ep = options.ep;
-            } else {
-                this.conf_ep = false
-            }
+            this.ep = options.ep;
         } else {
-            this.conf_ep = {
+            this.ep = {
                 name: "Page Pagination",
                 opt: "edition-pagination",
                 title: "Page Pagination",
@@ -239,65 +233,65 @@ class LoadEditor {
             }
         }
         if (options && "wr" in options) {
-            this.conf_wr = options.wr;
+            this.wr = options.wr;
         } else {
-            this.conf_wr = false;
+            this.wr = false;
         }
         if (options && "up" in options) {
-            this.conf_up = options.up;
+            this.up = options.up;
         } else {
-            this.conf_up = false;
+            this.up = false;
         }
 
         // initialize imported functions
-        this.up = new UrlSearchParamUpdate();
+        this.upc = new UrlSearchParamUpdate();
 
         // set cookies if config options is available
-        if (this.conf_aot) {
+        if (this.aot) {
             try {
-                this.set_cookie_aot = new SetDataCookie("conf_annotation_slider", this.conf_aot).build();
+                new SetDataCookie("annotation_slider", this.aot).build();
             } catch (e) {
                 console.log(e);
             }
         }
-        if (this.conf_fs) {
+        if (this.fs) {
             try {
-                this.set_cookie_fs = new SetDataCookie("conf_fullsize", this.conf_fs).build();
+                new SetDataCookie("fullsize", this.fs).build();
             } catch (e) {
                 console.log(e);
             }
         }
-        if (this.conf_fos) {
+        if (this.fos) {
             try {
-                this.set_cookie_fos = new SetDataCookie("conf_fontsize", this.conf_fos).build();
+                new SetDataCookie("fontsize", this.fos).build();
             } catch (e) {
                 console.log(e);
             }
         }
-        if (this.conf_ff) {
+        if (this.ff) {
             try {
-                this.set_cookie_ff = new SetDataCookie("conf_font_family", this.conf_ff).build();
+                new SetDataCookie("font_family", this.ff).build();
             } catch (e) {
                 console.log(e);
             }
         }
-        if (this.conf_is) {
+        if (this.is) {
             try {
-                this.set_cookie_is = new SetDataCookie("conf_image_switch", this.conf_is).build();
+                new SetDataCookie("image_switch", this.is).build();
             } catch (e) {
                 console.log(e);
             }
         }
-        if (this.conf_il) {
+        if (this.il) {
             try {
-                this.set_cookie_il = new SetDataCookie("conf_image_loader", this.conf_il).build();
+                new SetDataCookie("image_loader", this.il).build();
             } catch (e) {
                 console.log(e);
             }
         }
-        if (this.conf_ep) {
+        if (this.ep) {
             try {
-                this.set_cookie_ep = new SetDataCookie("conf_ed_pagination", this.conf_ep).build();
+                new SetDataCookie("ed_pagination", this.ep).build();
             } catch (e) {
                 console.log(e);
             }
@@ -306,75 +300,75 @@ class LoadEditor {
         // defines custom elements and assigns a class
         // renders html node and adds function
         // window onload triggers paramUrl functions
-        if (this.conf_ep) {
+        if (this.ep) {
             try {
                 window.customElements.define('edition-pagination', EditionPagination);
             } catch (e) {
                 console.log(e);
             }
         }
-        if (this.conf_il) {
+        if (this.il) {
             try {
                 window.customElements.define('image-loader', ImageLoader);
-                if (this.conf_up) {
-                    window.onload = this.up.pageUrl();
+                if (this.up) {
+                    window.onload = this.upc.pageUrl();
                 }
             } catch (e) {
                 console.log(e);
             }
         }
-        if (this.conf_aot) {
+        if (this.aot) {
             try {
                 window.customElements.define('annotation-slider', AnnotationSlider);
-                if (this.conf_up) {
-                    window.onload = this.up.textFeatures();
+                if (this.up) {
+                    window.onload = this.upc.textFeatures();
                 }
             } catch (e) {
                 console.log(e);
             }
         }
-        if (this.conf_fs) {
+        if (this.fs) {
             try {
                 window.customElements.define('full-size', FullSize);
-                if (this.conf_up) {
-                    window.onload = this.up.fullSreen();
+                if (this.up) {
+                    window.onload = this.upc.fullSreen();
                 }
             } catch (e) {
                 console.log(e);
             }
         }
-        if (this.conf_fos) {
+        if (this.fos) {
             try {
                 window.customElements.define('font-size', FontSize);
-                if (this.conf_up) {
-                    window.onload = this.up.fontSize();
+                if (this.up) {
+                    window.onload = this.upc.fontSize();
                 }
             } catch (e) {
                 console.log(e);
             }
         }
-        if (this.conf_ff) {
+        if (this.ff) {
             try {
                 window.customElements.define('font-family', FontFamily);
-                if (this.conf_up) {
-                    window.onload = this.up.fontFamily();
+                if (this.up) {
+                    window.onload = this.upc.fontFamily();
                 }
             } catch (e) {
                 console.log(e);
             }
         }
-        if (this.conf_is) {
+        if (this.is) {
             try {
                 window.customElements.define('image-switch', ImageSwitch);
-                if (this.conf_up) {
-                    window.onload = this.up.viewerSwitch();
+                if (this.up) {
+                    window.onload = this.upc.viewerSwitch();
                 }
                 
             } catch (e) {
                 console.log(e);
             }
         }
-        if (this.conf_wr) {
+        if (this.wr) {
             try {
                 window.customElements.define('window-resize', WindowResize);
             } catch (e) {
@@ -384,44 +378,44 @@ class LoadEditor {
 
         // onpopstate = browser back and forward button to recognize classes
         window.onpopstate = () => {
-            if (this.conf_aot && this.conf_up) {
+            if (this.aot && this.up) {
                 try {
-                    this.up.textFeatures();
+                    this.upc.textFeatures();
                 } catch (e) {
                     console.log(e);
                 }
             }
-            if (this.conf_fs && this.conf_up) {
+            if (this.fs && this.up) {
                 try {
-                    this.up.fullSreen();
+                    this.upc.fullSreen();
                 } catch (e) {
                     console.log(e);
                 }
             }
-            if (this.conf_fos && this.conf_up) {
+            if (this.fos && this.up) {
                 try {
-                    this.up.fontSize();
+                    this.upc.fontSize();
                 } catch (e) {
                     console.log(e);
                 }
             }
-            if (this.conf_ff && this.conf_up) {
+            if (this.ff && this.up) {
                 try {
-                    this.up.fontFamily();
+                    this.upc.fontFamily();
                 } catch (e) {
                     console.log(e);
                 }
             }
-            if (this.conf_is && this.conf_up) {
+            if (this.is && this.up) {
                 try {
-                    this.up.viewerSwitch();
+                    this.upc.viewerSwitch();
                 } catch (e) {
                     console.log(e);
                 }
             }
-            if (this.conf_il && this.conf_up) {
+            if (this.il && this.up) {
                 try {
-                    this.up.pageUrl();
+                    this.upc.pageUrl();
                 } catch (e) {
                     console.log(e);
                 }
@@ -436,7 +430,7 @@ class LoadEditor {
 
             } else {
 
-                var el = document.querySelector(window.location.hash);
+                var el: any = document.querySelector(window.location.hash);
             
                 if (el !== null) {
                 
@@ -444,7 +438,7 @@ class LoadEditor {
                     el.style.backgroundColor = "#FFFCA1";
 
                     setTimeout(function() {
-    
+
                         el.style.backgroundColor = "transparent";
     
                     }, 10000);

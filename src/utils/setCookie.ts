@@ -1,6 +1,9 @@
 export class SetDataCookie {
 
-    constructor(name, config) {
+    name: string;
+    config: object;
+
+    constructor(name: string, config: object) {
         this.name = name;
         this.config = config;
     }

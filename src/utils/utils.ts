@@ -3,11 +3,11 @@
 // by adding or removing classes. classes should hold CSS stylsheets
 // defined by the user separately.
 
-export function removeMarkup(html_class, css_class, color, hide, style) {
+export function removeMarkup(html_class: string, css_class: string | [], color: string, hide: boolean, style: {css_class: string}) {
     
     // find all provided classes
     var selected = document.querySelectorAll(`.${html_class}`);
-    selected.forEach((el) => {
+    selected.forEach((el: any) => {
 
         // in case classes come as object of two classes
         // one of the classes must be part in HTML dom
@@ -45,9 +45,9 @@ export function removeMarkup(html_class, css_class, color, hide, style) {
 };
 
 // same logic as above but for adding classes
-export function addMarkup(html_class, css_class, color, hide, style) {
+export function addMarkup(html_class: string, css_class: string | [], color: string, hide: boolean, style: {css_class: string}) {
     var selected = document.querySelectorAll(`.${html_class}`);
-    selected.forEach((el) => {
+    selected.forEach((el: any) => {
         if (typeof css_class === "object") {
             css_class.forEach((css) => {
                 if (el.classList.contains(css)) {
@@ -68,7 +68,12 @@ export function addMarkup(html_class, css_class, color, hide, style) {
     return String(selected.length);
 };
 
-export function uptState(options) {
+export function uptState(options: {
+    "hist": string,
+    "cit": any,
+    "state": boolean,
+    "href": string
+}) {
 
     if (options.hist) {
         // update url and state of history
@@ -86,9 +91,9 @@ export function uptState(options) {
 
 }
 
-export function hideLoading(id) { 
+export function hideLoading(id: string) { 
     let spinnerID = "spinner_" + id;
-    if ( document.getElementById(spinnerID) ) {
-        document.getElementById(spinnerID).remove();
+    if ( document.getElementById(spinnerID) !== null ) {
+        document.getElementById(spinnerID)!.remove();
     }
 }

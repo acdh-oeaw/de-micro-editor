@@ -4,58 +4,87 @@ const OpenSeadragon = require("openseadragon");
 export class UrlSearchParamUpdate {
 
     fullSreen() {
-        let el = document.getElementsByTagName('full-size');
-        let data = "conf_fullsize";
-        let opt = el[0].getAttribute("opt");
-        let options = JSON.parse(sessionStorage.getItem(data));
-        if (!options) {
-            alert("Please turn on cookies to display content!")
-        }
-        let url = new URL(location.href);
-        let urlParam = new URLSearchParams(url.search);
-        let variant = options.variants.find((v) => v.opt === opt);
-        let hide = variant.hide.class_to_hide;
-        let urlparam = variant.urlparam;
-        let svg_show = `
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fullscreen" viewBox="0 0 16 16">
-                <path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"/>
-            </svg>
-        `;
-        let svg_hide = `
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fullscreen-exit" viewBox="0 0 16 16">
-                <path d="M5.5 0a.5.5 0 0 1 .5.5v4A1.5 1.5 0 0 1 4.5 6h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 10 4.5v-4a.5.5 0 0 1 .5-.5zM0 10.5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 6 11.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zm10 1a1.5 1.5 0 0 1 1.5-1.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4z"/>
-            </svg>
-        `;
+        // get custom element and access opt attribute
+        let el: any = document.getElementsByTagName('full-size');
+        let opt: string = el[0].getAttribute("opt");
 
-        if (urlParam.get(urlparam) == null) {
-            urlParam.set(urlparam, "off");
-        }
-        if (!["on", "off"].includes(urlParam.get(urlparam))) {
-            console.log(`fullscreen=${urlParam.get(urlparam)} is not a selectable option.`);
-            urlParam.set(urlparam, "off");
-        }
-        if (urlParam.get(urlparam) == "off") {
-            document.querySelectorAll(`.${hide}`).forEach((el) => {
-                el.classList.remove("fade");
-                options.rendered_element.svg = svg_show;
+        // config name is predfined in index.ts
+        let data: string = "conf_fullsize";
+        // get config by accessing sessions storage
+        let storage: string | null = sessionStorage.getItem(data);
+
+        if (storage !== null) {
+            var options: {
+                title: string | null,
+                variants: [{
+                    opt: string | null,
+                    opt_slider: string | null,
+                    title: string | null,
+                    color: string | null,
+                    html_class: string | null,
+                    css_class: string | null,
+                    hide: {
+                        class_to_hide: string
+                    } | boolean | null,
+                    chg_citation: string | null,
+                    features: {
+                        all: boolean,
+                        class: string
+                    } | null
+                }] | null
+            } = JSON.parse(storage);
+            if (!options) {
+                alert("Please turn on cookies to display content!")
+            }
+
+            // to manipulate url parameters construct url by getting current url
+            let url = new URL(location.href);
+            let urlParam = new URLSearchParams(url.search);
+
+            // variant is found by comparing variant config opt with custom element attr opt
+            let variant = options.variants.find((v) => v.opt === opt);
+            let hide = variant.hide.class_to_hide;
+            let urlparam = variant.urlparam;
+            let svg_show = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fullscreen" viewBox="0 0 16 16">
+                    <path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"/>
+                </svg>
+            `;
+            let svg_hide = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fullscreen-exit" viewBox="0 0 16 16">
+                    <path d="M5.5 0a.5.5 0 0 1 .5.5v4A1.5 1.5 0 0 1 4.5 6h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 10 4.5v-4a.5.5 0 0 1 .5-.5zM0 10.5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 6 11.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zm10 1a1.5 1.5 0 0 1 1.5-1.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4z"/>
+                </svg>
+            `;
+
+            if (urlParam.get(urlparam) == null) {
+                urlParam.set(urlparam, "off");
+            }
+            if (!["on", "off"].includes(urlParam.get(urlparam))) {
+                console.log(`fullscreen=${urlParam.get(urlparam)} is not a selectable option.`);
+                urlParam.set(urlparam, "off");
+            }
+            if (urlParam.get(urlparam) == "off") {
+                document.querySelectorAll(`.${hide}`).forEach((el) => {
+                    el.classList.remove("fade");
+                    options.rendered_element.svg = svg_show;
+                });
+            }
+            if (urlParam.get(urlparam) == "on") {
+                document.querySelectorAll(`.${hide}`).forEach((el) => {
+                    el.classList.add("fade");
+                    options.rendered_element.svg = svg_hide;
+                });
+            }
+
+            let citation_url = document.getElementById(variant.chg_citation);
+            let href = `?${urlParam}${location.hash}`;
+            uptState({
+                "hist": true,
+                "cit": citation_url,
+                "state": false,
+                "href": href
             });
         }
-        if (urlParam.get(urlparam) == "on") {
-            document.querySelectorAll(`.${hide}`).forEach((el) => {
-                el.classList.add("fade");
-                options.rendered_element.svg = svg_hide;
-            });
-        }
-
-        let citation_url = document.getElementById(variant.chg_citation);
-        let href = `?${urlParam}${location.hash}`;
-        uptState({
-            "hist": true,
-            "cit": citation_url,
-            "state": false,
-            "href": href
-        });
-        
     }
 
     fontSize() {
