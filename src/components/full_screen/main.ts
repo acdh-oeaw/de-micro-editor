@@ -2,8 +2,6 @@ const { uptState } = require("../../utils/utils");
 
 export class FullSize extends HTMLElement {
 
-    "use strict";
-
     static get observedAttributes() {
         return ["opt"];
     }
@@ -15,10 +13,30 @@ export class FullSize extends HTMLElement {
     }
 
     fullScreen() {
-        let data = "conf_fullsize";
-        let options = JSON.parse(sessionStorage.getItem(data));
+
+        let data = "fullsize";
+        var options: {
+            name: string | null,
+            variants: [{
+                opt: string | null,
+                title: string | null,
+                hide: {
+                    hidden: string,
+                    class_to_hide: string
+                } | null,
+                chg_citation: string | null,
+                urlparam: string | null
+            }] | null,
+            active_class: string | null,
+            rendered_element: {
+                a_class: string | null,
+                svg: string | null
+            } | null
+        } = JSON.parse(sessionStorage.getItem(data));
+
         let url = new URL(window.location.href);
         let urlParam = new URLSearchParams(url.search);
+
         let active = options.active_class;
         let id = this.getAttribute("id");
         let variant = options.variants.find((v) => v.opt === id);
@@ -52,8 +70,10 @@ export class FullSize extends HTMLElement {
         }
         var stateName = variant.opt;
         var stateParam = urlParam.get(variant.opt);
-        var state = {};
-        state[stateName] = stateParam;
+        var state = {
+            [stateName]: stateParam
+        };
+        //state[stateName] = stateParam;
 
         let citation_url = document.getElementById(variant.chg_citation);
         let href = `?${urlParam}${location.hash}`;
@@ -67,8 +87,25 @@ export class FullSize extends HTMLElement {
     }
 
     render() {
-        let data = "conf_fullsize";
-        let options = JSON.parse(sessionStorage.getItem(data));
+        let data = "fullsize";
+        var options: {
+            name: string | null,
+            variants: [{
+                opt: string | null,
+                title: string | null,
+                hide: {
+                    hidden: string,
+                    class_to_hide: string
+                } | null,
+                chg_citation: string | null,
+                urlparam: string | null
+            }] | null,
+            active_class: string | null,
+            rendered_element: {
+                a_class: string | null,
+                svg: string | null
+            } | null
+        } = JSON.parse(sessionStorage.getItem(data));
         let opt = this.getAttribute("opt");
         let variant = options.variants.find((v) => v.opt === opt);
         let rendered_element = options.rendered_element;
@@ -88,7 +125,7 @@ export class FullSize extends HTMLElement {
     }
 
     disconnectedCallback() {
-        this.childNodes[3].removeEventListener("click", this.fullScrean);
+        this.childNodes[3].removeEventListener("click", this.fullScreen);
     }
 
 }
