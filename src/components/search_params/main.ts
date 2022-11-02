@@ -117,12 +117,12 @@ export class UrlSearchParamUpdate {
 
     fontSize() {
         let el = document.getElementsByTagName('font-size');
-        let opt = el[0].getAttribute("opt");
+        var id = el[0].getAttribute("opt");
 
         try {
-            let check_opt: string = opt;
+            let check_opt: string = id;
         } catch (err) {
-            let check_opt: any = opt;
+            let check_opt: any = id;
             console.log(`No 'opt' ${check_opt} attribute in custom element <font-size> found!`);
         }
 
@@ -165,11 +165,9 @@ export class UrlSearchParamUpdate {
             } catch (err) {
                 console.log("No option parameters found. Creating default parameters to continue.");
             }
-            var variants = paramCheck(variant_check, {opt: opt});
+            var variants = paramCheck(variant_check, [{opt: id}]);
 
             for (let v in variants) {
-
-                let select: any = document.getElementById(variants[v].opt);
 
                 var urlparam = paramCheck(variants[v].urlparam, "fontsize");
 
@@ -196,20 +194,28 @@ export class UrlSearchParamUpdate {
                 var css_class = paramCheck(variants[v].css_class, "font-size-");
 
                 if (urlParam.get(urlparam) == null) {
+
                     urlParam.set(urlparam, "default");
+
                 }
 
                 if (!Object.values(size).includes(urlParam.get(urlparam))) {
+
                     console.log(`fontsize=${urlParam.get(urlparam)} is not a selectable option.`);
                     urlParam.set(urlparam, "default");
+
                 } else {
+
                     let paragraph = document.querySelectorAll(`${p_change}.${p_class}`);
                     if (urlParam.get(urlparam) !== "default") {
                         var new_value = css_class + urlParam.get(urlparam);
                     } else {
                         var new_value = urlParam.get(urlparam);
                     }
+
+                    var select = (document.getElementById(variants[v].opt) as HTMLSelectElement);
                     select.value = new_value;
+
                     paragraph.forEach((el) => {
                         for (let s in size) {
                             if (size[s] !== "default") {
