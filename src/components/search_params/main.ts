@@ -113,16 +113,23 @@ export class UrlSearchParamUpdate {
     }
 
     fontSize() {
+        // get element to access opt attribute
+        // opt required to connect to specific custom element
         let el = document.getElementsByTagName('font-size');
         var id = el[0].getAttribute("opt");
+
+        // check if user set opt attribute
         if (typeof id !== "string") {
             console.log("No 'opt' attribute in custom element font-size found!");
         }
 
+        // string fontsize is variable to access session cookies
         let data = "fontsize";
         let storage: string | null = sessionStorage.getItem(data);
 
         if (storage) {
+
+            // define options object and parse session cookie as json
             var options: {
                 name: string | null | undefined,
                 variants: [{
@@ -146,6 +153,143 @@ export class UrlSearchParamUpdate {
         
 
             if (!options) {
+                alert("Please turn on cookies to display content!");
+            }
+
+            // get url and urlparams to manipulate and update
+            let url = new URL(location.href);
+            let urlParam = new URLSearchParams(url.search);
+
+            // variant is found by comparing variant config opt with custom element attr opt
+            try {
+                var variant_check = options.variants;
+            } catch (err) {
+                console.log("No option parameters found. Creating default parameters to continue.");
+            }
+            var variants = paramCheck(variant_check, [{opt: id}]);
+
+            for (let v in variants) {
+
+                // get urlparam key
+                var urlparam = paramCheck(variants[v].urlparam, "fontsize");
+
+                // get citation url key and HTMLElement
+                var citation_url_str = paramCheck(variants[v].chg_citation, "citation-url");
+                var citation_url = document.getElementById(citation_url_str);
+
+                // define paragraph HTML element name
+                let p_change = paramCheck(variants[v].paragraph, "p");
+                // define class to change font sizes (not all paragraphs might need to be changed)
+                let p_class = paramCheck(variants[v].p_class, "yes-index");
+
+                // check if sizes object with font sizes is not null or undefined
+                try {
+                    var size_check = variants[v].sizes;
+                } catch (err) {
+                    console.log("Sizes obj not found. Creating default parameters.");
+                }
+                let size = paramCheck(size_check, {
+                    default: "default",
+                    font_size_14: "14",
+                    font_size_18: "18",
+                    font_size_22: "22",
+                    font_size_26: "26"
+                });
+
+                // define font size name before size
+                var css_class = paramCheck(variants[v].css_class, "font-size-");
+
+                // check for null value in url params
+                if (urlParam.get(urlparam) == null) {
+
+                    urlParam.set(urlparam, "default");
+
+                }
+
+                // check if provides urlparam value is selectable
+                if (!Object.values(size).includes(urlParam.get(urlparam))) {
+
+                    console.log(`fontsize=${urlParam.get(urlparam)} is not a selectable option.`);
+                    urlParam.set(urlparam, "default");
+
+                } else {
+
+                    // if valid urlparam is found change font sizes of paragraphs
+                    let paragraph = document.querySelectorAll(`${p_change}.${p_class}`);
+                    if (urlParam.get(urlparam) !== "default") {
+                        var new_value = css_class + urlParam.get(urlparam);
+                    } else {
+                        var new_value = urlParam.get(urlparam);
+                    }
+
+                    // change select option value based on provided url param
+                    var select = (document.getElementById(variants[v].opt) as HTMLSelectElement);
+                    select.value = new_value;
+
+                    // finally, changing selected paragraph font size
+                    paragraph.forEach((el) => {
+                        for (let s in size) {
+                            if (size[s] !== "default") {
+                                el.classList.remove(css_class + size[s]);   
+                            } 
+                        }
+                        if(new_value !== "default") {
+                            el.classList.add(new_value);
+                        }
+                    });
+                    
+                } 
+            }
+
+            // change browser history state
+            let href = `?${urlParam}${location.hash}`;
+            uptState({
+                "hist": true,
+                "cit": citation_url,
+                "state": false,
+                "href": href
+            });
+        }
+        
+    }
+
+    fontFamily() {
+        let el = document.getElementsByTagName('font-family');
+        let id = el[0].getAttribute("opt");
+        // check if user set opt attribute
+        if (typeof id !== "string") {
+            console.log("No 'opt' attribute in custom element font-size found!");
+        }
+
+        let data = "font_family";
+        let storage = sessionStorage.getItem(data);
+
+        if (storage) {
+
+            let options: {
+                name: string | null | undefined,
+                variants: [
+                    {
+                        opt: string | null | undefined,
+                        title: string | null | undefined,
+                        urlparam: string | null | undefined,
+                        chg_citation: string | null | undefined,
+                        fonts: {
+                            default: string | null | undefined,
+                            font1: string | null | undefined,
+                            font2: string | null | undefined,
+                            font3: string | null | undefined,
+                        } | null | undefined,
+                        paragraph: string | null | undefined,
+                        p_class: string | null | undefined,
+                        css_class: string | null | undefined,
+                    }
+                ] | null | undefined,
+                active_class: string | null | undefined,
+                html_class: string | null | undefined,
+            } | null | undefined = JSON.parse(storage);
+
+            if (!options) {
                 alert("Please turn on cookies to display content!")
             }
 
@@ -162,66 +306,73 @@ export class UrlSearchParamUpdate {
 
             for (let v in variants) {
 
-                var urlparam = paramCheck(variants[v].urlparam, "fontsize");
-
+                // get citation url key and HTMLElement
                 var citation_url_str = paramCheck(variants[v].chg_citation, "citation-url");
                 var citation_url = document.getElementById(citation_url_str);
 
-                let p_change = paramCheck(variants[v].paragraph, "p");
+                // get urlparam key
+                var urlparam = paramCheck(variants[v].urlparam, "font");
 
+                // get citation url key and HTMLElement
+                var citation_url_str = paramCheck(variants[v].chg_citation, "citation-url");
+                var citation_url = document.getElementById(citation_url_str);
+
+                // define paragraph HTML element name
+                let p_change = paramCheck(variants[v].paragraph, "p");
+                // define class to change font sizes (not all paragraphs might need to be changed)
                 let p_class = paramCheck(variants[v].p_class, "yes-index");
 
+                // check if sizes object with font sizes is not null or undefined
                 try {
-                    var size_check = variants[v].sizes;
+                    var family_check = variants[v].fonts;
                 } catch (err) {
                     console.log("Sizes obj not found. Creating default parameters.");
                 }
-                let size = paramCheck(size_check, {
+                let family = paramCheck(family_check, {
                     default: "default",
-                    font_size_14: "14",
-                    font_size_18: "18",
-                    font_size_22: "22",
-                    font_size_26: "26"
+                    font1: "Times-New-Roman",
+                    font2: "Courier-New",
+                    font3: "Arial-serif"
                 });
 
-                var css_class = paramCheck(variants[v].css_class, "font-size-");
-
                 if (urlParam.get(urlparam) == null) {
-
                     urlParam.set(urlparam, "default");
-
                 }
 
-                if (!Object.values(size).includes(urlParam.get(urlparam))) {
+                if (!Object.values(family).includes(urlParam.get(urlparam))) {
 
-                    console.log(`fontsize=${urlParam.get(urlparam)} is not a selectable option.`);
+                    console.log(`font=${urlParam.get(urlparam)} is not a selectable option.`);
                     urlParam.set(urlparam, "default");
 
                 } else {
 
                     let paragraph = document.querySelectorAll(`${p_change}.${p_class}`);
                     if (urlParam.get(urlparam) !== "default") {
-                        var new_value = css_class + urlParam.get(urlparam);
+                        var new_value = urlParam.get(urlparam);
                     } else {
                         var new_value = urlParam.get(urlparam);
                     }
 
+                    // change select option value based on provided url param
                     var select = (document.getElementById(variants[v].opt) as HTMLSelectElement);
                     select.value = new_value;
 
+                    // finally, change font-size of selected paragraphs
                     paragraph.forEach((el) => {
-                        for (let s in size) {
-                            if (size[s] !== "default") {
-                                el.classList.remove(css_class + size[s]);   
+                        for (let f in family) {
+                            if (family[f] !== "default") {
+                                el.classList.remove(family[f].toLowerCase());   
                             } 
                         }
                         if(new_value !== "default") {
-                            el.classList.add(new_value);
+                            el.classList.add(new_value.toLowerCase());
                         }
                     });
                     
-                } 
+                }
             }
+
+            // update browser history state
             let href = `?${urlParam}${location.hash}`;
             uptState({
                 "hist": true,
@@ -230,62 +381,8 @@ export class UrlSearchParamUpdate {
                 "href": href
             });
         }
-        
-    }
 
-    // fontFamily() {
-    //     let el = document.getElementsByTagName('font-family');
-    //     let data = "conf_font_family";
-    //     let options = JSON.parse(sessionStorage.getItem(data));
-    //     if (!options) {
-    //         alert("Please turn on cookies to display content!")
-    //     }
-    //     let url = new URL(location.href);
-    //     let urlParam = new URLSearchParams(url.search);
-    //     let variants = options.variants;
-    //     for (let v in variants) {
-    //         let select = document.getElementById(variants[v].opt);
-    //         var citation_url = document.getElementById(variants[v].chg_citation);
-    //         let urlparam = variants[v].urlparam;
-    //         let p_change = variants[v].paragraph;
-    //         let p_class = variants[v].p_class;
-    //         let family = variants[v].fonts;
-    //         if (urlParam.get(urlparam) == null) {
-    //             urlParam.set(urlparam, "default");
-    //         }
-    //         if (!Object.values(family).includes(urlParam.get(urlparam))) {
-    //             console.log(`font=${urlParam.get(urlparam)} is not a selectable option.`);
-    //             urlParam.set(urlparam, "default");
-    //         } else {
-    //             let paragraph = document.querySelectorAll(`${p_change}.${p_class}`);
-    //             if (urlParam.get(urlparam) !== "default") {
-    //                 var new_value = urlParam.get(urlparam);
-    //             } else {
-    //                 var new_value = urlParam.get(urlparam);
-    //             }
-    //             select.value = new_value;
-    //             paragraph.forEach((el) => {
-    //                 for (let f in family) {
-    //                     if (family[f] !== "default") {
-    //                         el.classList.remove(family[f].toLowerCase());   
-    //                     } 
-    //                 }
-    //                 if(new_value !== "default") {
-    //                     el.classList.add(new_value.toLowerCase());
-    //                 }
-    //             });
-                
-    //         } 
-    //     }
-    //     let href = `?${urlParam}${location.hash}`;
-    //     uptState({
-    //         "hist": true,
-    //         "cit": citation_url,
-    //         "state": false,
-    //         "href": href
-    //     });
-        
-    // }
+    }
 
     // viewerSwitch() {
 
