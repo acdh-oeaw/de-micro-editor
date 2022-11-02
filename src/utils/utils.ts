@@ -99,7 +99,7 @@ export function hideLoading(id: string) {
 }
 
 export function paramCheck(param: string | null | undefined, def: string | {}) {
-    if(param) {
+    if (param) {
         return param;
     } else {
         return def;

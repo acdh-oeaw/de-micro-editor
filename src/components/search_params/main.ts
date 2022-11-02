@@ -6,8 +6,15 @@ export class UrlSearchParamUpdate {
     fullSreen() {
 
         // get custom element and access opt attribute
-        let el= document.getElementsByTagName('full-size');
+        let el = document.getElementsByTagName('full-size');
         let opt = el[0].getAttribute("opt");
+
+        try {
+            let check_opt: string = opt;
+        } catch (err) {
+            let check_opt: any = opt;
+            console.log(`No 'opt' ${check_opt} attribute in custom element <font-size> found!`);
+        }
 
         // config name is predfined in index.ts
         let data = "fullsize";
@@ -47,7 +54,6 @@ export class UrlSearchParamUpdate {
                 console.log("No option parameters found. Creating default parameters to continue.");
             }
             var variant = paramCheck(variant_check, {opt: opt});
-            console.log(variant);
 
             // if variant obj contains urlparam string check urlparams parameters
             var urlparam = paramCheck(variant.urlparam, "fullscreen");
@@ -71,15 +77,13 @@ export class UrlSearchParamUpdate {
             if (urlParam.get(urlparam) == "off") {
                 document.querySelectorAll(`.${hide}`).forEach((el) => {
                     el.classList.remove(hidden);
-                    if (options.render_svg) {
-                        let svg_show = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fullscreen" viewBox="0 0 16 16">
-                                                <path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"/>
-                                            </svg>
-                                        `;
-                        let btn = document.getElementById(opt);
-                        btn.innerHTML = svg_show;
-                        btn.classList.remove(active);
-                    }
+                    let svg_show = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fullscreen" viewBox="0 0 16 16">
+                                            <path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"/>
+                                        </svg>
+                                    `;
+                    let btn = document.getElementById(opt);
+                    btn.innerHTML = svg_show;
+                    btn.classList.remove(active);
                 });
                 
             }
@@ -111,66 +115,124 @@ export class UrlSearchParamUpdate {
         }
     }
 
-    // fontSize() {
-    //     let el = document.getElementsByTagName('font-size');
-    //     let data = "conf_fontsize";
-    //     let storage = sessionStorage.getItem(data)
+    fontSize() {
+        let el = document.getElementsByTagName('font-size');
+        let opt = el[0].getAttribute("opt");
 
-    //     if (storage) {
-    //         var options = JSON.parse(storage);
-    //     }
+        try {
+            let check_opt: string = opt;
+        } catch (err) {
+            let check_opt: any = opt;
+            console.log(`No 'opt' ${check_opt} attribute in custom element <font-size> found!`);
+        }
 
-    //     if (!options) {
-    //         alert("Please turn on cookies to display content!")
-    //     }
+        let data = "fontsize";
+        let storage: string | null = sessionStorage.getItem(data)
 
-    //     let url = new URL(location.href);
-    //     let urlParam = new URLSearchParams(url.search);
-    //     let variants = options.variants;
-    //     for (let v in variants) {
-    //         let select = document.getElementById(variants[v].opt);
-    //         let urlparam = variants[v].urlparam;
-    //         var citation_url = document.getElementById(variants[v].chg_citation);
-    //         let p_change = variants[v].paragraph;
-    //         let p_class = variants[v].p_class;
-    //         let size = variants[v].sizes;
-    //         var css_class = variants[v].css_class;
-    //         if (urlParam.get(urlparam) == null) {
-    //             urlParam.set(urlparam, "default");
-    //         }
-    //         if (!Object.values(size).includes(urlParam.get(urlparam))) {
-    //             console.log(`fontsize=${urlParam.get(urlparam)} is not a selectable option.`);
-    //             urlParam.set(urlparam, "default");
-    //         } else {
-    //             let paragraph = document.querySelectorAll(`${p_change}.${p_class}`);
-    //             if (urlParam.get(urlparam) !== "default") {
-    //                 var new_value = css_class + urlParam.get(urlparam);
-    //             } else {
-    //                 var new_value = urlParam.get(urlparam);
-    //             }
-    //             select.value = new_value;
-    //             paragraph.forEach((el) => {
-    //                 for (let s in size) {
-    //                     if (size[s] !== "default") {
-    //                         el.classList.remove(css_class + size[s]);   
-    //                     } 
-    //                 }
-    //                 if(new_value !== "default") {
-    //                     el.classList.add(new_value);
-    //                 }
-    //             });
-                
-    //         } 
-    //     }
-    //     let href = `?${urlParam}${location.hash}`;
-    //     uptState({
-    //         "hist": true,
-    //         "cit": citation_url,
-    //         "state": false,
-    //         "href": href
-    //     });
+        if (storage) {
+            var options: {
+                name: string | null | undefined,
+                variants: [{
+                    opt: string | null | undefined,
+                    title: string  | null | undefined,
+                    urlparam: string  | null | undefined,
+                    sizes: {
+                        default: string | null | undefined,
+                        font_size_14: string  | null | undefined,
+                        font_size_18: string | null | undefined,
+                        font_size_22: string | null | undefined,
+                        font_size_26: string | null | undefined
+                    } | null | undefined,
+                    paragraph: string | null | undefined,
+                    p_class: string  | null | undefined,
+                    css_class: string  | null | undefined
+                }] | null | undefined,
+                active_class: string | null | undefined,
+                html_class: string  | null | undefined
+            } |null | undefined = JSON.parse(storage);
         
-    // }
+
+            if (!options) {
+                alert("Please turn on cookies to display content!")
+            }
+
+            let url = new URL(location.href);
+            let urlParam = new URLSearchParams(url.search);
+
+            // variant is found by comparing variant config opt with custom element attr opt
+            try {
+                var variant_check = options.variants;
+            } catch (err) {
+                console.log("No option parameters found. Creating default parameters to continue.");
+            }
+            var variants = paramCheck(variant_check, {opt: opt});
+
+            for (let v in variants) {
+
+                let select: any = document.getElementById(variants[v].opt);
+
+                var urlparam = paramCheck(variants[v].urlparam, "fontsize");
+
+                var citation_url_str = paramCheck(variants[v].chg_citation, "citation-url");
+                var citation_url = document.getElementById(citation_url_str);
+
+                let p_change = paramCheck(variants[v].paragraph, "p");
+
+                let p_class = paramCheck(variants[v].p_class, "yes-index");
+
+                try {
+                    var size_check = variants[v].sizes;
+                } catch (err) {
+                    console.log("Sizes obj not found. Creating default parameters.")
+                }
+                let size = paramCheck(size_check, {
+                    default: "default",
+                    font_size_14: "14",
+                    font_size_18: "18",
+                    font_size_22: "22",
+                    font_size_26: "26"
+                });
+
+                var css_class = paramCheck(variants[v].css_class, "font-size-");
+
+                if (urlParam.get(urlparam) == null) {
+                    urlParam.set(urlparam, "default");
+                }
+
+                if (!Object.values(size).includes(urlParam.get(urlparam))) {
+                    console.log(`fontsize=${urlParam.get(urlparam)} is not a selectable option.`);
+                    urlParam.set(urlparam, "default");
+                } else {
+                    let paragraph = document.querySelectorAll(`${p_change}.${p_class}`);
+                    if (urlParam.get(urlparam) !== "default") {
+                        var new_value = css_class + urlParam.get(urlparam);
+                    } else {
+                        var new_value = urlParam.get(urlparam);
+                    }
+                    select.value = new_value;
+                    paragraph.forEach((el) => {
+                        for (let s in size) {
+                            if (size[s] !== "default") {
+                                el.classList.remove(css_class + size[s]);   
+                            } 
+                        }
+                        if(new_value !== "default") {
+                            el.classList.add(new_value);
+                        }
+                    });
+                    
+                } 
+            }
+            let href = `?${urlParam}${location.hash}`;
+            uptState({
+                "hist": true,
+                "cit": citation_url,
+                "state": false,
+                "href": href
+            });
+        }
+        
+    }
 
     // fontFamily() {
     //     let el = document.getElementsByTagName('font-family');
