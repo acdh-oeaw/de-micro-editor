@@ -1,4 +1,4 @@
-const { addMarkup, removeMarkup, uptState, hideLoading } = require("../../utils/utils");
+const { addMarkup, removeMarkup, uptState, hideLoading, paramCheck } = require("../../utils/utils");
 const OpenSeadragon = require("openseadragon");
 
 export class UrlSearchParamUpdate {
@@ -6,11 +6,11 @@ export class UrlSearchParamUpdate {
     fullSreen() {
 
         // get custom element and access opt attribute
-        let el: any = document.getElementsByTagName('full-size');
-        let opt: string = el[0].getAttribute("opt");
+        let el= document.getElementsByTagName('full-size');
+        let opt = el[0].getAttribute("opt");
 
         // config name is predfined in index.ts
-        let data: string = "fullsize";
+        let data = "fullsize";
 
         // get config by accessing sessions storage
         let storage: string | null = sessionStorage.getItem(data);
@@ -18,26 +18,22 @@ export class UrlSearchParamUpdate {
         if (storage) {
 
             var options: {
-                name: string | null,
+                name: string | null | undefined,
                 variants: [{
-                    opt: string | null,
-                    title: string | null,
-                    hide: {
-                        hidden: string,
-                        class_to_hide: string
-                    } | null,
-                    chg_citation: string | null,
-                    urlparam: string | null
+                    opt: string | null | undefined,
+                    title: string | null | undefined,
+                    hide: string | null | undefined,
+                    to_hide: string | null | undefined,
+                    chg_citation: string | null | undefined,
+                    urlparam: string | null | undefined
                 }] | null,
-                active_class: string | null,
-                rendered_element: {
-                    a_class: string | null,
-                    svg: string | null
-                } | null
-            } = JSON.parse(storage);
+                active_class: string | null | undefined,
+                render_class: string | null | undefined,
+                render_svg: string | null | undefined
+            } | null | undefined = JSON.parse(storage);
 
             if (!options) {
-                alert("Please turn on cookies to display content!")
+                alert("Please turn on cookies to display content!");
             }
 
             // to manipulate url parameters construct url by getting current url
@@ -45,76 +41,72 @@ export class UrlSearchParamUpdate {
             let urlParam: any = new URLSearchParams(url.search);
 
             // variant is found by comparing variant config opt with custom element attr opt
-            if (options.variants) {
-                var variant = options.variants.find((v) => v.opt === opt);
+            try {
+                var variant_check = options.variants.find((v) => v.opt === opt);
+            } catch (err) {
+                console.log("No option parameters found. Creating default parameters to continue.");
+            }
+            var variant = paramCheck(variant_check, {opt: opt});
+            console.log(variant);
+
+            // if variant obj contains urlparam string check urlparams parameters
+            var urlparam = paramCheck(variant.urlparam, "fullscreen");
+
+            // check for option param or return default value
+            var active = paramCheck(options.active_class, "active");
+
+            var hide = paramCheck(variant.hide, "hide-container");
+
+            var hidden = paramCheck(variant.to_hide, "fade");
+
+            if (urlParam.get(urlparam) == null) {
+                urlParam.set(urlparam, "off");
             }
 
-            // verify if variant was found
-            if (variant) {
-
-                // if variant obj contains urlparam string check urlparams parameters
-                if (variant.urlparam) {
-
-                    var urlparam = variant.urlparam;
-
-                    if (urlParam.get(urlparam) == null) {
-                        urlParam.set(urlparam, "off");
-                    }
-
-                    if (!["on", "off"].includes(urlParam.get(urlparam))) {
-                        console.log(`fullscreen=${urlParam.get(urlparam)} is not a selectable option.`);
-                        urlParam.set(urlparam, "off");
-                    }
-
-                    if (urlParam.get(urlparam) == "off") {
-                        if (variant.hide) {
-                            let hide = variant.hide.class_to_hide;
-                            let hidden = variant.hide.hidden;
-                            document.querySelectorAll(`.${hide}`).forEach((el) => {
-                                el.classList.remove(hidden);
-                                if (options.rendered_element) {
-                                    let svg_show = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fullscreen" viewBox="0 0 16 16">
-                                                            <path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"/>
-                                                        </svg>
-                                                    `;
-                                    options.rendered_element.svg = svg_show;
-                                }
-                            });
-                        }
-                        
-                    }
-                    
-                    if (urlParam.get(urlparam) == "on") {
-                        if (variant.hide) {
-                            let hide = variant.hide.class_to_hide;
-                            let hidden = variant.hide.hidden;
-                            document.querySelectorAll(`.${hide}`).forEach((el) => {
-                                el.classList.add(hidden);
-                                if (options.rendered_element) {
-                                    let svg_hide = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fullscreen-exit" viewBox="0 0 16 16">
-                                                            <path d="M5.5 0a.5.5 0 0 1 .5.5v4A1.5 1.5 0 0 1 4.5 6h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 10 4.5v-4a.5.5 0 0 1 .5-.5zM0 10.5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 6 11.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zm10 1a1.5 1.5 0 0 1 1.5-1.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4z"/>
-                                                        </svg>
-                                                    `;
-                                    options.rendered_element.svg = svg_hide;
-                                }
-                            });
-                        }
-                        
-                    }
-                }
-
-                if (variant.chg_citation) {
-                    let citation_url = document.getElementById(variant.chg_citation);
-                    let href = `?${urlParam}${location.hash}`;
-                    uptState({
-                        "hist": true,
-                        "cit": citation_url,
-                        "state": false,
-                        "href": href
-                    });
-                }
-
+            if (!["on", "off"].includes(urlParam.get(urlparam))) {
+                console.log(`fullscreen=${urlParam.get(urlparam)} is not a selectable option.`);
+                urlParam.set(urlparam, "off");
             }
+
+            if (urlParam.get(urlparam) == "off") {
+                document.querySelectorAll(`.${hide}`).forEach((el) => {
+                    el.classList.remove(hidden);
+                    if (options.render_svg) {
+                        let svg_show = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fullscreen" viewBox="0 0 16 16">
+                                                <path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"/>
+                                            </svg>
+                                        `;
+                        let btn = document.getElementById(opt);
+                        btn.innerHTML = svg_show;
+                        btn.classList.remove(active);
+                    }
+                });
+                
+            }
+            
+            if (urlParam.get(urlparam) == "on") {
+                document.querySelectorAll(`.${hide}`).forEach((el) => {
+                    el.classList.add(hidden);
+                    let svg_hide = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fullscreen-exit" viewBox="0 0 16 16">
+                                            <path d="M5.5 0a.5.5 0 0 1 .5.5v4A1.5 1.5 0 0 1 4.5 6h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 10 4.5v-4a.5.5 0 0 1 .5-.5zM0 10.5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 6 11.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zm10 1a1.5 1.5 0 0 1 1.5-1.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4z"/>
+                                        </svg>
+                                    `;
+                    let btn = document.getElementById(opt);
+                    btn.innerHTML = svg_hide;
+                    btn.classList.add(active);
+                });
+                
+            }
+
+            var citation_url_str = paramCheck(variant.chg_citation, "citation-url");
+            var citation_url = document.getElementById(citation_url_str);
+            let href = `?${urlParam}${location.hash}`;
+            uptState({
+                "hist": true,
+                "cit": citation_url,
+                "state": false,
+                "href": href
+            });
             
         }
     }

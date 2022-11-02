@@ -97,3 +97,11 @@ export function hideLoading(id: string) {
         document.getElementById(spinnerID)!.remove();
     }
 }
+
+export function paramCheck(param: string | null | undefined, def: string | {}) {
+    if(param) {
+        return param;
+    } else {
+        return def;
+    }
+}
