@@ -8,12 +8,9 @@ export class UrlSearchParamUpdate {
         // get custom element and access opt attribute
         let el = document.getElementsByTagName('full-size');
         let opt = el[0].getAttribute("opt");
-
-        try {
-            let check_opt: string = opt;
-        } catch (err) {
-            let check_opt: any = opt;
-            console.log(`No 'opt' ${check_opt} attribute in custom element <font-size> found!`);
+        if (typeof opt !== "string") {
+            
+            console.log("No 'opt' attribute in custom element font-size found!");
         }
 
         // config name is predfined in index.ts
@@ -118,16 +115,12 @@ export class UrlSearchParamUpdate {
     fontSize() {
         let el = document.getElementsByTagName('font-size');
         var id = el[0].getAttribute("opt");
-
-        try {
-            let check_opt: string = id;
-        } catch (err) {
-            let check_opt: any = id;
-            console.log(`No 'opt' ${check_opt} attribute in custom element <font-size> found!`);
+        if (typeof id !== "string") {
+            console.log("No 'opt' attribute in custom element font-size found!");
         }
 
         let data = "fontsize";
-        let storage: string | null = sessionStorage.getItem(data)
+        let storage: string | null = sessionStorage.getItem(data);
 
         if (storage) {
             var options: {
@@ -181,7 +174,7 @@ export class UrlSearchParamUpdate {
                 try {
                     var size_check = variants[v].sizes;
                 } catch (err) {
-                    console.log("Sizes obj not found. Creating default parameters.")
+                    console.log("Sizes obj not found. Creating default parameters.");
                 }
                 let size = paramCheck(size_check, {
                     default: "default",
