@@ -258,7 +258,7 @@ export class UrlSearchParamUpdate {
         let id = el[0].getAttribute("opt");
         // check if user set opt attribute
         if (typeof id !== "string") {
-            console.log("No 'opt' attribute in custom element font-size found!");
+            console.log("No 'opt' attribute in custom element font-family found!");
         }
 
         let data = "font_family";
@@ -326,7 +326,7 @@ export class UrlSearchParamUpdate {
                 try {
                     var family_check = variants[v].fonts;
                 } catch (err) {
-                    console.log("Sizes obj not found. Creating default parameters.");
+                    console.log("Family ff obj not found. Creating default parameters.");
                 }
                 let family = paramCheck(family_check, {
                     default: "default",
