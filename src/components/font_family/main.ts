@@ -52,7 +52,7 @@ export class FontFamily extends HTMLElement {
             } catch (err) {
                 console.log("No option parameters found. Creating default parameters to continue.");
             }
-            var variant = paramCheck(variant_check, [{opt: id}]);
+            var variant = paramCheck(variant_check, {opt: id});
 
             // get citation url key and HTMLElement
             var citation_url_str = paramCheck(variant.chg_citation, "citation-url");
