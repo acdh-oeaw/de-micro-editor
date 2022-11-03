@@ -380,82 +380,177 @@ export class UrlSearchParamUpdate {
 
     }
 
-    // viewerSwitch() {
+    viewerSwitch() {
 
-    //     let el = document.getElementsByTagName('image-switch');
-    //     let data = "conf_image_switch";
-    //     let opt = el[0].getAttribute("opt");
-    //     let options = JSON.parse(sessionStorage.getItem(data));
-    //     if (!options) {
-    //         alert("Please turn on cookies to display content!")
-    //     }
-    //     let url = new URL(location.href);
-    //     let urlParam = new URLSearchParams(url.search);
+        let el = document.getElementsByTagName('image-switch');
+        let opt = el[0].getAttribute("opt");
+        // check if user set opt attribute
+        if (typeof opt !== "string") {
+            console.log("No 'opt' attribute in custom element font-family found!");
+        }
 
-    //     // let opt = options
-    //     let variant = options.variants.find((v) => v.opt === opt);
-    //     let active = options.active_class;
-    //     let hide = variant.hide.class_to_hide;
-    //     let show = variant.hide.class_to_show;
-    //     let parent = variant.hide.class_parent;
-    //     let urlparam = variant.urlparam;
-    //     let fade = variant.fade;
-    //     let column_small = [variant.column_small["class"], variant.column_small["percent"]];
-    //     let column_full = [variant.column_full["class"], variant.column_full["percent"]];
-    //     if (urlParam.get(urlparam) == null) {
-    //         urlParam.set(urlparam, "on");
-    //     }
-    //     if (!["on", "off"].includes(urlParam.get(urlparam))) {
-    //         console.log(`image=${urlParam.get(urlparam)} is not a selectable option.`);
-    //         urlParam.set(urlparam, "on");
-    //     }
-    //     if (urlParam.get(urlparam) == "on") {
-    //         document.querySelectorAll(`.${hide}`).forEach((el) => {
-    //             el.classList.remove(fade);
-    //             el.classList.add(column_small[0]);
-    //             el.style.maxWidth = column_small[1];
-    //             el.classList.add(active);
-    //         });
-    //         document.querySelectorAll(`.${show}`).forEach((el) => {
-    //             el.classList.add(column_small[0]);
-    //             el.classList.remove(column_full[0]);
-    //             el.style.maxWidth = column_small[1];
-    //             el.classList.add(active);
-    //         });
-    //         document.getElementById(opt).classList.add(active); 
-    //     }
-    //     if (urlParam.get(urlparam) == "off") {
-    //         document.querySelectorAll(`.${hide}`).forEach((el) => {
-    //             el.classList.add(fade);
-    //             el.classList.remove(column_small[0]);
-    //             el.style.maxWidth = column_full[1];
-    //             el.classList.remove(active);
-    //         });
-    //         document.querySelectorAll(`.${show}`).forEach((el) => {
-    //             el.classList.remove(column_small[0]);
-    //             el.classList.add(column_full[0]);
-    //             el.style.maxWidth = column_full[1];
-    //             el.classList.remove(active);
-    //         });
-
-    //         // works only with one image viewer
-    //         const viewer = document.querySelector(`.${parent}.${active} .${hide}`);
-    //         const facs = viewer.querySelectorAll("*")[0];
-    //         facs.style.width = `${viewer.offsetWidth}px`;
-    //         facs.style.height = variant.image_size;
-    //         document.getElementById(opt).classList.remove(active); 
-    //     }
-
-    //     let citation_url = document.getElementById(variant.chg_citation);
-    //     let href = `?${urlParam}${location.hash}`;
-    //     uptState({
-    //         "hist": true,
-    //         "cit": citation_url,
-    //         "state": false,
-    //         "href": href
-    //     });
+        let data = "image_switch";
+        let storage = sessionStorage.getItem(data);
         
-    // }
+        if (storage) {
+
+            let options: {
+                name: string | null | undefined,
+                variants:  [
+                    {
+                        opt:  string | null | undefined,
+                        title:  string | null | undefined,
+                        urlparam:  string | null | undefined,
+                        chg_citation:  string | null | undefined,
+                        fade:  string | null | undefined,
+                        column_small: {
+                            class:  string | null | undefined,
+                            percent:  string | null | undefined,
+                        } | null | undefined,
+                        column_full: {
+                            class:  string | null | undefined,
+                            percent:  string | null | undefined,
+                        } | null | undefined,
+                        hide: {
+                            hidden: true,
+                            class_to_hide:  string | null | undefined,
+                            class_to_show:  string | null | undefined,
+                            class_parent:  string | null | undefined,
+                            resize:  string | null | undefined,
+                        } | null | undefined,
+                        image_size:  string | null | undefined,
+                    }
+                ],
+                active_class:  string | null | undefined,
+                rendered_element: {
+                    a_class:  string | null | undefined,
+                    svg:  string | null | undefined
+                } | null | undefined
+            } | null | undefined = JSON.parse(storage);
+
+            if (!options) {
+                alert("Please turn on cookies to display content!")
+            }
+
+            let url = new URL(location.href);
+            let urlParam = new URLSearchParams(url.search);
+
+            // variant is found by comparing variant config opt with custom element attr opt
+            try {
+                var variant_check = options.variants.find((v) => v.opt === opt);
+            } catch (err) {
+                console.log("No option parameters found. Creating default parameters to continue.");
+            }
+            var variant = paramCheck(variant_check, {opt: opt});
+
+
+            // check for option param or return default value
+            var active = paramCheck(options.active_class, "active");
+
+            // check if sizes object with font sizes is not null or undefined
+            try {
+                var hide_check = variant.hide;
+            } catch (err) {
+                console.log("Font family object not found. Creating default parameters.");
+            }
+            let hide_checked = paramCheck(hide_check, {
+                hidden: true,
+                class_to_hide: "osd-viewer",
+                class_to_show: "text-re",
+                class_parent: "pagination-tab",
+                resize: "resize-hide"
+            });
+
+            // get classes from params for container to hide and show
+            let hide = paramCheck(hide_checked.class_to_hide, "hide-container1");
+            let show = paramCheck(variant.hide.class_to_show, "show-container1");
+
+            // get class for wrapper of hide show container
+            let parent = paramCheck(variant.hide.class_parent, "hide-show-wrapper");
+
+            // get urlparam key
+            var urlparam = paramCheck(variant.urlparam, "image");
+
+            // get fade class
+            let fade = paramCheck(variant.fade, "fade");
+
+            // get classes and style for hide show container resizing
+            let column_small = [paramCheck(variant.column_small["class"], "col-md-6"), paramCheck(variant.column_small["percent"], "50%")];
+            let column_full = [paramCheck(variant.column_full["class"], "col-md-6"), paramCheck(variant.column_full["percent"], "50%")];
+            
+            // check if urlparam value is null and set to default
+            if (urlParam.get(urlparam) == null) {
+                urlParam.set(urlparam, "on");
+            }
+
+            // if urlparam value is not valid set to default
+            if (!["on", "off"].includes(urlParam.get(urlparam))) {
+                console.log(`image=${urlParam.get(urlparam)} is not a selectable option.`);
+                urlParam.set(urlparam, "on");
+            }
+
+            // if urlparam value is 'on' show container
+            if (urlParam.get(urlparam) == "on") {
+                document.querySelectorAll(`.${hide}`).forEach((el: HTMLElement) => {
+                    el.classList.remove(fade);
+                    el.classList.add(column_small[0]);
+                    el.style.maxWidth = column_small[1];
+                    el.classList.add(active);
+                });
+                document.querySelectorAll(`.${show}`).forEach((el: HTMLElement) => {
+                    el.classList.add(column_small[0]);
+                    el.classList.remove(column_full[0]);
+                    el.style.maxWidth = column_small[1];
+                    el.classList.add(active);
+                });
+                document.getElementById(opt).classList.add(active); 
+            }
+
+            // if urlparam value is 'off' hide container
+            if (urlParam.get(urlparam) == "off") {
+                document.querySelectorAll(`.${hide}`).forEach((el: HTMLElement) => {
+                    el.classList.add(fade);
+                    el.classList.remove(column_small[0]);
+                    el.style.maxWidth = column_full[1];
+                    el.classList.remove(active);
+                });
+                document.querySelectorAll(`.${show}`).forEach((el: HTMLElement) => {
+                    el.classList.remove(column_small[0]);
+                    el.classList.add(column_full[0]);
+                    el.style.maxWidth = column_full[1];
+                    el.classList.remove(active);
+                });
+
+                // works only with one image viewer
+                let viewer = (document.querySelector(`.${parent}.${active} .${hide}`) as HTMLElement);
+                let facs = (viewer.querySelectorAll("*")[0] as HTMLElement);
+
+                // get iamge_size from params
+                let image_size = paramCheck(variant.image_size, "500px");
+
+                // set style height and width
+                facs.style.width = `${viewer.offsetWidth}px`;
+                facs.style.height = image_size;
+
+                // remove active class
+                document.getElementById(opt).classList.remove(active); 
+            }
+
+            // get citation url class and update citation
+            let citation_url_str = paramCheck(variant.chg_citation, "citation-url");
+            let citation_url = document.getElementById(citation_url_str);
+
+            // update browser history state
+            let href = `?${urlParam}${location.hash}`;
+            uptState({
+                "hist": true,
+                "cit": citation_url,
+                "state": false,
+                "href": href
+            });
+        }
+        
+    }
 
     // textFeatures() {
     //     let data = "conf_annotation_slider";
