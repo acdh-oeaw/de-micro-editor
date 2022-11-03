@@ -582,96 +582,238 @@ export class UrlSearchParamUpdate {
         
     }
 
-    // textFeatures() {
-    //     let data = "conf_annotation_slider";
-    //     let options = JSON.parse(sessionStorage.getItem(data));
-    //     if (!options) {
-    //         alert(`Please turn on cookies to display content.\n
-    //             Or check if configuration files path match data-target and data-path property.`)
-    //     }
-    //     let url = new URL(location.href);
-    //     let urlParam = new URLSearchParams(url.search);
-    //     var variantAll = options.variants.filter((v) => v.features.all === true);
-    //     let variants = options.variants.filter((v) => v.features.all === false);
-    //     let wrg_ft = options.variants.filter((v) => typeof v.features.all !== "boolean");
-    //     if (wrg_ft) {
-    //         for (let w of wrg_ft) {
-    //             console.log(`Type of variant ${w.opt} config. "features.all" must be boolean (true or false)`);
-    //         }
-    //     }
-    //     let style = options.span_element;
-    //     let active = options.active_class;
-    //     let count_active = 0;
-    //     let count = 0;
-    //     for (let v in variants) {
-    //         if (urlParam.get(variants[v].opt) === null) {
-    //             urlParam.set(variants[v].opt, "off");
-    //         }
-    //         else if (!["on", "off"].includes(urlParam.get(variants[v].opt))) {
-    //             console.log(`${variants[v].opt}=${urlParam.get(variants[v].opt)} is not a selectable option.`);
-    //             urlParam.set(variants[v].opt, "off");
-    //         }
-    //         else if (urlParam.get(variants[v].opt) === "on") {
-    //             count_active += 1;
-    //             let color = variants[v].color;
-    //             let html_class = variants[v].html_class;
-    //             let css_class = variants[v].css_class;
-    //             let hide = variants[v].hide;
-    //             let selected = addMarkup(html_class, css_class, color, hide, style);
-    //             let slider = document.getElementById(variants[v].opt_slider);
-    //             slider.setAttribute("data", selected);
-    //             count += parseInt(selected);
-    //             slider.classList.add("slider-number");
-    //             slider.classList.add(color);
-    //             if (document.getElementById(variants[v].opt).checked === false) {
-    //                 document.getElementById(variants[v].opt).checked = true;
-    //                 document.getElementById(variants[v].opt).classList.add(active);
-    //             }
-    //         }
-    //         else if (urlParam.get(variants[v].opt) === "off") {
-    //             let color = variants[v].color;
-    //             let html_class = variants[v].html_class;
-    //             let css_class = variants[v].css_class;
-    //             let hide = variants[v].hide;
-    //             let selected = removeMarkup(html_class, css_class, color, hide, style);
-    //             let slider = document.getElementById(variants[v].opt_slider);
-    //             slider.classList.remove(color);
-    //             slider.removeAttribute("data");
-    //             slider.classList.remove("slider-number");
-    //             if (document.getElementById(variants[v].opt).checked === true) {
-    //                 document.getElementById(variants[v].opt).checked = false;
-    //                 document.getElementById(variants[v].opt).classList.remove(active);
-    //             }
-    //         }
-    //         if (variants[v].chg_citation) {
-    //             var citation_url = document.getElementById(variants[v].chg_citation);
-    //         }
-    //     }
-    //     if (count_active == variants.length) {
-    //         if (document.getElementById(variantAll[0].opt).checked === false) {
-    //             let slider_all = document.getElementById(variantAll[0].opt);
-    //             slider_all.checked = true;
-    //             slider_all.classList.add(active);
-    //             slider_all.classList.add("slider-number");
-    //             slider_all.setAttribute("data", String(count));
-    //         }
-    //     } else {
-    //         if (document.getElementById(variantAll[0].opt).checked === true) {
-    //             let slider_all = document.getElementById(variantAll[0].opt);
-    //             slider_all.checked = false;
-    //             slider_all.classList.remove(active);
-    //             slider_all.removeAttribute("data");
-    //             slider_all.classList.remove("slider-number");
-    //         }
-    //     }
-    //     let href = `?${urlParam}${location.hash}`;
-    //     uptState({
-    //         "hist": true,
-    //         "cit": citation_url,
-    //         "state": false,
-    //         "href": href
-    //     });
-    // }
+    textFeatures() {
+        let data = "annotation_slider";
+        
+        let storage = sessionStorage.getItem(data);
+        if (storage) {
+
+            let options: {
+                title: string | null | undefined,
+                variants: [
+                    {
+                        opt:  string | null | undefined,
+                        opt_slider:  string | null | undefined,
+                        title:  string | null | undefined,
+                        color:  string | null | undefined,
+                        html_class:  string | null | undefined,
+                        css_class:  string | null | undefined,
+                        hide:  boolean | null | undefined,
+                        chg_citation:  string | null | undefined,
+                        features: {
+                            all:  boolean | null | undefined,
+                            class:  string | null | undefined,
+                        }
+                    }
+                ] | null | undefined,
+                span_element: {
+                    css_class: string | null | undefined,
+                } | null | undefined,
+                active_class: string | null | undefined,
+                rendered_element: {
+                    label_class: string | null | undefined,
+                    slider_class: string | null | undefined,
+                } | null | undefined,
+            } | null | undefined = JSON.parse(storage);
+
+            if (!options) {
+                alert(`Please turn on cookies to display content.\n
+                    Or check if configuration files path match data-target and data-path property.`)
+            }
+
+            let url = new URL(location.href);
+            let urlParam = new URLSearchParams(url.search);
+
+            // variant is found by comparing variant config opt with custom element attr opt
+            try {
+                var variant_all_check = options.variants.filter((v) => v.features.all === true);
+            } catch (err) {
+                console.log("No option parameters found. Creating default parameters to continue.");
+            }
+            let variantAll = paramCheck(variant_all_check, [{
+                opt: "text-features",
+                features: {
+                    all: true,
+                    class: "all-features"
+                }
+            }]);
+
+            // variant is found by comparing variant config opt with custom element attr opt
+            try {
+                var variant_check = options.variants.filter((v) => v.features.all === false);
+            } catch (err) {
+                console.log("No option parameters found. Creating default parameters to continue.");
+            }
+            let variants = paramCheck(variant_check, {
+                opt: "any-feature-1",
+                features: {
+                    all: false,
+                    class: "single-feature"
+                }
+            });
+
+            // try {
+            //     var features_check = variants.features;
+            // } catch (err) {
+            //     console.log("Features object in variant not found. Creating default parameters.")
+            // }
+            // let features = paramCheck(features_check, {
+            //     all: false,
+            //     class: "single-feature"
+            // })
+
+            // variant is found by comparing variant config opt with custom element attr opt
+            try {
+                var variant_check_bool = options.variants.filter((v) => typeof v.features.all !== "boolean");
+            } catch (err) {
+                console.log("No option parameters found. Creating default parameters to continue.");
+            }
+            let wrg_ft = paramCheck(variant_check_bool, []);
+            if (wrg_ft) {
+                for (let w of wrg_ft) {
+                    console.log(`Type of variant ${w} config. "features.all" must be boolean (true or false)`);
+                }
+            }
+
+            // check if sizes object with font sizes is not null or undefined
+            try {
+                var span_check = options.span_element
+            } catch (err) {
+                console.log("Hide object not found. Creating default parameters.");
+            }
+            let span_checked = paramCheck(span_check, {
+                css_class : "badge-item"
+            });
+
+            // get params from options
+            let style = paramCheck(span_checked, "badge-item");
+            let active = paramCheck(options.active_class, "active");
+
+            // set count to verify state of sliders
+            let count_active = 0;
+            let count = 0;
+            var optAll = paramCheck(variantAll[0].opt, `any-feature-all`);
+            for (let v in variants) {
+
+                var opt = paramCheck(variants[v].opt, `any-feature-${v}`);
+
+                if (urlParam.get(opt) === null) {
+
+                    urlParam.set(opt, "off");
+
+                }
+
+                else if (!["on", "off"].includes(urlParam.get(opt))) {
+
+                    console.log(`${opt}=${urlParam.get(opt)} is not a selectable option.`);
+                    urlParam.set(opt, "off");
+                }
+
+                else if (urlParam.get(opt) === "on") {
+
+                    count_active += 1;
+                    let color = paramCheck(variants[v].color, `color-${opt}`);
+                    let html_class = paramCheck(variants[v].html_class, `html-class-${opt}`);
+                    let css_class = paramCheck(variants[v].css_class, `css-class-${opt}`);
+
+                    let hide = paramCheck(variants[v].hide, false);
+                    let selected = addMarkup(html_class, css_class, color, hide, style);
+                    let opt_slider = paramCheck(variants[v].opt_slider, `any-slider-${opt}`);
+
+                    try {
+                        let slider = (document.getElementById(opt_slider) as HTMLElement);
+                        slider.setAttribute("data", selected);
+                        count += parseInt(selected);
+                        slider.classList.add("slider-number");
+                        slider.classList.add(color);
+                    } catch (err) {
+                        console.log(`slider class ${opt_slider} not found!`);
+                    }
+
+                    if ((document.getElementById(opt) as HTMLInputElement).checked === false) {
+                        (document.getElementById(opt) as HTMLInputElement).checked = true;
+                        (document.getElementById(opt) as HTMLInputElement).classList.add(active);
+                    }
+
+                }
+
+                else if (urlParam.get(opt) === "off") {
+
+                    let color = paramCheck(variants[v].color, `color-${opt}`);
+                    let html_class = paramCheck(variants[v].html_class, `html-class-${opt}`);
+                    let css_class = paramCheck(variants[v].css_class, `css-class-${opt}`);
+
+                    let hide = paramCheck(variants[v].hide, false);
+                    let selected = addMarkup(html_class, css_class, color, hide, style);
+                    let opt_slider = paramCheck(variants[v].opt_slider, `any-slider-${opt}`);
+
+                    try {
+                        let slider = (document.getElementById(opt_slider) as HTMLElement);
+                        slider.classList.remove(color);
+                        slider.removeAttribute("data");
+                        slider.classList.remove("slider-number");
+                    } catch (err) {
+                        console.log(`slider class ${opt_slider} not found!`);
+                    }
+
+                    if ((document.getElementById(opt) as HTMLInputElement).checked === true) {
+                        (document.getElementById(opt) as HTMLInputElement).checked = false;
+                        (document.getElementById(opt) as HTMLInputElement).classList.remove(active);
+                    }
+
+                }
+
+                let citation_url_str = paramCheck(variants[v].chg_citation, "citation-url");
+                if (citation_url_str) {
+
+                    var citation_url = document.getElementById(citation_url_str);
+
+                }
+            }
+
+            if (count_active == variants.length) {
+
+                if ((document.getElementById(optAll) as HTMLInputElement).checked === false) {
+
+                    try {
+                        let slider_all = (document.getElementById(optAll) as HTMLInputElement);
+                        slider_all.checked = true;
+                        slider_all.classList.add(active);
+                        slider_all.classList.add("slider-number");
+                        slider_all.setAttribute("data", String(count));
+                    } catch (err) {
+                        console.log(`slider class ${optAll} not found!`);
+                    }
+
+                }
+
+            } else {
+
+                if ((document.getElementById(optAll) as HTMLInputElement).checked === true) {
+                    
+                    try {
+                        let slider_all = (document.getElementById(optAll) as HTMLInputElement);
+                        slider_all.checked = false;
+                        slider_all.classList.remove(active);
+                        slider_all.removeAttribute("data");
+                        slider_all.classList.remove("slider-number");
+                    } catch (err) {
+                        console.log(`slider class ${optAll} not found!`);
+                    }
+
+                }
+
+            }
+
+            let href = `?${urlParam}${location.hash}`;
+            uptState({
+                "hist": true,
+                "cit": citation_url,
+                "state": false,
+                "href": href
+            });
+        }
+    }
 
     pageUrl() {
 

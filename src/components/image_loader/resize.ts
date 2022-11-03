@@ -59,7 +59,6 @@ export class WindowResize extends HTMLElement {
                 viewer.style.height = `${right_container.offsetHeight}px`;
 
             }
-            
 
         });
 

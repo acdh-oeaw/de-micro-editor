@@ -98,7 +98,7 @@ export function hideLoading(id: string) {
     }
 }
 
-export function paramCheck(param: string | null | undefined, def: string | {} | []) {
+export function paramCheck(param: string | null | undefined, def: string | boolean | {} | []) {
     if (param) {
         return param;
     } else {
