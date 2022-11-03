@@ -451,22 +451,23 @@ export class UrlSearchParamUpdate {
             try {
                 var hide_check = variant.hide;
             } catch (err) {
-                console.log("Font family object not found. Creating default parameters.");
+                console.log("Hide object not found. Creating default parameters.");
             }
             let hide_checked = paramCheck(hide_check, {
                 hidden: true,
-                class_to_hide: "osd-viewer",
-                class_to_show: "text-re",
-                class_parent: "pagination-tab",
+                class_to_hide: "hide-container1",
+                class_to_show: "show-container1",
+                class_parent: "hide-show-wrapper",
                 resize: "resize-hide"
             });
 
             // get classes from params for container to hide and show
+            let hidden = paramCheck(hide_checked.hidden, true);
             let hide = paramCheck(hide_checked.class_to_hide, "hide-container1");
-            let show = paramCheck(variant.hide.class_to_show, "show-container1");
+            let show = paramCheck(hide_checked.class_to_show, "show-container1");
 
             // get class for wrapper of hide show container
-            let parent = paramCheck(variant.hide.class_parent, "hide-show-wrapper");
+            let parent = paramCheck(hide_checked.class_parent, "hide-show-wrapper");
 
             // get urlparam key
             var urlparam = paramCheck(variant.urlparam, "image");
@@ -474,9 +475,31 @@ export class UrlSearchParamUpdate {
             // get fade class
             let fade = paramCheck(variant.fade, "fade");
 
+            // check if sizes object with font sizes is not null or undefined
+            try {
+                var small_check = variant.column_small;
+            } catch (err) {
+                console.log("Hide object not found. Creating default parameters.");
+            }
+            let column_small_check = paramCheck(small_check, {
+                class: "col-md-6",
+                percent: "50%"
+            });
+
+            // check if sizes object with font sizes is not null or undefined
+            try {
+                var large_check = variant.column_full;
+            } catch (err) {
+                console.log("Hide object not found. Creating default parameters.");
+            }
+            let column_full_checked = paramCheck(large_check, {
+                class: "col-md-12",
+                percent: "100%"
+            });
+
             // get classes and style for hide show container resizing
-            let column_small = [paramCheck(variant.column_small["class"], "col-md-6"), paramCheck(variant.column_small["percent"], "50%")];
-            let column_full = [paramCheck(variant.column_full["class"], "col-md-6"), paramCheck(variant.column_full["percent"], "50%")];
+            let column_small = [paramCheck(column_small_check.class, "col-md-6"), paramCheck(column_small_check.percent, "50%")];
+            let column_full = [paramCheck(column_full_checked.class, "col-md-12"), paramCheck(column_full_checked.percent, "100%")];
             
             // check if urlparam value is null and set to default
             if (urlParam.get(urlparam) == null) {
@@ -522,15 +545,22 @@ export class UrlSearchParamUpdate {
                 });
 
                 // works only with one image viewer
-                let viewer = (document.querySelector(`.${parent}.${active} .${hide}`) as HTMLElement);
-                let facs = (viewer.querySelectorAll("*")[0] as HTMLElement);
+                try {
+                    var viewer = (document.querySelector(`.${parent}.${active} .${hide}`) as HTMLElement);
+                } catch (err) {
+                    console.log(`HTML class elements .${parent}.${active} .${hide} not found. Please make sure your HTML site contains them.`);
+                }
 
-                // get iamge_size from params
-                let image_size = paramCheck(variant.image_size, "500px");
-
-                // set style height and width
-                facs.style.width = `${viewer.offsetWidth}px`;
-                facs.style.height = image_size;
+                try {
+                    var facs = (viewer.querySelectorAll("*")[0] as HTMLElement);
+                    // set style height and width
+                    // get iamge_size from params
+                    let image_size = paramCheck(variant.image_size, "500px");
+                    facs.style.width = `${viewer.offsetWidth}px`;
+                    facs.style.height = image_size;
+                } catch (err) {
+                    console.log(`HTML class elements .${parent}.${active} .${hide} not found. Please make sure your HTML site contains them.`);
+                }
 
                 // remove active class
                 document.getElementById(opt).classList.remove(active); 
