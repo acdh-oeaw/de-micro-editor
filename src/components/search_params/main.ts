@@ -673,118 +673,167 @@ export class UrlSearchParamUpdate {
     //     });
     // }
 
-    // pageUrl() {
+    pageUrl() {
 
-    //     // get session cookies as parameters
-    //     let data = "conf_image_loader";
-    //     let options = JSON.parse(sessionStorage.getItem(data));
+        // get session cookies as parameters
+        let data = "image_loader";
+        let storage = sessionStorage.getItem(data);
 
-    //     // get url params
-    //     let url = new URL(location.href);
-    //     let urlParam = new URLSearchParams(url.search);
-    //     var _current = urlParam.get(options.urlparam);
-    //     // const item = document.querySelector('.pagination .nav-tabs .nav-item .nav-link.active');
-    //     // const href = item.getAttribute('href').replace('#', '');
-    //     if (_current == null) {
-    //         urlParam.set(options.urlparam, "1");
-    //         _current = urlParam.get(options.urlparam);
-    //     }
+        if (storage) {
+            let options: {
+                name: string  | null | undefined,
+                opt: string  | null | undefined,
+                title: string  | null | undefined,
+                urlparam: string  | null | undefined,
+                chg_citation: string  | null | undefined,
+                pag_link: string  | null | undefined,
+                pag_tab: string  | null | undefined,
+                img_size: string  | null | undefined,
+                url: string  | null | undefined,
+                url_param: string  | null | undefined,
+                osd_target: string  | null | undefined,
+                img_source: string  | null | undefined,
+                img_types: []  | null | undefined,
+                active_class:  string  | null | undefined,
+                inactive_class:  string  | null | undefined,
+                bootstrap_class:  string  | null | undefined,
+            } | null | undefined = JSON.parse(storage);
 
-    //     // deactivate all tabs
-    //     let tabs = document.querySelectorAll(`${options.pag_tab}[data-tab="paginate"]`);
-    //     tabs.forEach(function(el) {
-    //         el.classList.remove(options.active_class);
-    //         el.classList.add(options.inactive_class);
-    //     });
+            // get url params
+            let url = new URL(location.href);
+            let urlParam = new URLSearchParams(url.search);
+            var urlparam = paramCheck(options.urlparam);
+            var _current = urlParam.get(urlparam);
 
-    //     // deactivate pagination linksshow metadata
+            // const item = document.querySelector('.pagination .nav-tabs .nav-item .nav-link.active');
+            // const href = item.getAttribute('href').replace('#', '');
+            if (_current == null) {
+                urlParam.set(urlparam, "1");
+                _current = urlParam.get(urlparam);
+            }
 
-    //     let link = document.querySelectorAll(`${options.pag_link}`);
-    //     let pgOpt = [];
-    //     link.forEach(function(el) {
-    //         el.classList.remove(options.active_class);
-    //         el.classList.remove(options.bootstrap_class);
-    //         let el_id = el.getAttribute("id");
-    //         if (el_id) {
-    //             let idn = el_id.split('_');
-    //             let idNo = idn[idn.length - 1];
-    //             pgOpt.push(idNo);
-    //         }
-    //     });
+            // set all nav links to inactive
+            let pag_link = paramCheck(options.pag_link, ".pagination-link");
+            let active = paramCheck(options.active_class, "active");
+            let inactive = paramCheck(options.inactive_class, "fade");
+            let bootstrap_class = paramCheck(options.bootstrap_class, "show");
+            let pag_tab = paramCheck(options.pag_tab, ".pagination-tab.tab-pane")
 
-    //     // check if page url param is valid
-    //     if (!pgOpt.includes(_current)) {
-    //         console.log(`${options.urlparam}=${_current} is not a selectable option.`);
-    //         urlParam.set(options.urlparam, "1");
-    //         _current = urlParam.get(options.urlparam);
-    //     }
+            // deactivate all tabs
+            let tabs = document.querySelectorAll(`${pag_tab}[data-tab="paginate"]`);
+            tabs.forEach(function(el: HTMLElement) {
+                el.classList.remove(active);
+                el.classList.add(inactive);
+            });
 
-    //     // activate tab base on urlparams
-    //     let tab = document.getElementById(`paginate-${_current}`);
-    //     tab.classList.remove(options.inactive_class);
-    //     tab.classList.add(options.active_class);
-    //     tab.classList.add(options.bootstrap_class); 
+            // deactivate pagination linksshow metadata
+            let link = document.querySelectorAll(`${pag_link}`);
+            let pgOpt: any = [];
+            link.forEach(function(el: HTMLElement) {
+                el.classList.remove(active);
+                el.classList.remove(bootstrap_class);
+                let el_id = el.getAttribute("id");
+                if (el_id) {
+                    let idn = el_id.split('_');
+                    let idNo = idn[idn.length - 1];
+                    pgOpt.push(idNo);
+                }
+            });
 
-    //     // get all nav tabs matching href tabs based on urlparams and set to active
-    //     let linkActive = document.querySelectorAll(`${options.pag_link}[href="#paginate-${_current}"]`);
-    //     linkActive.forEach(function(el) {
-    //         el.classList.add(options.active_class);
-    //         el.classList.add(options.bootstrap_class);
-    //     });
+            // check if page url param is valid
+            if (!pgOpt.includes(_current)) {
+                console.log(`${urlparam}=${_current} is not a selectable option.`);
+                urlParam.set(urlparam, "1");
+                _current = urlParam.get(urlparam);
+            }
 
-    //     // create OSD container
-    //     let i = 0;
-    //     while (i < options.img_types.length) {
-    //         if (document.getElementById(`${options.img_types[i]}_${options.osd_target}_${_current}`)) {
-    //             var _image_type = options.img_types[i];
-    //         }
-    //         i++;
-    //     }
-    //     let _osd_container_id = `${_image_type}_${options.osd_target}_${_current}`;
-    //     let _osd_container_id2 = `${_image_type}_${options.img_source}_${_current}`;
-    //     let osd_container = document.getElementById(_osd_container_id);
-    //     let osd_container_2 = document.getElementById(_osd_container_id2);
-    //     if ( osd_container_2 ) {
-    //         osd_container.style.height = options.img_size;
-    //         let image = document.getElementById(`${_image_type}_img_${_current}`);
-    //         let image_src = image.getAttribute('data-src');
-    //         let image_url = {type: 'image', url: image_src};
-    //         let viewer = OpenSeadragon({
-    //             id: _osd_container_id,
-    //             prefixUrl: 'https://cdnjs.cloudflare.com/ajax/libs/openseadragon/3.1.0/images/',
-    //             tileSources: image_url
-    //         });
+            // activate tab base on urlparams
+            let tab = (document.getElementById(`paginate-${_current}`) as HTMLElement);
+            tab.classList.remove(inactive);
+            tab.classList.add(active);
+            tab.classList.add(bootstrap_class); 
 
-    //         // hides static images
-    //         osd_container_2.remove();
-    
-    //         // hide loading spinner if image fully loaded status changes
-    //         // see issue: https://github.com/openseadragon/openseadragon/issues/1262
-    //         viewer.addHandler('open', function() {
-    //             let tiledImage = viewer.world.getItemAt(0);
-    //             if (tiledImage.getFullyLoaded()) {
-    //                 hideLoading(_osd_container_id);
-    //             } else {
-    //                 tiledImage.addOnceHandler('fully-loaded-change', function() {
-    //                     let spinnerID2 = "spinner_" + _osd_container_id;
-    //                     if ( document.getElementById(spinnerID2) ) {
-    //                         document.getElementById(spinnerID2).remove();
-    //                     }
-    //                 });
-    //             }
-    //         });
-    //     }
+            // get all nav tabs matching href tabs based on urlparams and set to active
+            let linkActive = document.querySelectorAll(`${pag_link}[href="#paginate-${_current}"]`);
+            linkActive.forEach(function(el: HTMLElement) {
+                el.classList.add(active);
+                el.classList.add(bootstrap_class);
+            });
 
-    //     // update state
-    //     let citation_url = document.getElementById(options.chg_citation);
-    //     let href = `?${urlParam}${location.hash}`;
-    //     uptState({
-    //         "hist": true,
-    //         "cit": citation_url,
-    //         "state": false,
-    //         "href": href
-    //     });
+            // create OSD container
+            // check if sizes object with font sizes is not null or undefined
+            try {
+                var type_check = options.img_types;
+            } catch (err) {
+                console.log("Hide object not found. Creating default parameters.");
+            }
+            let type_checked = paramCheck(type_check, ["type1", "type2"]);
 
-    // }
+            // get class where osd img are inserted
+            let opt_osd_target = paramCheck(options.osd_target, "container");
+            let opt_img_source = paramCheck(options.img_source, "container2");
+            let opt_image_size = paramCheck(options.img_size, "500px");
 
+            // find correct image type
+            let i = 0;
+            while (i < type_checked.length) {
+                if (document.getElementById(`${type_checked[i]}_${opt_osd_target}_${_current}`)) {
+                    var _image_type = type_checked[i];
+                }
+                i++;
+            }
+
+            let _osd_container_id = `${_image_type}_${opt_osd_target}_${_current}`;
+            let _osd_container_id2 = `${_image_type}_${opt_img_source}_${_current}`;
+            let osd_container = (document.getElementById(_osd_container_id) as HTMLElement);
+            let osd_container_2 = (document.getElementById(_osd_container_id2) as HTMLElement);
+
+            if ( osd_container_2 ) {
+
+                osd_container.style.height = opt_image_size;
+                let image = document.getElementById(`${_image_type}_img_${_current}`);
+
+                let image_src = image.getAttribute('data-src');
+                let image_url = {type: 'image', url: image_src};
+
+                let viewer = OpenSeadragon({
+                    id: _osd_container_id,
+                    prefixUrl: 'https://cdnjs.cloudflare.com/ajax/libs/openseadragon/3.1.0/images/',
+                    tileSources: image_url
+                });
+
+                // hides static images
+                osd_container_2.remove();
+        
+                // hide loading spinner if image fully loaded status changes
+                // see issue: https://github.com/openseadragon/openseadragon/issues/1262
+                viewer.addHandler('open', function() {
+                    let tiledImage = viewer.world.getItemAt(0);
+                    if (tiledImage.getFullyLoaded()) {
+                        hideLoading(_osd_container_id);
+                    } else {
+                        tiledImage.addOnceHandler('fully-loaded-change', function() {
+                            let spinnerID2 = "spinner_" + _osd_container_id;
+                            if ( document.getElementById(spinnerID2) ) {
+                                document.getElementById(spinnerID2).remove();
+                            }
+                        });
+                    }
+                });
+            }
+
+            // get citation url class and update citation
+            let citation_url_str = paramCheck(options.chg_citation, "citation-url");
+            let citation_url = document.getElementById(citation_url_str);
+
+            let href = `?${urlParam}${location.hash}`;
+            uptState({
+                "hist": true,
+                "cit": citation_url,
+                "state": false,
+                "href": href
+            });
+
+        }
+    }
 }
