@@ -306,10 +306,6 @@ export class UrlSearchParamUpdate {
 
             for (let v in variants) {
 
-                // get citation url key and HTMLElement
-                var citation_url_str = paramCheck(variants[v].chg_citation, "citation-url");
-                var citation_url = document.getElementById(citation_url_str);
-
                 // get urlparam key
                 var urlparam = paramCheck(variants[v].urlparam, "font");
 
@@ -326,7 +322,7 @@ export class UrlSearchParamUpdate {
                 try {
                     var family_check = variants[v].fonts;
                 } catch (err) {
-                    console.log("Family ff obj not found. Creating default parameters.");
+                    console.log("Font family object not found. Creating default parameters.");
                 }
                 let family = paramCheck(family_check, {
                     default: "default",
@@ -364,7 +360,7 @@ export class UrlSearchParamUpdate {
                                 el.classList.remove(family[f].toLowerCase());   
                             } 
                         }
-                        if(new_value !== "default") {
+                        if (new_value !== "default") {
                             el.classList.add(new_value.toLowerCase());
                         }
                     });
