@@ -2,7 +2,7 @@
   "name": "de-micro-editor",
   "version": "0.1.5",
   "description": "Digital Edition Editor building blocks",
-  "module": "index.js",
+  "module": "index.ts",
   "scripts": {
     "start": "webpack serve --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js"
@@ -11,7 +11,12 @@
     "type": "git",
     "url": "https://github.com/acdh-oeaw/de-micro-editor.git"
   },
-  "keywords": ["Digital Edition", "JavaScript", "Editor", "Text Annotation"],
+  "keywords": [
+    "Digital Edition",
+    "JavaScript",
+    "Editor",
+    "Text Annotation"
+  ],
   "author": "Daniel Stoxreiter",
   "license": "MIT",
   "bugs": {
@@ -22,6 +27,8 @@
     "openseadragon": "^3.1.0",
     "path": "^0.12.7",
     "terser-webpack-plugin": "^5.3.3",
+    "ts-loader": "^9.4.1",
+    "typescript": "^4.8.4",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0",
     "webpack-merge": "^5.8.0"
