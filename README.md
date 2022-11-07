@@ -22,7 +22,8 @@ or
 
 In HTML:
 
-`<script src="https://unpkg.com/de-micro-editor@0.1.0/dist/de-editor.min.js"></script>`
+`<script src="https://unpkg.com/de-micro-editor@0.2.0/dist/de-editor.min.js"></script>`
+`<link href="https://unpkg.com/de-micro-editor@0.2.0/src/css/style.css" rel="stylesheet" type="text/css"></link>`
 
 ## Custom Elements (HTML)
 The package renders 7 different custom elements and creates event listeners to triggers defined functions. Each custom element takes an attribute `opt` which connects the element with a specific configurations parameter variant (see configuration description below). The window-resize element also takes an attribute `pos` which specifies a specific window to resize. The edition-pagination element uses attributes like `pos facs and data-type` to access window, element ids like images and data-type for further specification. The last two attributes are optional.
@@ -48,45 +49,96 @@ The package renders 7 different custom elements and creates event listeners to t
 </edition-pagination>
 ```
 
+## HTML Classes
+
+### Feature AOT
+
+For each variant (= custom element) the following classes must be added to your HTML site:
+
+* aot.variants[0].html_class: 
+default = `html-class-[opt]` where `[opt]` must match the opt attribute of the custom element. 
+(Add this class to all html elements to to be highlighted or manipulated.)
+
+* aot.variants[0].chg_citation: default = `citation-url` 
+(Add this class to your custom citation link.)
+
+## CSS Classes
+
+### Feature AOT
+
+For each variant (= custom element) the following classes must be added to your HTML site:
+
+* aot.variants[0].css_class:
+default = `css-class-[opt]` where `[opt]` must match the opt attribute of the custom element.
+(Add this class to your css file and assign css style properties.)
+
+* aot.variants[0].color:
+default = `color-[opt]`  where `[opt]` must match the opt attribute of the custom element.
+(Add this class to your css file and assign css style properties.)
+
+* aot.span_element.css_class (optional):
+default = `badge-item`
+Add this class to your css stylesheet if you want to change the appearance. Default stylesheet available in style.css (see 'src/css' directory of package)
+
+* aot.rendered_element.label_class (optional): 
+default = `switch`
+Add this class to your css stylesheet if you want to change the appearance. Default stylesheet available in style.css (see 'src/css' directory of package)
+
+* aot.rendered_element.slider_class (optional): 
+default = `i-slider round`
+Add this class to your css stylesheet if you want to change the appearance. Default stylesheet available in style.css (see 'src/css' directory of package)
+
 ## Initialize Load Editor
 ```
 var editor = new LoadEditor({...});
 ```
 
-## Configuration Options
+## Configuration Options (optional)
 ### class aot
 Options for element annotation-slider. If a configuration is present it loads parameters and stores it as session cookies. Default: null. 
 ### Example of class aot:
-All string values can be replaced and the "variants array" can hold multiple objects.
-```
+All string values are custom values, feel free to choose any string. The "variants array" can hold multiple objects.
+
+In case no parameters are provided default parameters are used. The only requirement is a predefined "opt" attribute value as part of the custom element. `[opt]` = opt attribute of custom element
+
+```JavaScript
 aot: {
     title: "Text Annotations",
     variants: [
         {   
-            opt: "deleted",
-            opt_slider: "deleted-slider",
-            title: "Deleted",
-            color: "red",
-            html_class: "del",
-            css_class: "strikethrough",
-            hide: true,
+            opt: "[opt]",
+            // class of html slider element
+            opt_slider: "[opt]-slider",
+            // visible title of the custom element
+            title: "Text Features", 
+            // class to add a specific highlighting color
+            color: "color-[opt]",
+            // class to access elements to be highlighted or manipulated
+            html_class: "html-class-[opt]",
+            // class added or removed depending on slider state
+            css_class: "css-class-[opt]",
+            // if true elements will be hidden by default and visible of state is active
+            hide: false,
+            // class for custom citation link
             chg_citation: "citation-url",
+            // object to identify element as single or all (if true the custom element controls all variants)
             features: {
                 all: false,
-                class: "single-feature"
+                class: "single-feature" or "all-features" if set to true
             }
         },
     ],
-    # additional css class for visualizing text
+    // additional css class for visualizing text
     span_element: {
         css_class: "badge-item"
     },
-    # class to define state of the custom element
-    active_class: "activated",
-    # css class for HTML switch to turn on/off options
+    // class to define state of the custom element
+    active_class: "active",
+    // css class for HTML switch to turn on/off options
     rendered_element: {
         label_class: "switch",
         slider_class: "i-slider round"
+    }
 },
 ```
 ### class ff
