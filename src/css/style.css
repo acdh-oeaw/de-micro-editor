@@ -174,3 +174,25 @@ input:checked + .i-slider:before {
 .font-size-14 {
      font-size: 14px !important;
 }
+
+/* Fullsize mode */
+
+.nav-link {
+    background-color: transparent !important;
+}
+
+.nav-link.active {
+    background-color: #f1f1f1 !important;
+}
+
+.nav-link.btn.active {
+    background-color: #b59890 !important;
+}
+
+.nav-link.btn {
+    background-color: transparent !important;
+}
+
+.nav-link.btn-backlink {
+    background-color: transparent !important;
+}
