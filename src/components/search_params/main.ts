@@ -644,13 +644,26 @@ export class UrlSearchParamUpdate {
             } catch (err) {
                 console.log("No option parameters found. Creating default parameters to continue.");
             }
-            let variants = paramCheck(variant_check, [{
-                opt: "any-feature-1",
-                features: {
-                    all: false,
-                    class: "single-feature"
+            let allVariants = document.getElementsByTagName("annotation-slider");
+            let allVariantsObjs = [];            
+            for (let i in allVariants) {
+                try {
+                    var attrOpt = allVariants[i].getAttribute("opt");
+                } catch (err) {
+                    // console.log(err);
                 }
-            }]);
+                if (attrOpt) {
+                    allVariantsObjs.push({
+                        opt: attrOpt,
+                        features: {
+                            all: false,
+                            class: "single-feature"
+                        }
+                    });
+                }
+                
+            }
+            let variants: any = paramCheck(variant_check, allVariantsObjs);
 
             // try {
             //     var features_check = variants.features;
