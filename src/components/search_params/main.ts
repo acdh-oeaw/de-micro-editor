@@ -644,13 +644,13 @@ export class UrlSearchParamUpdate {
             } catch (err) {
                 console.log("No option parameters found. Creating default parameters to continue.");
             }
-            let variants = paramCheck(variant_check, {
+            let variants = paramCheck(variant_check, [{
                 opt: "any-feature-1",
                 features: {
                     all: false,
                     class: "single-feature"
                 }
-            });
+            }]);
 
             // try {
             //     var features_check = variants.features;
@@ -692,7 +692,7 @@ export class UrlSearchParamUpdate {
             // set count to verify state of sliders
             let count_active = 0;
             let count = 0;
-            var optAll = paramCheck(variantAll[0].opt, `any-feature-all`);
+            var optAll = paramCheck(variantAll[0].opt, `text-features`);
             for (let v in variants) {
 
                 var opt = paramCheck(variants[v].opt, `any-feature-${v}`);
@@ -718,7 +718,7 @@ export class UrlSearchParamUpdate {
 
                     let hide = paramCheck(variants[v].hide, false);
                     let selected = addMarkup(html_class, css_class, color, hide, style);
-                    let opt_slider = paramCheck(variants[v].opt_slider, `any-slider-${opt}`);
+                    let opt_slider = paramCheck(variants[v].opt_slider, `${opt}-slider`);
 
                     try {
                         let slider = (document.getElementById(opt_slider) as HTMLElement);
@@ -744,7 +744,7 @@ export class UrlSearchParamUpdate {
                     let css_class = paramCheck(variants[v].css_class, `css-class-${opt}`);
 
                     let hide = paramCheck(variants[v].hide, false);
-                    let selected = addMarkup(html_class, css_class, color, hide, style);
+                    let selected = removeMarkup(html_class, css_class, color, hide, style);
                     let opt_slider = paramCheck(variants[v].opt_slider, `any-slider-${opt}`);
 
                     try {
