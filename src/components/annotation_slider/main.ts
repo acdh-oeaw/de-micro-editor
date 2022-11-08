@@ -222,7 +222,7 @@ export class AnnotationSlider extends HTMLElement {
                             let css_class = paramCheck(el.css_class, `css-class-${el.opt}`);
                             let hide = paramCheck(el.hide, false);
                             var selected = addMarkup(html_class, css_class, color, hide, style);
-                            var slider_str = paramCheck(el.opt_slider, `css-class-${el.opt}`);
+                            var slider_str = paramCheck(el.opt_slider, `${el.opt}-slider`);
 
                             try {
                                 let slider = (document.getElementById(slider_str) as HTMLElement);
@@ -259,7 +259,7 @@ export class AnnotationSlider extends HTMLElement {
                 var html_class = paramCheck(variant.html_class, `html-class-${variant.opt}`);
                 var css_class = paramCheck(variant.css_class, `css-class-${variant.opt}`);
                 var hide = paramCheck(variant.hide, false);
-                var slider_str = paramCheck(variant.opt_slider, `css-class-${variant.opt}`);
+                var slider_str = paramCheck(variant.opt_slider, `${variant.opt}-slider`);
 
                 if ( this.classList.contains(active) ) {
 

@@ -5,19 +5,17 @@ var editor = new LoadEditor({
         variants: [
             {
                 opt: "feature1",
-                opt_slider: "feature1-slider",
                 title: "Feature 1",
                 color: "color-feature1",
                 html_class: "html-class-feature1",
                 css_class: "css-class-feature1",
                 features: {
                     all: false,
-                    class: "all-features"
+                    class: "single-features"
                 }
             },
             {
                 opt: "feature2",
-                opt_slider: "feature2-slider",
                 title: "Feature 2",
                 color: "color-feature2",
                 html_class: "html-class-feature2",
@@ -25,17 +23,30 @@ var editor = new LoadEditor({
                 hide: true,
                 features: {
                     all: false,
-                    class: "all-features"
+                    class: "single-features"
                 }
             },
             {
                 opt: "feature3",
-                opt_slider: "feature3-slider",
                 title: "All Features",
                 color: "color-feature3",
+                html_class: "html-class-feature3",
+                css_class: "css-class-feature3",
                 features: {
                     all: true,
                     class: "all-features"
+                }
+            },
+            {
+                opt: "feature4",
+                title: "Feature 4",
+                color: "color-feature4",
+                html_class: "html-class-feature4",
+                css_class: "css-class-feature4",
+                hide: true,
+                features: {
+                    all: false,
+                    class: "single-features"
                 }
             }
         ]
