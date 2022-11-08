@@ -10,25 +10,33 @@ Furthermore, a build in OSD image viewer offers better representation of facsimi
 * [Freud HKA](https://freud-digital.github.io/frd-static/sfe-1904-002.html?break=off&person=off&place=off&keyword=off&dream=off&text-variant=off&editorial-notes=off&fullscreen=off&fontsize=default&font=default)
 
 ## Installation
-`npm install de-micro-editor`
+```JavaScript
+npm install de-micro-editor
+```
 
 In JS:
 
-`const { LoadEditor } = require("de-micro-editor");`
+```JavaScript
+const { LoadEditor } = require("de-micro-editor");
+```
 
 or
 
-`import { LoadEditor } from "de-micro-editor";`
+```JavaScript
+import { LoadEditor } from "de-micro-editor";
+```
 
 In HTML:
 
-`<script src="https://unpkg.com/de-micro-editor@0.2.0/dist/de-editor.min.js"></script>`
-`<link href="https://unpkg.com/de-micro-editor@0.2.0/src/css/style.css" rel="stylesheet" type="text/css"></link>`
+```HTML
+<script src="https://unpkg.com/de-micro-editor@0.2.0/dist/de-editor.min.js"></script>
+<link href="https://unpkg.com/de-micro-editor@0.2.0/src/css/style.css" rel="stylesheet" type="text/css"/>
+```
 
 ## Custom Elements (HTML)
-The package renders 7 different custom elements and creates event listeners to triggers defined functions. Each custom element takes an attribute `opt` which connects the element with a specific configurations parameter variant (see configuration description below). The window-resize element also takes an attribute `pos` which specifies a specific window to resize. The edition-pagination element uses attributes like `pos facs and data-type` to access window, element ids like images and data-type for further specification. The last two attributes are optional.
+The package renders 7 different custom elements and creates event listeners to trigger defined functions. Each custom element takes an attribute `opt` which connects the element with a specific configurations parameter variant (see configuration description below). The window-resize element also takes an attribute `pos` which specifies a specific window to resize. The edition-pagination element uses attributes like `pos facs and data-type` to access window, element ids like images and data-type for further specification. The last two attributes are optional.
 
-```
+```HTML
 <annotation-slider opt="break"></annotation-slider>
 
 <font-family opt="select-font"></font-family>
