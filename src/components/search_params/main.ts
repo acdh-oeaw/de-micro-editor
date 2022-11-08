@@ -708,11 +708,31 @@ export class UrlSearchParamUpdate {
             var optAll = paramCheck(variantAll[0].opt, `text-features`);
             for (let v in variants) {
 
-                var opt = paramCheck(variants[v].opt, `any-feature-${v}`);
+                let opt = paramCheck(variants[v].opt, `any-feature-${v}`);
+                let color = paramCheck(variants[v].color, `color-${opt}`);
+                let html_class = paramCheck(variants[v].html_class, `html-class-${opt}`);
+                let css_class = paramCheck(variants[v].css_class, `css-class-${opt}`);
+                let opt_slider = paramCheck(variants[v].opt_slider, `${opt}-slider`);
+                let hide = paramCheck(variants[v].hide, false);
 
                 if (urlParam.get(opt) === null) {
 
                     urlParam.set(opt, "off");
+                    let selected = removeMarkup(html_class, css_class, color, hide, style);
+
+                    try {
+                        let slider = (document.getElementById(opt_slider) as HTMLElement);
+                        slider.classList.remove(color);
+                        slider.removeAttribute("data");
+                        slider.classList.remove("slider-number");
+                    } catch (err) {
+                        console.log(`slider class ${opt_slider} not found!`);
+                    }
+
+                    if ((document.getElementById(opt) as HTMLInputElement).checked === true) {
+                        (document.getElementById(opt) as HTMLInputElement).checked = false;
+                        (document.getElementById(opt) as HTMLInputElement).classList.remove(active);
+                    }
 
                 }
 
@@ -720,18 +740,30 @@ export class UrlSearchParamUpdate {
 
                     console.log(`${opt}=${urlParam.get(opt)} is not a selectable option.`);
                     urlParam.set(opt, "off");
+
+                    let selected = removeMarkup(html_class, css_class, color, hide, style);
+
+                    try {
+                        let slider = (document.getElementById(opt_slider) as HTMLElement);
+                        slider.classList.remove(color);
+                        slider.removeAttribute("data");
+                        slider.classList.remove("slider-number");
+                    } catch (err) {
+                        console.log(`slider class ${opt_slider} not found!`);
+                    }
+
+                    if ((document.getElementById(opt) as HTMLInputElement).checked === true) {
+                        (document.getElementById(opt) as HTMLInputElement).checked = false;
+                        (document.getElementById(opt) as HTMLInputElement).classList.remove(active);
+                    }
+
                 }
 
                 else if (urlParam.get(opt) === "on") {
 
                     count_active += 1;
-                    let color = paramCheck(variants[v].color, `color-${opt}`);
-                    let html_class = paramCheck(variants[v].html_class, `html-class-${opt}`);
-                    let css_class = paramCheck(variants[v].css_class, `css-class-${opt}`);
 
-                    let hide = paramCheck(variants[v].hide, false);
                     let selected = addMarkup(html_class, css_class, color, hide, style);
-                    let opt_slider = paramCheck(variants[v].opt_slider, `${opt}-slider`);
 
                     try {
                         let slider = (document.getElementById(opt_slider) as HTMLElement);
@@ -752,13 +784,7 @@ export class UrlSearchParamUpdate {
 
                 else if (urlParam.get(opt) === "off") {
 
-                    let color = paramCheck(variants[v].color, `color-${opt}`);
-                    let html_class = paramCheck(variants[v].html_class, `html-class-${opt}`);
-                    let css_class = paramCheck(variants[v].css_class, `css-class-${opt}`);
-
-                    let hide = paramCheck(variants[v].hide, false);
                     let selected = removeMarkup(html_class, css_class, color, hide, style);
-                    let opt_slider = paramCheck(variants[v].opt_slider, `any-slider-${opt}`);
 
                     try {
                         let slider = (document.getElementById(opt_slider) as HTMLElement);
