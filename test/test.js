@@ -30,6 +30,17 @@ var editor = new LoadEditor({
                     all: false,
                     class: "single-feature"
                 }
+            },
+            {
+                opt: "feature3",
+                opt_slider: "feature3-slider",
+                title: "All Features",
+                hide: false,
+                chg_citation: "citation-url",
+                features: {
+                    all: true,
+                    class: "all-features"
+                }
             }
         ],
         span_element: {
