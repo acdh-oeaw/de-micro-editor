@@ -35,7 +35,7 @@ In HTML:
 
 ## HTML / JS / CSS Example
 
-[Show Example](test/index.html)
+[Show Example](https://acdh-oeaw.github.io/de-micro-editor/test/index.html)
 
 ## Custom Elements (HTML)
 The package renders 7 different custom elements and creates event listeners to trigger defined functions. Each custom element takes an attribute `opt` which connects the element with a specific configurations parameter variant (see configuration description below). The window-resize element also takes an attribute `pos` which specifies a specific window to resize. The edition-pagination element uses attributes like `pos facs and data-type` to access window, element ids like images and data-type for further specification. The last two attributes are optional.
