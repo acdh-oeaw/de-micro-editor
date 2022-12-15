@@ -980,7 +980,15 @@ export class UrlSearchParamUpdate {
                 let viewer = OpenSeadragon({
                     id: _osd_container_id,
                     prefixUrl: 'https://cdnjs.cloudflare.com/ajax/libs/openseadragon/3.1.0/images/',
-                    tileSources: image_url
+                    tileSources: image_url,
+                    // Initial rotation angle
+                    // degrees: 90,
+                    // Show rotation buttons
+                    showRotationControl: true,
+                    // Enable touch rotation on tactile devices
+                    gestureSettingsTouch: {
+                        pinchRotate: true
+                    }
                 });
 
                 // hides static images

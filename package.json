@@ -1,6 +1,6 @@
 {
   "name": "de-micro-editor",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Digital Edition Editor building blocks",
   "module": "index.ts",
   "scripts": {
@@ -14,8 +14,10 @@
   "keywords": [
     "Digital Edition",
     "JavaScript",
+    "TypeScript",
     "Editor",
-    "Text Annotation"
+    "Text Annotation",
+    "Digital Humanities"
   ],
   "author": "Daniel Stoxreiter",
   "license": "MIT",
