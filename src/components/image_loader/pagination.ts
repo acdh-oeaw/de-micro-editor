@@ -138,7 +138,15 @@ export class EditionPagination extends HTMLElement {
                 let viewer = OpenSeadragon({
                     id: targetID0,
                     prefixUrl: 'https://cdnjs.cloudflare.com/ajax/libs/openseadragon/3.1.0/images/',
-                    tileSources: imageURL
+                    tileSources: imageURL,
+                    // Initial rotation angle
+                    // degrees: 90,
+                    // Show rotation buttons
+                    showRotationControl: true,
+                    // Enable touch rotation on tactile devices
+                    gestureSettingsTouch: {
+                        pinchRotate: true
+                    }
                 });
 
                 // hide loading spinner if image fully loaded status changes
