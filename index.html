@@ -1,257 +1,433 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Digital Edition Micro Editor</title>
-        <style>
-            nav {
-                margin: 0 auto;
-                text-align: center;
-            }
-            .css-class-feature1 {
-                text-decoration: underline;
-            }
-            .color-feature1 {
-                background-color: #ffe6e6 !important;
-            }
-            .css-class-feature2 {
-                font-weight: bold;
-            }
-            .color-feature2 {
-                background-color: #e1d4ff !important;
-            }
-            .color-feature4 {
-                background-color: #FDA4A4 !important;
-            }
-            .verdana-serif {
-                font-family: 'Verdana', 'serif' !important;
-            }
-            .font-size-32 {
-                font-size: 32px !important;
-            }
-            .custom-select {
-                padding: .5em;
-                border-radius: .25rem;
-            }
-            ul {
-                margin: 2em auto;
-            }
-            ul li {
-                display: inline;
-                padding: 2em;
-            }
-            .paragraph {
-                padding: 1em;
-                line-height: normal;
-            }
-            .container {
-                max-width: 1400px;
-                border: 1px solid #000;
-                margin: 0 auto;
-            }
-            .is-hide-show-wrapper {
-                display: flex;
-            }
-            .is-hide-show-wrapper div {
-                display: inline-flex;
-
-            }
-            .fade {
-                display: none !important;
-            }
-            .codebox a { 
-                padding: .5em;
-                font-size: 18px;
-                background-color: cadetblue;
-                margin: 2em auto;
-                border-radius: .25rem;
-                color: #fff;
-                text-decoration: none;
-            }
-            a:hover {
-                text-decoration: none;
-            }
-            .codebox {
-                display: flex;
-            }
-        </style>
-        <script src="https://unpkg.com/de-micro-editor@0.2.2/dist/de-editor.min.js"></script>
-        <link href="https://unpkg.com/de-micro-editor@0.2.2/src/css/style.css" rel="stylesheet" type="text/css"/>
-    </head>
-    <body>
-        <div class="page">
-            <div class="container hide-container1 hide-container2 hide-container3 hide-container4">
-                <nav id="start-anker">
-                    <ul>
-                        <li>
-                            <a href="#start-anker">Start</a>
-                        </li>
-                        <li>
-                            <a href="#aot">Annotation Slider</a>
-                        </li>
-                        <li>
-                            <a href="#ff">Select Font</a>
-                        </li>
-                        <li>
-                            <a href="#fos">Font Size</a>
-                        </li>
-                        <li>
-                            <a href="#is">Hide/Show Window</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            <div class="container hide-container2 hide-container3 hide-container4">
-                <div class="codebox">
-                    <a href="https://codepen.io/linxOD/pen/MWXbPVw" target="_blank">
-                        View Complete Example on CodePen
-                    </a>
-                </div>
-            </div>
-            <div class="container hide-container2 hide-container3 hide-container4">
-                <div class="codebox">
-                    <a href="https://codepen.io/linxOD/pen/OJEbowx" target="_blank">
-                        View Code on CodePen
-                    </a>
-                </div>
-                <div id="aot">
-                    <ul>
-                        <li>
-                            <full-size opt="edition-fullsize1"></full-size> 
-                        </li>
-                        <li>
-                            <annotation-slider opt="feature3"></annotation-slider>
-                          </li>
-                        <li>
-                            <annotation-slider opt="feature1"></annotation-slider>
-                        </li>
-                        <li>
-                            <annotation-slider opt="feature2"></annotation-slider>
-                        </li>
-                        <li>
-                            <annotation-slider opt="feature4"></annotation-slider>
-                        </li>
-                    </ul>
-                </div>
-                <div class="paragraph">
-                    <p>
-                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr,<br class="html-class-feature4"/> sed diam nonumy eirmod <span class="html-class-feature1">tempor invidunt ut labore et <span class="html-class-feature2">dolore</span> magna aliquyam erat, sed diam voluptua.<br class="html-class-feature4"/> At vero eos et accusam</span> et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam <span class="html-class-feature2">nonumy</span> eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.<br class="html-class-feature4"/> Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.   
-
-                        Duis autem vel eum <span class="html-class-feature1">iriure</span> dolor in hendrerit in vulputate velit esse molestie consequat,<br class="html-class-feature4"/> vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit <span class="html-class-feature1">praesent</span> luptatum zzril delenit augue duis dolore te feugait nulla facilisi.<br class="html-class-feature4"/> Lorem ipsum dolor sit amet, consectetuer adipiscing elit,<br class="html-class-feature4"/> sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.<br class="html-class-feature4"/>   
-
-                        Ut wisi enim ad <span class="html-class-feature2">minim veniam</span>,<br class="html-class-feature4"/> quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla <span class="html-class-feature2">facilisis</span> at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.<br class="html-class-feature4"/>   
-
-                        Nam liber tempor cum soluta nobis eleifend option <span class="html-class-feature1">congue</span> nihil imperdiet doming id quod mazim placerat facer possim assum.<br class="html-class-feature4"/> Lorem ipsum dolor sit amet, consectetuer adipiscing elit,<br class="html-class-feature4"/> sed diam nonummy nibh euismod tincidunt ut <span class="html-class-feature2">laoreet dolore magna aliquam erat volutpat</span>.<br class="html-class-feature4"/> Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit<br class="html-class-feature4"/> lobortis nisl ut aliquip ex ea commodo consequat.<br class="html-class-feature4"/>   
-
-                        Duis autem vel eum iriure dolor in hendrerit in <span class="html-class-feature1">vulputate</span> velit esse molestie consequat,<br class="html-class-feature4"/> vel illum dolore eu feugiat nulla facilisis.<br class="html-class-feature4"/>   
-                    </p>
-                </div>
-            </div>
-            <div class="container hide-container1 hide-container3 hide-container4">
-                <div class="codebox">
-                    <a href="https://codepen.io/linxOD/pen/ZERBqyY" target="_blank">
-                        View Code on CodePen
-                    </a>
-                </div>
-                <div id="ff">
-                    <ul>
-                        <li>
-                            <full-size opt="edition-fullsize2"></full-size> 
-                        </li>
-                        <li>
-                            <font-family opt="select-font"></font-family>
-                        </li>
-                    </ul>
-                </div>
-                <div class="paragraph">
-                    <p class="yes-index">
-                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.   
-
-                        Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.   
-
-                        Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.   
-
-                        Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.   
-
-                        Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.   
-                    </p>
-                </div>
-            </div>
-            <div class="container hide-container1 hide-container2 hide-container4">
-                <div class="codebox">
-                    <a href="https://codepen.io/linxOD/pen/rNKWqyV" target="_blank">
-                        View Code on CodePen
-                    </a>
-                </div>
-                <div id="fos">
-                    <ul>
-                        <li>
-                            <full-size opt="edition-fullsize3"></full-size> 
-                        </li>
-                        <li>
-                            <font-size opt="select-fontsize"></font-size> 
-                        </li>
-                    </ul>
-                </div>
-                <div class="paragraph">
-                    <p class="yes-index-2">
-                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.   
-
-                        Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.   
-
-                        Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.   
-
-                        Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.   
-
-                        Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.   
-                    </p>
-                </div>
-            </div>
-            <div class="container hide-container1 hide-container2 hide-container3">
-                <div class="codebox">
-                    <a href="https://codepen.io/linxOD/pen/MWXbPEY" target="_blank">
-                        View Code on CodePen
-                    </a>
-                </div>
-                <div id="is">
-                    <ul>
-                        <li>
-                            <full-size opt="edition-fullsize4"></full-size> 
-                        </li>
-                        <li>
-                            <image-switch opt="edition-switch1"></image-switch>
-                        </li>
-                    </ul>
-                </div>
-                <div class="is-hide-show-wrapper">
-                    <div class="is-show-container1 paragraph">
-                        <p>
-                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.   
-
-                            Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.   
-
-                            Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.   
-
-                            Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.   
-
-                            Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.   
-                        </p>
-                    </div>
-                    <div class="is-hide-container1 paragraph">
-                        <p>
-                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.   
-
-                            Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.   
-
-                            Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.   
-
-                            Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.   
-
-                            Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.   
-                        </p>
-                    </div>
-                </div>
-            </div>
+  <head>
+    <title>Digital Edition Micro Editor</title>
+    <style>
+      nav {
+        margin: 0 auto;
+        text-align: center;
+      }
+      .css-class-feature1 {
+        text-decoration: underline;
+      }
+      .color-feature1 {
+        background-color: #ffe6e6 !important;
+      }
+      .css-class-feature2 {
+        font-weight: bold;
+      }
+      .color-feature2 {
+        background-color: #e1d4ff !important;
+      }
+      .color-feature4 {
+        background-color: #fda4a4 !important;
+      }
+      .verdana-serif {
+        font-family: "Verdana", "serif" !important;
+      }
+      .font-size-32 {
+        font-size: 32px !important;
+      }
+      .custom-select {
+        padding: 0.5em;
+        border-radius: 0.25rem;
+      }
+      ul {
+        margin: 2em auto;
+      }
+      ul li {
+        display: inline;
+        padding: 2em;
+      }
+      .paragraph {
+        padding: 1em;
+        line-height: normal;
+      }
+      .container {
+        max-width: 1400px;
+        border: 1px solid #000;
+        margin: 0 auto;
+      }
+      .is-hide-show-wrapper {
+        display: flex;
+      }
+      .is-hide-show-wrapper div {
+        display: inline-flex;
+      }
+      .fade {
+        display: none !important;
+      }
+      .codebox a {
+        padding: 0.5em;
+        font-size: 18px;
+        background-color: cadetblue;
+        margin: 2em auto;
+        border-radius: 0.25rem;
+        color: #fff;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: none;
+      }
+      .codebox {
+        display: flex;
+      }
+    </style>
+    <script src="https://unpkg.com/de-micro-editor@0.2.2/dist/de-editor.min.js"></script>
+    <link
+      href="https://unpkg.com/de-micro-editor@0.2.2/src/css/style.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+  <body>
+    <div class="page">
+      <div
+        class="container hide-container1 hide-container2 hide-container3 hide-container4"
+      >
+        <nav id="start-anker">
+          <ul>
+            <li>
+              <a href="#start-anker">Start</a>
+            </li>
+            <li>
+              <a href="#aot">Annotation Slider</a>
+            </li>
+            <li>
+              <a href="#ff">Select Font</a>
+            </li>
+            <li>
+              <a href="#fos">Font Size</a>
+            </li>
+            <li>
+              <a href="#is">Hide/Show Window</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="container hide-container2 hide-container3 hide-container4">
+        <div class="codebox">
+          <a href="https://codepen.io/linxOD/pen/MWXbPVw" target="_blank">
+            View Complete Example on CodePen
+          </a>
         </div>
-        <script type="text/javascript" src="test/test.js"></script>
-    </body>
+      </div>
+      <div class="container hide-container2 hide-container3 hide-container4">
+        <div class="codebox">
+          <a href="https://codepen.io/linxOD/pen/OJEbowx" target="_blank">
+            View Code on CodePen
+          </a>
+        </div>
+        <div id="aot">
+          <ul>
+            <li>
+              <full-size opt="edition-fullsize1"></full-size>
+            </li>
+            <li>
+              <annotation-slider opt="feature3"></annotation-slider>
+            </li>
+            <li>
+              <annotation-slider opt="feature1"></annotation-slider>
+            </li>
+            <li>
+              <annotation-slider opt="feature2"></annotation-slider>
+            </li>
+            <li>
+              <annotation-slider opt="feature4"></annotation-slider>
+            </li>
+          </ul>
+        </div>
+        <div class="paragraph">
+          <p>
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr,<br
+              class="html-class-feature4"
+            />
+            sed diam nonumy eirmod
+            <span class="html-class-feature1"
+              >tempor invidunt ut labore et
+              <span class="html-class-feature2">dolore</span> magna aliquyam
+              erat, sed diam voluptua.<br class="html-class-feature4" />
+              At vero eos et accusam</span
+            >
+            et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
+            takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor
+            sit amet, consetetur sadipscing elitr, sed diam
+            <span class="html-class-feature2">nonumy</span> eirmod tempor
+            invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+            At vero eos et accusam et justo duo dolores et ea rebum.<br
+              class="html-class-feature4"
+            />
+            Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+            dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing
+            elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
+            magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
+            justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
+            takimata sanctus est Lorem ipsum dolor sit amet. Duis autem vel eum
+            <span class="html-class-feature1">iriure</span> dolor in hendrerit
+            in vulputate velit esse molestie consequat,<br
+              class="html-class-feature4"
+            />
+            vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan
+            et iusto odio dignissim qui blandit
+            <span class="html-class-feature1">praesent</span> luptatum zzril
+            delenit augue duis dolore te feugait nulla facilisi.<br
+              class="html-class-feature4"
+            />
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit,<br
+              class="html-class-feature4"
+            />
+            sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
+            aliquam erat volutpat.<br class="html-class-feature4" />
+
+            Ut wisi enim ad
+            <span class="html-class-feature2">minim veniam</span>,<br
+              class="html-class-feature4"
+            />
+            quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut
+            aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in
+            hendrerit in vulputate velit esse molestie consequat, vel illum
+            dolore eu feugiat nulla
+            <span class="html-class-feature2">facilisis</span> at vero eros et
+            accumsan et iusto odio dignissim qui blandit praesent luptatum zzril
+            delenit augue duis dolore te feugait nulla facilisi.<br
+              class="html-class-feature4"
+            />
+
+            Nam liber tempor cum soluta nobis eleifend option
+            <span class="html-class-feature1">congue</span> nihil imperdiet
+            doming id quod mazim placerat facer possim assum.<br
+              class="html-class-feature4"
+            />
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit,<br
+              class="html-class-feature4"
+            />
+            sed diam nonummy nibh euismod tincidunt ut
+            <span class="html-class-feature2"
+              >laoreet dolore magna aliquam erat volutpat</span
+            >.<br class="html-class-feature4" />
+            Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
+            suscipit<br class="html-class-feature4" />
+            lobortis nisl ut aliquip ex ea commodo consequat.<br
+              class="html-class-feature4"
+            />
+
+            Duis autem vel eum iriure dolor in hendrerit in
+            <span class="html-class-feature1">vulputate</span> velit esse
+            molestie consequat,<br class="html-class-feature4" />
+            vel illum dolore eu feugiat nulla facilisis.<br
+              class="html-class-feature4"
+            />
+          </p>
+        </div>
+      </div>
+      <div class="container hide-container1 hide-container3 hide-container4">
+        <div class="codebox">
+          <a href="https://codepen.io/linxOD/pen/ZERBqyY" target="_blank">
+            View Code on CodePen
+          </a>
+        </div>
+        <div id="ff">
+          <ul>
+            <li>
+              <full-size opt="edition-fullsize2"></full-size>
+            </li>
+            <li>
+              <font-family opt="select-font"></font-family>
+            </li>
+          </ul>
+        </div>
+        <div class="paragraph">
+          <p class="yes-index">
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+            erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
+            et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+            Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
+            sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
+            et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
+            accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+            no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum
+            dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+            tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
+            voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+            Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+            dolor sit amet. Duis autem vel eum iriure dolor in hendrerit in
+            vulputate velit esse molestie consequat, vel illum dolore eu feugiat
+            nulla facilisis at vero eros et accumsan et iusto odio dignissim qui
+            blandit praesent luptatum zzril delenit augue duis dolore te feugait
+            nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing
+            elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore
+            magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis
+            nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip
+            ex ea commodo consequat. Duis autem vel eum iriure dolor in
+            hendrerit in vulputate velit esse molestie consequat, vel illum
+            dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto
+            odio dignissim qui blandit praesent luptatum zzril delenit augue
+            duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta
+            nobis eleifend option congue nihil imperdiet doming id quod mazim
+            placerat facer possim assum. Lorem ipsum dolor sit amet,
+            consectetuer adipiscing elit, sed diam nonummy nibh euismod
+            tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi
+            enim ad minim veniam, quis nostrud exerci tation ullamcorper
+            suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis
+            autem vel eum iriure dolor in hendrerit in vulputate velit esse
+            molestie consequat, vel illum dolore eu feugiat nulla facilisis.
+          </p>
+        </div>
+      </div>
+      <div class="container hide-container1 hide-container2 hide-container4">
+        <div class="codebox">
+          <a href="https://codepen.io/linxOD/pen/rNKWqyV" target="_blank">
+            View Code on CodePen
+          </a>
+        </div>
+        <div id="fos">
+          <ul>
+            <li>
+              <full-size opt="edition-fullsize3"></full-size>
+            </li>
+            <li>
+              <font-size opt="select-fontsize"></font-size>
+            </li>
+          </ul>
+        </div>
+        <div class="paragraph">
+          <p class="yes-index-2">
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+            erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
+            et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+            Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
+            sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
+            et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
+            accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+            no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum
+            dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+            tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
+            voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+            Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+            dolor sit amet. Duis autem vel eum iriure dolor in hendrerit in
+            vulputate velit esse molestie consequat, vel illum dolore eu feugiat
+            nulla facilisis at vero eros et accumsan et iusto odio dignissim qui
+            blandit praesent luptatum zzril delenit augue duis dolore te feugait
+            nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing
+            elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore
+            magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis
+            nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip
+            ex ea commodo consequat. Duis autem vel eum iriure dolor in
+            hendrerit in vulputate velit esse molestie consequat, vel illum
+            dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto
+            odio dignissim qui blandit praesent luptatum zzril delenit augue
+            duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta
+            nobis eleifend option congue nihil imperdiet doming id quod mazim
+            placerat facer possim assum. Lorem ipsum dolor sit amet,
+            consectetuer adipiscing elit, sed diam nonummy nibh euismod
+            tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi
+            enim ad minim veniam, quis nostrud exerci tation ullamcorper
+            suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis
+            autem vel eum iriure dolor in hendrerit in vulputate velit esse
+            molestie consequat, vel illum dolore eu feugiat nulla facilisis.
+          </p>
+        </div>
+      </div>
+      <div class="container hide-container1 hide-container2 hide-container3">
+        <div class="codebox">
+          <a href="https://codepen.io/linxOD/pen/MWXbPEY" target="_blank">
+            View Code on CodePen
+          </a>
+        </div>
+        <div id="is">
+          <ul>
+            <li>
+              <full-size opt="edition-fullsize4"></full-size>
+            </li>
+            <li>
+              <image-switch opt="edition-switch1"></image-switch>
+            </li>
+          </ul>
+        </div>
+        <div class="is-hide-show-wrapper">
+          <div class="is-show-container1 paragraph">
+            <p>
+              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+              nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+              erat, sed diam voluptua. At vero eos et accusam et justo duo
+              dolores et ea rebum. Stet clita kasd gubergren, no sea takimata
+              sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
+              amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+              invidunt ut labore et dolore magna aliquyam erat, sed diam
+              voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+              Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+              dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing
+              elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
+              magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
+              justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
+              takimata sanctus est Lorem ipsum dolor sit amet. Duis autem vel
+              eum iriure dolor in hendrerit in vulputate velit esse molestie
+              consequat, vel illum dolore eu feugiat nulla facilisis at vero
+              eros et accumsan et iusto odio dignissim qui blandit praesent
+              luptatum zzril delenit augue duis dolore te feugait nulla
+              facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing
+              elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore
+              magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis
+              nostrud exerci tation ullamcorper suscipit lobortis nisl ut
+              aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor
+              in hendrerit in vulputate velit esse molestie consequat, vel illum
+              dolore eu feugiat nulla facilisis at vero eros et accumsan et
+              iusto odio dignissim qui blandit praesent luptatum zzril delenit
+              augue duis dolore te feugait nulla facilisi. Nam liber tempor cum
+              soluta nobis eleifend option congue nihil imperdiet doming id quod
+              mazim placerat facer possim assum. Lorem ipsum dolor sit amet,
+              consectetuer adipiscing elit, sed diam nonummy nibh euismod
+              tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi
+              enim ad minim veniam, quis nostrud exerci tation ullamcorper
+              suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis
+              autem vel eum iriure dolor in hendrerit in vulputate velit esse
+              molestie consequat, vel illum dolore eu feugiat nulla facilisis.
+            </p>
+          </div>
+          <div class="is-hide-container1 paragraph">
+            <p>
+              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+              nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+              erat, sed diam voluptua. At vero eos et accusam et justo duo
+              dolores et ea rebum. Stet clita kasd gubergren, no sea takimata
+              sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
+              amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+              invidunt ut labore et dolore magna aliquyam erat, sed diam
+              voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+              Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+              dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing
+              elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
+              magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
+              justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
+              takimata sanctus est Lorem ipsum dolor sit amet. Duis autem vel
+              eum iriure dolor in hendrerit in vulputate velit esse molestie
+              consequat, vel illum dolore eu feugiat nulla facilisis at vero
+              eros et accumsan et iusto odio dignissim qui blandit praesent
+              luptatum zzril delenit augue duis dolore te feugait nulla
+              facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing
+              elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore
+              magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis
+              nostrud exerci tation ullamcorper suscipit lobortis nisl ut
+              aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor
+              in hendrerit in vulputate velit esse molestie consequat, vel illum
+              dolore eu feugiat nulla facilisis at vero eros et accumsan et
+              iusto odio dignissim qui blandit praesent luptatum zzril delenit
+              augue duis dolore te feugait nulla facilisi. Nam liber tempor cum
+              soluta nobis eleifend option congue nihil imperdiet doming id quod
+              mazim placerat facer possim assum. Lorem ipsum dolor sit amet,
+              consectetuer adipiscing elit, sed diam nonummy nibh euismod
+              tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi
+              enim ad minim veniam, quis nostrud exerci tation ullamcorper
+              suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis
+              autem vel eum iriure dolor in hendrerit in vulputate velit esse
+              molestie consequat, vel illum dolore eu feugiat nulla facilisis.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="test/test.js"></script>
+  </body>
 </html>
