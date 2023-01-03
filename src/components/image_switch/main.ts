@@ -115,7 +115,7 @@ export class ImageSwitch extends HTMLElement {
             }
             let column_small_check = paramCheck(small_check, {
                 class: "col-md-6",
-                percent: "50%"
+                percent: "50"
             });
 
             // check if sizes object with font sizes is not null or undefined
@@ -126,12 +126,12 @@ export class ImageSwitch extends HTMLElement {
             }
             let column_full_checked = paramCheck(large_check, {
                 class: "col-md-12",
-                percent: "100%"
+                percent: "100"
             });
 
             // get classes and style for hide show container resizing
-            let column_small = [paramCheck(column_small_check.class, "col-md-6"), paramCheck(column_small_check.percent, "50%")];
-            let column_full = [paramCheck(column_full_checked.class, "col-md-12"), paramCheck(column_full_checked.percent, "100%")];
+            let column_small = [paramCheck(column_small_check.class, "col-md-6"), paramCheck(column_small_check.percent, "50")];
+            let column_full = [paramCheck(column_full_checked.class, "col-md-12"), paramCheck(column_full_checked.percent, "100")];
             
 
             if ( urlParam.get(urlparam) == "on" ) {
@@ -140,13 +140,13 @@ export class ImageSwitch extends HTMLElement {
                 document.querySelectorAll(`.${hide}`).forEach((el: HTMLElement) => {
                     el.classList.add(fade);
                     el.classList.remove(column_small[0]);
-                    el.style.maxWidth = column_full[1];
+                    el.style.maxWidth = `${column_full[1]}%`;
                     el.classList.remove(active);
                 });
                 document.querySelectorAll(`.${show}`).forEach((el: HTMLElement) => {
                     el.classList.remove(column_small[0]);
                     el.classList.add(column_full[0]);
-                    el.style.maxWidth = column_full[1];
+                    el.style.maxWidth = `${column_full[1]}%`;
                     el.classList.remove(active);
                 });
                 document.querySelectorAll(`.${resize}`).forEach((el: HTMLElement) => {
@@ -160,13 +160,13 @@ export class ImageSwitch extends HTMLElement {
                 document.querySelectorAll(`.${hide}`).forEach((el: HTMLElement) => {
                     el.classList.remove(fade);
                     el.classList.add(column_small[0]);
-                    el.style.maxWidth = column_small[1];
+                    el.style.maxWidth = `${column_small[1]}%`;
                     el.classList.add(active);
                 });
                 document.querySelectorAll(`.${show}`).forEach((el: HTMLElement) => {
                     el.classList.add(column_small[0]);
                     el.classList.remove(column_full[0]);
-                    el.style.maxWidth = column_small[1];
+                    el.style.maxWidth = `${parseInt(column_full[1]) - parseInt(column_small[1])}%`;
                     el.classList.add(active);
                 });
                 document.querySelectorAll(`.${resize}`).forEach((el: HTMLElement) => {

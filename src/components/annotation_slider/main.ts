@@ -51,7 +51,7 @@ export class AnnotationSlider extends HTMLElement {
 
             // get current url parameters
             let url = new URL(window.location.href);
-            let hash = url.hash;
+            // let hash = url.hash;
             let urlParam = new URLSearchParams(url.search);
 
             // get id of rendered html element. opt value of custom element is used as ID.
@@ -126,7 +126,7 @@ export class AnnotationSlider extends HTMLElement {
                 opt: "text-features",
                 features: {
                     all: true,
-                    class: "all-features"
+                    class: "all-features-1"
                 }
             });
 
@@ -152,6 +152,7 @@ export class AnnotationSlider extends HTMLElement {
             // the all-features variant from others. If one is found it triggers
             // all sliders by clicking on the all-features slider variant
             var all = features.all;
+            var allClass = features.class;
 
             if (all === true) {
 
@@ -164,7 +165,8 @@ export class AnnotationSlider extends HTMLElement {
                     // find all element classes in DOM and remove CSS class
                     variants.forEach((el: any) => {
 
-                        if ((document.getElementById(el.opt) as HTMLInputElement).checked === true) {
+                        if ((document.getElementById(el.opt) as HTMLInputElement).checked === true 
+                            && el.features.class === allClass) {
 
                             // for all found DOM elements remove color class and css_class
                             // if hide is true hide elements with display:none
@@ -215,7 +217,8 @@ export class AnnotationSlider extends HTMLElement {
 
                     variants.forEach((el: any) => {
 
-                        if ((document.getElementById(el.opt) as HTMLInputElement).checked === false) {
+                        if ((document.getElementById(el.opt) as HTMLInputElement).checked === false
+                            && el.features.class === allClass) {
 
                             var color = paramCheck(el.color, `color-${el.opt}`);
                             let html_class = paramCheck(el.html_class, `html-class-${el.opt}`);
