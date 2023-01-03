@@ -11,7 +11,7 @@ var editor = new LoadEditor({
                 css_class: "css-class-feature1",
                 features: {
                     all: false,
-                    class: "single-features"
+                    class: "features-1"
                 }
             },
             {
@@ -23,7 +23,7 @@ var editor = new LoadEditor({
                 hide: true,
                 features: {
                     all: false,
-                    class: "single-features"
+                    class: "features-1"
                 }
             },
             {
@@ -34,7 +34,7 @@ var editor = new LoadEditor({
                 css_class: "css-class-feature3",
                 features: {
                     all: true,
-                    class: "all-features"
+                    class: "features-1"
                 }
             },
             {
@@ -46,7 +46,7 @@ var editor = new LoadEditor({
                 hide: true,
                 features: {
                     all: false,
-                    class: "single-features"
+                    class: "features-1"
                 }
             }
         ]
