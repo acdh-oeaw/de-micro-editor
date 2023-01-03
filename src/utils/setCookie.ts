@@ -1,15 +1,13 @@
 export class SetDataCookie {
+  name: string;
+  config: object;
 
-    name: string;
-    config: object;
+  constructor(name: string, config: object) {
+    this.name = name;
+    this.config = config;
+  }
 
-    constructor(name: string, config: object) {
-        this.name = name;
-        this.config = config;
-    }
-
-    build() {
-        sessionStorage.setItem(this.name, JSON.stringify(this.config));
-    }
-
+  build() {
+    sessionStorage.setItem(this.name, JSON.stringify(this.config));
+  }
 }
