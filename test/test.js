@@ -8,6 +8,10 @@ var editor = new LoadEditor({
         color: "color-feature1",
         html_class: "html-class-feature1",
         css_class: "css-class-feature1",
+        hide: {
+          hidden: true,
+          class: "html-class-feature15",
+        },
         features: {
           all: false,
           class: "features-1",
@@ -19,7 +23,7 @@ var editor = new LoadEditor({
         color: "color-feature2",
         html_class: "html-class-feature2",
         css_class: "css-class-feature2",
-        hide: true,
+        hide: false,
         features: {
           all: false,
           class: "features-1",
@@ -42,7 +46,10 @@ var editor = new LoadEditor({
         color: "color-feature4",
         html_class: "html-class-feature4",
         css_class: "css-class-feature4",
-        hide: true,
+        hide: {
+          hidden: true,
+          class: "html-class-feature4",
+        },
         features: {
           all: false,
           class: "features-1",
