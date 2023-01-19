@@ -6,7 +6,10 @@ export function removeMarkup(
   html_class: string,
   css_class: string | [],
   color: string,
-  hide: boolean,
+  hide: {
+    hidden: boolean;
+    class: string;
+  } | null,
   style: { css_class: string }
 ) {
   // find all provided classes
@@ -36,13 +39,28 @@ export function removeMarkup(
 
     // adds additional class for element styling
     el.classList.add(style.css_class);
-
-    // if hide is true it sets display to none
-    if (hide) {
-      el.style.display = "none";
-    }
   });
-
+  // if hide is true it sets display to none
+  if (hide) {
+    try {
+      var hde = hide.hidden;
+    } catch (err) {
+      console.log(`aot hide.hidden not found ${err}`);
+      var hde = false;
+    }
+    try {
+      var cls = hide.class;
+    } catch (err) {
+      console.log(`aot hide.hidden not found ${err}`);
+      var cls = "";
+    }
+    if (hde && cls) {
+      let hde = document.querySelectorAll(`.${cls}`);
+      hde.forEach((el: any) => {
+        el.style.display = "none";
+      });
+    }
+  }
   // returns number of nodes found as string
   return String(selected.length);
 }
@@ -52,7 +70,10 @@ export function addMarkup(
   html_class: string,
   css_class: string | [],
   color: string,
-  hide: boolean,
+  hide: {
+    hidden: boolean;
+    class: string;
+  } | null,
   style: { css_class: string }
 ) {
   var selected = document.querySelectorAll(`.${html_class}`);
@@ -70,10 +91,27 @@ export function addMarkup(
     }
     el.classList.add(color);
     el.classList.add(style.css_class);
-    if (hide) {
-      el.style.display = "inline";
-    }
   });
+  if (hide) {
+    try {
+      var hde = hide.hidden;
+    } catch (err) {
+      console.log(`aot hide.hidden not found ${err}`);
+      var hde = false;
+    }
+    try {
+      var cls = hide.class;
+    } catch (err) {
+      console.log(`aot hide.hidden not found ${err}`);
+      var cls = "";
+    }
+    if (hde && cls) {
+      let hde = document.querySelectorAll(`.${cls}`);
+      hde.forEach((el: any) => {
+        el.style.display = "inline";
+      });
+    }
+  }
   return String(selected.length);
 }
 

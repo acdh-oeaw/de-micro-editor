@@ -37,12 +37,15 @@ export class AnnotationSlider extends HTMLElement {
                     color: string | null | undefined;
                     html_class: string | null | undefined;
                     css_class: string | null | undefined;
-                    hide: boolean | null | undefined;
+                    hide: {
+                      hidden: boolean;
+                      class: string;
+                    } | null;
                     chg_citation: string | null | undefined;
                     features: {
                       all: boolean | null | undefined;
                       class: string | null | undefined;
-                    };
+                    } | null;
                   }
                 ]
               | null
@@ -368,7 +371,6 @@ export class AnnotationSlider extends HTMLElement {
         let variants_checked = document.querySelectorAll(
           `input.${features.class}[aot-type="false"]:checked`
         );
-        console.log(variants_checked);
         let variants_group = variants.filter(
           (v: any) =>
             v.features.all === false && v.features.class === features.class
