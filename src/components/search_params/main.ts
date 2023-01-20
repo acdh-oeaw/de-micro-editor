@@ -659,7 +659,10 @@ export class UrlSearchParamUpdate {
                     color: string | null | undefined;
                     html_class: string | null | undefined;
                     css_class: string | null | undefined;
-                    hide: boolean | null | undefined;
+                    hide: {
+                      hidden: boolean;
+                      class: string;
+                    } | null;
                     chg_citation: string | null | undefined;
                     features: {
                       all: boolean | null | undefined;

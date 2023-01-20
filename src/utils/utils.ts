@@ -9,7 +9,7 @@ export function removeMarkup(
   hide: {
     hidden: boolean;
     class: string;
-  } | null,
+  },
   style: { css_class: string }
 ) {
   // find all provided classes
@@ -19,7 +19,7 @@ export function removeMarkup(
     // one of the classes must be part in HTML dom
     // if one is present it is removed and another class added
     // lets you control CSS styles
-    if (typeof css_class === "object") {
+    if (css_class instanceof Object) {
       css_class.forEach((css) => {
         if (el.classList.contains(css)) {
           el.classList.remove(css);
@@ -73,12 +73,12 @@ export function addMarkup(
   hide: {
     hidden: boolean;
     class: string;
-  } | null,
+  },
   style: { css_class: string }
 ) {
   var selected = document.querySelectorAll(`.${html_class}`);
   selected.forEach((el: any) => {
-    if (typeof css_class === "object") {
+    if (css_class instanceof Object) {
       css_class.forEach((css) => {
         if (el.classList.contains(css)) {
           el.classList.remove(css);
