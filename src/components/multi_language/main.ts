@@ -42,7 +42,7 @@ export class MultiLanguage extends HTMLElement {
       let urlParam = new URLSearchParams(url.search);
 
       // get id of rendered html element. opt value of custom element is used as ID.
-      let id = this.getAttribute("id");
+      let id = this.getAttribute("id").split("_")[1];
       if (!id) {
         console.log(
           "ID of multi language custom child element not found. \
@@ -73,34 +73,10 @@ export class MultiLanguage extends HTMLElement {
         );
       }
 
-      // use try/catch to verify if object exists in options
-      try {
-        var variants_check = options.variants.filter((v) => v.opt !== id);
-      } catch (err) {
-        console.log(
-          "No option parameters found. Creating default parameters to continue."
-        );
-      }
-      // all variants except current clicked
-      var variants = paramCheck(variants_check, [
-        {
-          opt: id,
-        },
-      ]);
-
       /* check if language mappings is available */
       var map = paramCheck(variant.map, { "index.html": "index-en.html" });
 
-      /* check if active class was defined or set to default class */
-      // var active = paramCheck(options.active_class, "lang_active");
-
-      // /* set current clicked variant active with class and change state of urlparam */
-      // this.classList.add(active);
-      // /* remove active class from variants not clicked */
-      // variants.forEach((el: any) => {
-      //   document.getElementById(el.opt).classList.remove(active);
-      // });
-
+      /* save state in urlparam lang */
       urlParam.set("lang", variant.opt);
 
       if (map) {
@@ -114,7 +90,7 @@ export class MultiLanguage extends HTMLElement {
             ? map[path[2]]
             : path.length == 2 && path[1].length > 0
             ? map[path[1]]
-            : /^en\b/.test(variant.opt)
+            : variant.opt === "en"
             ? map["index.html"]
             : map["index-en.html"];
 
@@ -184,7 +160,7 @@ export class MultiLanguage extends HTMLElement {
     let v_class = paramCheck(variant.class, "nav-link pointer");
 
     this.innerHTML = `
-        <a id="${variant.opt}" class="${v_class}">${title}</a>
+        <a id="ml_${variant.opt}" class="${v_class}">${title}</a>
       `;
   }
 

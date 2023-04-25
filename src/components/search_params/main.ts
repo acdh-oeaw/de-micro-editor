@@ -1189,7 +1189,7 @@ export class UrlSearchParamUpdate {
         /* get current browser language */
         var lang = navigator.language;
         /* only de and en supported */
-        var langUpdate = /^de\b/.test(lang) ? "lang_de" : "lang_en";
+        var langUpdate = /^de\b/.test(lang) ? "de" : "en";
         urlParam.set("lang", langUpdate);
       } else {
         var langUpdate = urlParam.get("lang");
@@ -1237,7 +1237,7 @@ export class UrlSearchParamUpdate {
       /* remove active class from variants not clicked */
       let languages: any = [];
       variants.forEach((el: any) => {
-        document.getElementById(el.opt).classList.remove(active);
+        document.getElementById(`ml_${el.opt}`).classList.remove(active);
         languages.push(el.opt);
       });
 
@@ -1250,7 +1250,7 @@ export class UrlSearchParamUpdate {
       var map = paramCheck(variant.map, { "index.html": "index-en.html" });
 
       /* set current clicked variant active with class and change state of urlparam */
-      let current = document.getElementById(variant.opt);
+      let current = document.getElementById(`ml_${variant.opt}`);
       current.classList.add(active);
 
       if (map) {
@@ -1264,7 +1264,7 @@ export class UrlSearchParamUpdate {
             ? map[path[2]]
             : path.length == 2 && path[1].length > 0
             ? map[path[1]]
-            : langUpdate == "lang_en"
+            : langUpdate == "en"
             ? map["index.html"]
             : map["index-en.html"];
 

@@ -183,10 +183,10 @@ var editor = new LoadEditor({
   wr: false,
   up: true,
   lang: {
-    title: "Multi Languge Support",
+    title: "Multi Language Support",
     variants: [
       {
-        opt: "lang_de",
+        opt: "de",
         title: "German",
         class: "multi-lang nav-link pointer",
         map: {
@@ -195,7 +195,7 @@ var editor = new LoadEditor({
         },
       },
       {
-        opt: "lang_en",
+        opt: "en",
         title: "English",
         class: "multi-lang nav-link pointer",
         map: {
