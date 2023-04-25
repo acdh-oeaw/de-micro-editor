@@ -924,7 +924,7 @@ export class UrlSearchParamUpdate {
         }
       }
 
-      if (count_active == variants.length) {
+      if (String(count_active) === String(variants.length)) {
         if (
           (document.getElementById(optAll) as HTMLInputElement).checked ===
           false
@@ -1149,6 +1149,138 @@ export class UrlSearchParamUpdate {
         state: false,
         href: href,
       });
+    }
+  }
+
+  multiLanguage() {
+    // get session cookie with configartion json
+    let data = "multi_language";
+    let storage = sessionStorage.getItem(data);
+    if (storage) {
+      let options:
+        | {
+            title: string | null | undefined;
+            variants:
+              | [
+                  {
+                    opt: string | null | undefined;
+                    title: string | null | undefined;
+                    class: string | null | undefined;
+                    map: object | null | undefined;
+                  }
+                ]
+              | null
+              | undefined;
+            active_class: string | null | undefined;
+          }
+        | null
+        | undefined = JSON.parse(storage);
+
+      /* get current ur */
+      var url = new URL(document.location.href);
+
+      /* get current url parameters */
+      var urlParam = new URLSearchParams(url.search);
+
+      /* check if active class was defined or set to default class */
+      var active = paramCheck(options.active_class, "lang_active");
+
+      if (urlParam.get("lang") == null) {
+        /* get current browser language */
+        var lang = navigator.language;
+        /* only de and en supported */
+        var langUpdate = /^de\b/.test(lang) ? "lang_de" : "lang_en";
+        urlParam.set("lang", langUpdate);
+      } else {
+        var langUpdate = urlParam.get("lang");
+      }
+
+      // configuration holds an array with variants with at least one variant object.
+      // to match the custom element with the configuration the opt value must match.
+      // variant is found by comparing variant config opt with custom element attr opt
+      try {
+        var variant_check = options.variants.find((v) => v.opt === langUpdate);
+      } catch (err) {
+        console.log(
+          "No option parameters found. Creating default parameters to continue."
+        );
+      }
+      // variant as selected in UI
+      let variant = paramCheck(variant_check, {
+        opt: langUpdate,
+      });
+      if (!variant) {
+        console.log(
+          "No variant found! Please define a variant object that contains \
+                  and 'opt' key holding a string value that matches the 'opt' value of custom \
+                  element 'annotation#slider'."
+        );
+      }
+
+      // use try/catch to verify if object exists in options
+      try {
+        var variants_check = options.variants.filter(
+          (v) => v.opt !== langUpdate
+        );
+      } catch (err) {
+        console.log(
+          "No option parameters found. Creating default parameters to continue."
+        );
+      }
+      // all variants except current clicked
+      var variants = paramCheck(variants_check, [
+        {
+          opt: langUpdate,
+        },
+      ]);
+
+      /* remove active class from variants not clicked */
+      let languages: any = [];
+      variants.forEach((el: any) => {
+        document.getElementById(el.opt).classList.remove(active);
+        languages.push(el.opt);
+      });
+
+      /* check if urlparam set fits to configuration options */
+      if (!languages.includes(urlParam.get("lang"))) {
+        urlParam.set("lang", langUpdate);
+      }
+
+      /* check if language mappings is available */
+      var map = paramCheck(variant.map, { "index.html": "index-en.html" });
+
+      /* set current clicked variant active with class and change state of urlparam */
+      let current = document.getElementById(variant.opt);
+      current.classList.add(active);
+
+      if (map) {
+        /* must be replaced in production
+          get pathname and specific filename
+          set new path based on mappings from mappings json
+          key in mappings = filename */
+        let path = location.pathname.split("/");
+        let newPath =
+          path.length == 3 && path[2].length > 0
+            ? map[path[2]]
+            : path.length == 2 && path[1].length > 0
+            ? map[path[1]]
+            : langUpdate == "lang_en"
+            ? map["index.html"]
+            : map["index-en.html"];
+
+        // current state of the annotation sliders is saved in the url parameters
+        // current state is also saved in window history (back/forward browser button)
+        var state = {
+          lang: variant.opt,
+        };
+
+        let href = `${newPath}?${urlParam}${location.hash}`;
+        uptState({
+          hist: true,
+          state: state,
+          href: href,
+        });
+      }
     }
   }
 }

@@ -182,4 +182,28 @@ var editor = new LoadEditor({
   // },
   wr: false,
   up: true,
+  lang: {
+    title: "Multi Languge Support",
+    variants: [
+      {
+        opt: "lang_de",
+        title: "German",
+        class: "multi-lang nav-link pointer",
+        map: {
+          "index-en.html": "index.html",
+          "index.html": "index.html",
+        },
+      },
+      {
+        opt: "lang_en",
+        title: "English",
+        class: "multi-lang nav-link pointer",
+        map: {
+          "index.html": "index-en.html",
+          "index-en.html": "index-en.html",
+        },
+      },
+    ],
+    active_class: "lang_active",
+  },
 });
