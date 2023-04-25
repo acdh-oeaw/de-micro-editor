@@ -17,7 +17,7 @@
 
 /* Hide default HTML checkbox */
 .switch input {
-  /* opacity: 0; */
+  opacity: 0;
   width: 0;
   height: 0;
 }
@@ -175,21 +175,34 @@ input:checked + .i-slider:before {
 /* Fullsize mode */
 
 .nav-link {
-  background-color: transparent !important;
+  background-color: transparent;
 }
 
 .nav-link.active {
-  background-color: #f1f1f1 !important;
+  background-color: #f1f1f1;
 }
 
 .nav-link.btn.active {
-  background-color: #b59890 !important;
+  background-color: #b59890;
 }
 
 .nav-link.btn {
-  background-color: transparent !important;
+  background-color: transparent;
 }
 
 .nav-link.btn-backlink {
-  background-color: transparent !important;
+  background-color: transparent;
+}
+
+.nav-link.lang_active {
+  background-color: aquamarine;
+}
+
+.multi-lang {
+  padding: 0.5em;
+  border-radius: 0.5rem;
+}
+
+.pointer {
+  cursor: pointer;
 }
