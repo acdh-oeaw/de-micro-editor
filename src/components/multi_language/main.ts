@@ -90,9 +90,7 @@ export class MultiLanguage extends HTMLElement {
             ? map[path[2]]
             : path.length == 2 && path[1].length > 0
             ? map[path[1]]
-            : variant.opt === "en"
-            ? map["index.html"]
-            : map["index-en.html"];
+            : map["index.html"];
 
         // current state of the annotation sliders is saved in the url parameters
         // current state is also saved in window history (back/forward browser button)
