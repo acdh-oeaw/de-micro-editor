@@ -9,6 +9,7 @@ const {
 } = require("./src/components/image_loader/pagination");
 const { WindowResize } = require("./src/components/image_loader/resize");
 const { UrlSearchParamUpdate } = require("./src/components/search_params/main");
+const { MultiLanguage } = require("./src/components/multi_language/main");
 const { SetDataCookie } = require("./src/utils/setCookie");
 
 ("use strict");
@@ -24,6 +25,7 @@ class LoadEditor {
   wr: object | boolean;
   up: object | boolean;
   upc: any;
+  lang: object | boolean;
 
   constructor(options: {
     aot: object | boolean;
@@ -35,6 +37,7 @@ class LoadEditor {
     ep: object | boolean;
     wr: object | boolean;
     up: object | boolean;
+    lang: object | boolean;
   }) {
     /*
         define configuration options
@@ -68,6 +71,9 @@ class LoadEditor {
     }
     if (options && "up" in options) {
       this.up = options.up;
+    }
+    if (options && "lang" in options) {
+      this.lang = options.lang;
     }
 
     // initialize imported functions
@@ -119,6 +125,13 @@ class LoadEditor {
     if (this.ep) {
       try {
         new SetDataCookie("ed_pagination", this.ep).build();
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    if (this.lang) {
+      try {
+        new SetDataCookie("multi_language", this.lang).build();
       } catch (e) {
         console.log(e);
       }
@@ -201,6 +214,16 @@ class LoadEditor {
         console.log(e);
       }
     }
+    if (this.lang) {
+      try {
+        window.customElements.define("multi-language", MultiLanguage);
+        if (this.up) {
+          window.onload = this.upc.multiLanguage();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
 
     // onpopstate = browser back and forward button to recognize classes
     window.onpopstate = () => {
@@ -242,6 +265,13 @@ class LoadEditor {
       if (this.il && this.up) {
         try {
           this.upc.pageUrl();
+        } catch (e) {
+          console.log(e);
+        }
+      }
+      if (this.lang && this.up) {
+        try {
+          this.upc.multiLanguage();
         } catch (e) {
           console.log(e);
         }
