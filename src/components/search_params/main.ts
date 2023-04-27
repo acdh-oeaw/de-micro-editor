@@ -1154,10 +1154,10 @@ export class UrlSearchParamUpdate {
 
   multiLanguage() {
     // get session cookie with configartion json
-    let data = "multi_language";
-    let storage = sessionStorage.getItem(data);
+    const data = "multi_language";
+    const storage = sessionStorage.getItem(data);
     if (storage) {
-      let options:
+      const options:
         | {
             title: string | null | undefined;
             variants:
@@ -1185,36 +1185,32 @@ export class UrlSearchParamUpdate {
       /* check if active class was defined or set to default class */
       var active = paramCheck(options.active_class, "lang_active");
 
+      /* create array of all configured user languages  */
+      var userLang = [];
+      for (let x of options.variants) {
+        userLang.push(x.opt);
+      }
+
+      /* ############################################### */
+      /*  verifying if urlparam set is valid */
+      /* ############################################### */
       if (urlParam.get("lang") == null) {
         /* get current browser language */
         var lang = navigator.language;
-        /* only de and en supported */
-        var langUpdate = /^de\b/.test(lang) ? "de" : "en";
+        /* check if browser language is in configuration options */
+        var langUpdate = userLang.includes(lang.split("-")[0])
+          ? lang.split("-")[0]
+          : "en";
         urlParam.set("lang", langUpdate);
+      } else if (!userLang.includes(urlParam.get("lang"))) {
+        /* check if urlparam set fits to configuration options */
+        urlParam.set("lang", "en");
+        var langUpdate = "en";
+        console.log(`lang urlparameter does not fit webpage configuration.
+                    set to default language.`);
       } else {
+        /* get urlparam set */
         var langUpdate = urlParam.get("lang");
-      }
-
-      // configuration holds an array with variants with at least one variant object.
-      // to match the custom element with the configuration the opt value must match.
-      // variant is found by comparing variant config opt with custom element attr opt
-      try {
-        var variant_check = options.variants.find((v) => v.opt === langUpdate);
-      } catch (err) {
-        console.log(
-          "No option parameters found. Creating default parameters to continue."
-        );
-      }
-      // variant as selected in UI
-      let variant = paramCheck(variant_check, {
-        opt: langUpdate,
-      });
-      if (!variant) {
-        console.log(
-          "No variant found! Please define a variant object that contains \
-                  and 'opt' key holding a string value that matches the 'opt' value of custom \
-                  element 'annotation#slider'."
-        );
       }
 
       // use try/catch to verify if object exists in options
@@ -1227,6 +1223,7 @@ export class UrlSearchParamUpdate {
           "No option parameters found. Creating default parameters to continue."
         );
       }
+
       // all variants except current clicked
       var variants = paramCheck(variants_check, [
         {
@@ -1234,24 +1231,40 @@ export class UrlSearchParamUpdate {
         },
       ]);
 
-      /* remove active class from variants not clicked */
-      let languages: any = [];
-      variants.forEach((el: any) => {
-        document.getElementById(`ml_${el.opt}`).classList.remove(active);
-        languages.push(el.opt);
-      });
-
-      /* check if urlparam set fits to configuration options */
-      if (!languages.includes(urlParam.get("lang"))) {
-        urlParam.set("lang", langUpdate);
+      // configuration holds an array with variants with at least one variant object.
+      // to match the custom element with the configuration the opt value must match.
+      // variant is found by comparing variant config opt with custom element attr opt
+      try {
+        var variant_check = options.variants.find((v) => v.opt === langUpdate);
+      } catch (err) {
+        console.log(
+          "No option parameters found. Creating default parameters to continue."
+        );
       }
 
-      /* check if language mappings is available */
-      var map = paramCheck(variant.map, { "index.html": "index-en.html" });
+      // variant as selected in UI
+      let variant = paramCheck(variant_check, {
+        opt: langUpdate,
+      });
+      if (!variant) {
+        console.log(
+          "No variant found! Please define a variant object that contains \
+                  and 'opt' key holding a string value that matches the 'opt' value of custom \
+                  element 'annotation#slider'."
+        );
+      }
+
+      /* remove active class from variants not clicked */
+      variants.forEach((el: any) => {
+        document.getElementById(`ml_${el.opt}`).classList.remove(active);
+      });
 
       /* set current clicked variant active with class and change state of urlparam */
       let current = document.getElementById(`ml_${variant.opt}`);
       current.classList.add(active);
+
+      /* check if language mappings is available */
+      var map = paramCheck(variant.map, { "index.html": "index-en.html" });
 
       if (map) {
         /* must be replaced in production

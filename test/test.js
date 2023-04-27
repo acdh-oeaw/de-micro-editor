@@ -192,6 +192,7 @@ var editor = new LoadEditor({
         map: {
           "index-en.html": "index.html",
           "index.html": "index.html",
+          "index-fr.html": "index.html",
         },
       },
       {
@@ -201,6 +202,17 @@ var editor = new LoadEditor({
         map: {
           "index.html": "index-en.html",
           "index-en.html": "index-en.html",
+          "index-fr.html": "index-en.html",
+        },
+      },
+      {
+        opt: "fr",
+        title: "French",
+        class: "multi-lang nav-link pointer",
+        map: {
+          "index.html": "index-fr.html",
+          "index-fr.html": "index-fr.html",
+          "index-en.html": "index-fr.html",
         },
       },
     ],

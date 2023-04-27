@@ -42,7 +42,7 @@ export class MultiLanguage extends HTMLElement {
       let urlParam = new URLSearchParams(url.search);
 
       // get id of rendered html element. opt value of custom element is used as ID.
-      let id = this.getAttribute("id").split("_")[1];
+      let id = this.getAttribute("id").split("ml_")[1];
       if (!id) {
         console.log(
           "ID of multi language custom child element not found. \
