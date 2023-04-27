@@ -1266,18 +1266,20 @@ export class UrlSearchParamUpdate {
             ? map[path[1]]
             : map["index.html"];
 
-        // current state of the annotation sliders is saved in the url parameters
-        // current state is also saved in window history (back/forward browser button)
-        var state = {
-          lang: variant.opt,
-        };
+        if (newPath) {
+          // current state of the annotation sliders is saved in the url parameters
+          // current state is also saved in window history (back/forward browser button)
+          var state = {
+            lang: variant.opt,
+          };
 
-        let href = `${newPath}?${urlParam}${location.hash}`;
-        uptState({
-          hist: true,
-          state: state,
-          href: href,
-        });
+          let href = `${newPath}?${urlParam}${location.hash}`;
+          uptState({
+            hist: true,
+            state: state,
+            href: href,
+          });
+        }
       }
     }
   }
