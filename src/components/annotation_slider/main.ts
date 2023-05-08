@@ -242,8 +242,8 @@ export class AnnotationSlider extends HTMLElement {
                 document.getElementById(el.opt) as HTMLInputElement
               ).classList.remove(active);
 
-              // accasses the url params and sets the key to off
-              urlParam.set(el.opt, "off");
+              // access the url params and sets the key to off
+              urlParam.delete(el.opt);
             }
           });
 
@@ -345,7 +345,7 @@ export class AnnotationSlider extends HTMLElement {
           }
 
           this.classList.remove(color);
-          urlParam.set(variant.opt, "off");
+          urlParam.delete(variant.opt);
         } else {
           // state == not active (add state and markup)
           this.classList.add(active);

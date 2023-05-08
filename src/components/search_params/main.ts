@@ -94,6 +94,9 @@ export class UrlSearchParamUpdate {
           let btn = document.getElementById(opt);
           btn.innerHTML = svg_show;
           btn.classList.remove(active);
+
+          /* if value is off it should not be part of the urlsearchparams */
+          urlParam.delete(urlparam);
         });
       }
 
@@ -227,20 +230,20 @@ export class UrlSearchParamUpdate {
           urlParam.set(urlparam, "default");
         }
 
-        // check if provides urlparam value is selectable
+        // check if provided urlparam value is selectable
         if (!Object.values(size).includes(urlParam.get(urlparam))) {
           console.log(
-            `fontsize=${urlParam.get(urlparam)} is not a selectable option.`
+            `${urlparam}=${urlParam.get(urlparam)} is not a selectable option.`
           );
           urlParam.set(urlparam, "default");
         } else {
           // if valid urlparam is found change font sizes of paragraphs
           let paragraph = document.querySelectorAll(`${p_change}.${p_class}`);
-          if (urlParam.get(urlparam) !== "default") {
-            var new_value = css_class + urlParam.get(urlparam);
-          } else {
-            var new_value = urlParam.get(urlparam);
-          }
+
+          var new_value =
+            urlParam.get(urlparam) !== "default"
+              ? css_class + urlParam.get(urlparam)
+              : urlParam.get(urlparam);
 
           // change select option value based on provided url param
           var select = document.getElementById(
@@ -260,6 +263,11 @@ export class UrlSearchParamUpdate {
             }
           });
         }
+      }
+
+      /* if value is off it should not be part of the urlsearchparams */
+      if (urlParam.get(urlparam) == "default") {
+        urlParam.delete(urlparam);
       }
 
       // change browser history state
@@ -400,6 +408,11 @@ export class UrlSearchParamUpdate {
             }
           });
         }
+      }
+
+      /* if value is off it should not be part of the urlsearchparams */
+      if (urlParam.get(urlparam) == "default") {
+        urlParam.delete(urlparam);
       }
 
       // update browser history state
@@ -582,6 +595,9 @@ export class UrlSearchParamUpdate {
           el.classList.add(active);
         });
         document.getElementById(opt).classList.add(active);
+
+        /* if value is off it should not be part of the urlsearchparams */
+        urlParam.delete(urlparam);
       }
 
       // if urlparam value is 'off' hide container
@@ -807,7 +823,7 @@ export class UrlSearchParamUpdate {
         let hide = paramCheck(variants[v].hide, false);
 
         if (urlParam.get(opt) === null) {
-          urlParam.set(opt, "off");
+          // urlParam.set(opt, "off");
           let selected = removeMarkup(
             html_class,
             css_class,
@@ -913,6 +929,9 @@ export class UrlSearchParamUpdate {
               active
             );
           }
+
+          /* default value e.g. off should not be added to url */
+          urlParam.delete(opt);
         }
 
         let citation_url_str = paramCheck(

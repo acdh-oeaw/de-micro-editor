@@ -75,7 +75,7 @@ export class FullSize extends HTMLElement {
 
       var urlparam = paramCheck(variant.urlparam, "fullscreen");
 
-      if (urlParam.get(urlparam) == "off") {
+      if (urlParam.get(urlparam) == "off" || urlParam.get(urlparam) == null) {
         urlParam.set(urlparam, "on");
         document.querySelectorAll(`.${hide}`).forEach((el: HTMLElement) => {
           el.classList.add(hidden);
@@ -83,7 +83,7 @@ export class FullSize extends HTMLElement {
         this.innerHTML = svg_hide;
         this.classList.remove(active);
       } else {
-        urlParam.set(urlparam, "off");
+        urlParam.delete(urlparam);
         document.querySelectorAll(`.${hide}`).forEach((el: HTMLElement) => {
           el.classList.remove(hidden);
         });
