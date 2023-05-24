@@ -108,16 +108,16 @@ class LoadEditor {
         console.log(e);
       }
     }
-    if (this.is) {
+    if (this.il) {
       try {
-        new SetDataCookie("image_switch", this.is).build();
+        new SetDataCookie("image_loader", this.il).build();
       } catch (e) {
         console.log(e);
       }
     }
-    if (this.il) {
+    if (this.is) {
       try {
-        new SetDataCookie("image_loader", this.il).build();
+        new SetDataCookie("image_switch", this.is).build();
       } catch (e) {
         console.log(e);
       }
@@ -197,19 +197,19 @@ class LoadEditor {
         console.log(e);
       }
     }
+    if (this.wr) {
+      try {
+        window.customElements.define("window-resize", WindowResize);
+      } catch (e) {
+        console.log(e);
+      }
+    }
     if (this.is) {
       try {
         window.customElements.define("image-switch", ImageSwitch);
         if (this.up) {
           window.onload = this.upc.viewerSwitch();
         }
-      } catch (e) {
-        console.log(e);
-      }
-    }
-    if (this.wr) {
-      try {
-        window.customElements.define("window-resize", WindowResize);
       } catch (e) {
         console.log(e);
       }

@@ -7,8 +7,10 @@ Furthermore, a built-in OSD image viewer offers better representation of facsimi
 
 ## Projects currently using the package
 
-- [AMP](https://amp.acdh.oeaw.ac.at/amp-transcript__0022.html)
-- [Freud HKA](https://freud-digital.github.io/frd-static/sfe-1904-002.html?break=off&person=off&place=off&keyword=off&dream=off&text-variant=off&editorial-notes=off&fullscreen=off&fontsize=default&font=default)
+- [AMP](https://amp.acdh.oeaw.ac.at)
+- [Freud HKA](https://freud.acdh-dev.oeaw.ac.at)
+- [HANSLICK](https://hanslick.acdh.oeaw.ac.at)
+- [SCHNITZLER BRIEFE](https://schnitzler-briefe.acdh.oeaw.ac.at)
 
 ## Installation
 
@@ -31,8 +33,8 @@ import { LoadEditor } from "de-micro-editor";
 In HTML:
 
 ```HTML
-<script src="https://unpkg.com/de-micro-editor@0.2.6/dist/de-editor.min.js"></script>
-<link href="https://unpkg.com/de-micro-editor@0.2.6/src/css/style.css" rel="stylesheet" type="text/css"/>
+<script src="https://unpkg.com/de-micro-editor@0.2.84/dist/de-editor.min.js"></script>
+<link href="https://unpkg.com/de-micro-editor@0.2.84/src/css/style.css" rel="stylesheet" type="text/css"/>
 ```
 
 ## HTML / JS / CSS Example

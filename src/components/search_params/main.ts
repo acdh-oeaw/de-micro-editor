@@ -525,6 +525,7 @@ export class UrlSearchParamUpdate {
       let hidden = paramCheck(hide_checked.hidden, true);
       let hide = paramCheck(hide_checked.class_to_hide, "hide-container1");
       let show = paramCheck(hide_checked.class_to_show, "show-container1");
+      let resize = paramCheck(hide_checked.resize, "resize-hide");
 
       // get class for wrapper of hide show container
       let parent = paramCheck(hide_checked.class_parent, "hide-show-wrapper");
@@ -594,6 +595,9 @@ export class UrlSearchParamUpdate {
           el.style.maxWidth = column_small[1];
           el.classList.add(active);
         });
+        document.querySelectorAll(`.${resize}`).forEach((el: HTMLElement) => {
+          el.classList.remove(fade);
+        });
         document.getElementById(opt).classList.add(active);
 
         /* if value is off it should not be part of the urlsearchparams */
@@ -613,6 +617,9 @@ export class UrlSearchParamUpdate {
           el.classList.add(column_full[0]);
           el.style.maxWidth = column_full[1];
           el.classList.remove(active);
+        });
+        document.querySelectorAll(`.${resize}`).forEach((el: HTMLElement) => {
+          el.classList.add(fade);
         });
 
         // works only with one image viewer
@@ -1125,7 +1132,7 @@ export class UrlSearchParamUpdate {
         let viewer = OpenSeadragon({
           id: _osd_container_id,
           prefixUrl:
-            "https://cdnjs.cloudflare.com/ajax/libs/openseadragon/3.1.0/images/",
+            "https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.0.0/images/",
           tileSources: image_url,
           // Initial rotation angle
           // degrees: 90,

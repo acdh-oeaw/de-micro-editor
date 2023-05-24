@@ -15,6 +15,9 @@ module.exports = {
       },
     ],
   },
+  externals: {
+    openseadragon: "OpenSeadragon",
+  },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
   },

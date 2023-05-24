@@ -168,7 +168,7 @@ export class ImageSwitch extends HTMLElement {
           el.classList.remove(active);
         });
         document.querySelectorAll(`.${resize}`).forEach((el: HTMLElement) => {
-          el.style.display = "none";
+          el.classList.add(fade);
         });
         this.classList.remove(active);
       } else {
@@ -188,7 +188,7 @@ export class ImageSwitch extends HTMLElement {
           el.classList.add(active);
         });
         document.querySelectorAll(`.${resize}`).forEach((el: HTMLElement) => {
-          el.style.display = "block";
+          el.classList.remove(fade);
         });
 
         // works only with one image viewer
