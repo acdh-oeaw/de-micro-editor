@@ -28,9 +28,15 @@ export class WindowResize extends HTMLElement {
     let handle = document.getElementById(
       `${variant.opt}-${variant.pos}`
     ) as HTMLInputElement;
-    let viewer = document.getElementById(`viewer-${variant.pos}`)
-      .childNodes[0] as HTMLElement;
+    let viewer_wrapper = document.getElementById(
+      `viewer-${variant.pos}`
+    ) as HTMLElement;
+    let viewer = viewer_wrapper.childNodes[0] as HTMLElement;
     let text = left_container.childNodes[0] as HTMLElement;
+
+    /* reset width height */
+    viewer_wrapper.style.width = null;
+    viewer_wrapper.style.height = null;
 
     document.addEventListener("mousemove", function (e) {
       // we don't want to do anything if we aren't resizing.

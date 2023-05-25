@@ -147,16 +147,6 @@ class LoadEditor {
         console.log(e);
       }
     }
-    if (this.il) {
-      try {
-        window.customElements.define("image-loader", ImageLoader);
-        if (this.up) {
-          window.onload = this.upc.pageUrl();
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    }
     if (this.aot) {
       try {
         window.customElements.define("annotation-slider", AnnotationSlider);
@@ -209,6 +199,16 @@ class LoadEditor {
         window.customElements.define("image-switch", ImageSwitch);
         if (this.up) {
           window.onload = this.upc.viewerSwitch();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    if (this.il) {
+      try {
+        window.customElements.define("image-loader", ImageLoader);
+        if (this.up) {
+          window.onload = this.upc.pageUrl();
         }
       } catch (e) {
         console.log(e);
