@@ -1,4 +1,5 @@
-const { uptState, paramCheck } = require("../../utils/utils");
+const { uptState, paramCheck, hideLoading } = require("../../utils/utils");
+const OpenSeadragon = require("openseadragon");
 
 export class ImageSwitch extends HTMLElement {
   static get observedAttributes() {
@@ -191,28 +192,110 @@ export class ImageSwitch extends HTMLElement {
           el.classList.remove(fade);
         });
 
-        // works only with one image viewer
-        try {
-          var viewer = document.querySelector(
-            `.${parent}.${active} .${hide}`
-          ) as HTMLElement;
-        } catch (err) {
-          console.log(
-            `HTML class elements .${parent}.${active} .${hide} not found. Please make sure your HTML site contains them.`
-          );
-        }
+        /* test if openseadragon is already loaded */
+        var osd_test = document.getElementsByClassName(
+          "openseadragon-container"
+        )[0];
 
-        try {
-          var facs = viewer.querySelectorAll("*")[0] as HTMLElement;
-          // set style height and width
-          // get iamge_size from params
-          let image_size = paramCheck(variant.image_size, "500px");
-          facs.style.width = `${viewer.offsetWidth}px`;
-          facs.style.height = image_size;
-        } catch (err) {
-          console.log(
-            `HTML class elements .${parent}.${active} .${hide} not found. Please make sure your HTML site contains them.`
+        if (!osd_test) {
+          /* initialize OpenSeardragon and get container and image url */
+
+          /* get image-loader custom element */
+          var image_loader = document.querySelectorAll("image-loader");
+          var image_loader_type = image_loader[0].getAttribute("data-type");
+          var image_loader_pos = image_loader[0].getAttribute("pos");
+          var image = document.getElementById(
+            `${image_loader_type}_img_${image_loader_pos}`
           );
+
+          /* get container to load osd in */
+          var _osd_container_id = `${image_loader_type}_container_${image_loader_pos}`;
+          var osd_container = document.getElementById(_osd_container_id);
+
+          /* get container with image-viewer element to be removed afer osd was loaded */
+          var osd_container_2 = document.getElementById(
+            `${image_loader_type}_container2_${image_loader_pos}`
+          );
+
+          /* get text container to set proper container height for osd viewer */
+          var text_container_height = document.getElementById(
+            `text-resize-${image_loader_pos}`
+          ).offsetHeight;
+
+          /* get img container to set proper container width for osd viewer */
+          var image_container_width = document.getElementById(
+            `img-resize-${image_loader_pos}`
+          ).offsetWidth;
+
+          /* set osd container width and height */
+          osd_container.style.height = `${text_container_height}px`;
+          osd_container.style.width = `${image_container_width - 25}px`;
+
+          /* get image url of iiif server */
+          let image_src = image.getAttribute("data-src");
+          let image_url = { type: "image", url: image_src };
+
+          /* initialize OpenSeadragon viewer */
+          let viewer = OpenSeadragon({
+            id: _osd_container_id,
+            prefixUrl:
+              "https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.0.0/images/",
+            tileSources: image_url,
+            // Initial rotation angle
+            // degrees: 90,
+            // Show rotation buttons
+            showRotationControl: true,
+            // Enable touch rotation on tactile devices
+            gestureSettingsTouch: {
+              pinchRotate: true,
+            },
+          });
+
+          // hides static images
+          osd_container_2.remove();
+
+          // hide loading spinner if image fully loaded status changes
+          // see issue: https://github.com/openseadragon/openseadragon/issues/1262
+          viewer.addHandler("open", function () {
+            let tiledImage = viewer.world.getItemAt(0);
+            if (tiledImage.getFullyLoaded()) {
+              hideLoading(_osd_container_id);
+            } else {
+              tiledImage.addOnceHandler("fully-loaded-change", function () {
+                let spinnerID2 = "spinner_" + _osd_container_id;
+                if (document.getElementById(spinnerID2)) {
+                  document.getElementById(spinnerID2).remove();
+                }
+              });
+            }
+          });
+        } else {
+          /* works only with one image viewer */
+          try {
+            var viewer_loaded = document.querySelector(
+              `.${parent}.${active} .${hide}`
+            ) as HTMLElement;
+          } catch (err) {
+            console.log(
+              `HTML class elements .${parent}.${active} .${hide} not found. Please make sure your HTML site contains them.`
+            );
+          }
+
+          try {
+            var facs = viewer_loaded.querySelectorAll("*")[0] as HTMLElement;
+            var facsContainer = facs.childNodes[0] as HTMLElement;
+            // set style height and width
+            // get iamge_size from params
+            // let image_size = paramCheck(variant.image_size, "500px");
+            facs.style.width = `${viewer_loaded.offsetWidth}px`;
+            facs.style.height = `${viewer_loaded.offsetHeight}px`;
+            facsContainer.style.width = `${viewer_loaded.offsetWidth - 25}px`;
+            facsContainer.style.height = `${viewer_loaded.offsetHeight}px`;
+          } catch (err) {
+            console.log(
+              `HTML class elements .${parent}.${active} .${hide} not found. Please make sure your HTML site contains them.`
+            );
+          }
         }
 
         this.classList.add(active);

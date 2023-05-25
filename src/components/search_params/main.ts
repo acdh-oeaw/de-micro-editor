@@ -637,9 +637,9 @@ export class UrlSearchParamUpdate {
           var facs = viewer.querySelectorAll("*")[0] as HTMLElement;
           // set style height and width
           // get iamge_size from params
-          let image_size = paramCheck(variant.image_size, "500px");
+          // let image_size = paramCheck(variant.image_size, "500px");
           facs.style.width = `${viewer.offsetWidth}px`;
-          facs.style.height = image_size;
+          facs.style.height = `${viewer.offsetHeight}px`;
         } catch (err) {
           console.log(
             `HTML class elements .${parent}.${active} .${hide} not found. Please make sure your HTML site contains them.`
@@ -1010,7 +1010,7 @@ export class UrlSearchParamUpdate {
             chg_citation: string | null | undefined;
             pag_link: string | null | undefined;
             pag_tab: string | null | undefined;
-            img_size: string | null | undefined;
+            img_size: string | null | undefined; // to be deprecated
             url: string | null | undefined;
             url_param: string | null | undefined;
             osd_target: string | null | undefined;
@@ -1098,7 +1098,7 @@ export class UrlSearchParamUpdate {
       // get class where osd img are inserted
       let opt_osd_target = paramCheck(options.osd_target, "container");
       let opt_img_source = paramCheck(options.img_source, "container2");
-      let opt_image_size = paramCheck(options.img_size, "500px");
+      let opt_image_size = paramCheck(options.img_size, "500px"); // to be deprecated
 
       // find correct image type
       let i = 0;
@@ -1122,8 +1122,18 @@ export class UrlSearchParamUpdate {
         _osd_container_id2
       ) as HTMLElement;
 
-      if (osd_container_2) {
-        osd_container.style.height = opt_image_size;
+      /* ancestor wrapper of osd viewer */
+      let osd_container_2_img = document.getElementById(
+        `img-resize-${_current}`
+      );
+
+      /* wrapper sibling of resize container to get correct height */
+      let test_container_height = document.getElementById(
+        `text-resize-${_current}`
+      ).offsetHeight;
+
+      if (osd_container_2 && !osd_container_2_img.classList.contains("fade")) {
+        osd_container.style.height = `${test_container_height}px`;
         let image = document.getElementById(`${_image_type}_img_${_current}`);
 
         let image_src = image.getAttribute("data-src");
