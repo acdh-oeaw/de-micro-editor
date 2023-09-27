@@ -682,6 +682,7 @@ export class UrlSearchParamUpdate {
                     color: string | null | undefined;
                     html_class: string | null | undefined;
                     css_class: string | null | undefined;
+                    default: boolean | null | undefined;
                     hide: {
                       hidden: boolean;
                       class: string;
@@ -830,31 +831,56 @@ export class UrlSearchParamUpdate {
         let hide = paramCheck(variants[v].hide, false);
 
         if (urlParam.get(opt) === null) {
-          // urlParam.set(opt, "off");
-          let selected = removeMarkup(
-            html_class,
-            css_class,
-            color,
-            hide,
-            style
-          );
-
-          try {
-            let slider = document.getElementById(opt_slider) as HTMLElement;
-            slider.classList.remove(color);
-            slider.removeAttribute("data");
-            slider.classList.remove("slider-number");
-          } catch (err) {
-            console.log(`slider class ${opt_slider} not found!`);
-          }
-
-          if (
-            (document.getElementById(opt) as HTMLInputElement).checked === true
-          ) {
-            (document.getElementById(opt) as HTMLInputElement).checked = false;
-            (document.getElementById(opt) as HTMLInputElement).classList.remove(
-              active
+          if(variants[v].default === true) { // if default is true
+            count_active += 1;
+            let selected = addMarkup(html_class, css_class, color, hide, style);
+            try {
+              let slider = document.getElementById(opt_slider) as HTMLElement;
+              slider.setAttribute("data", selected);
+              count += parseInt(selected);
+              slider.classList.add("slider-number");
+              slider.classList.add(color);
+              urlParam.set(opt, "on");
+            } catch (err) {
+              console.log(`slider class ${opt_slider} not found!`);
+            }
+  
+            if (
+              (document.getElementById(opt) as HTMLInputElement).checked === false
+            ) {
+              (document.getElementById(opt) as HTMLInputElement).checked = true;
+              (document.getElementById(opt) as HTMLInputElement).classList.add(
+                active
+              );
+            }
+  
+          } else {
+            // urlParam.set(opt, "off");
+            let selected = removeMarkup(
+              html_class,
+              css_class,
+              color,
+              hide,
+              style
             );
+
+            try {
+              let slider = document.getElementById(opt_slider) as HTMLElement;
+              slider.classList.remove(color);
+              slider.removeAttribute("data");
+              slider.classList.remove("slider-number");
+            } catch (err) {
+              console.log(`slider class ${opt_slider} not found!`);
+            }
+
+            if (
+              (document.getElementById(opt) as HTMLInputElement).checked === true
+            ) {
+              (document.getElementById(opt) as HTMLInputElement).checked = false;
+              (document.getElementById(opt) as HTMLInputElement).classList.remove(
+                active
+              );
+            }
           }
         } else if (!["on", "off"].includes(urlParam.get(opt))) {
           console.log(
@@ -939,7 +965,7 @@ export class UrlSearchParamUpdate {
 
           /* default value e.g. off should not be added to url */
           urlParam.delete(opt);
-        }
+        } 
 
         let citation_url_str = paramCheck(
           variants[v].chg_citation,

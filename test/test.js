@@ -8,6 +8,7 @@ var editor = new LoadEditor({
         color: "color-feature1",
         html_class: "html-class-feature1",
         css_class: "css-class-feature1",
+        default: true,
         hide: {
           hidden: true,
           class: "html-class-feature15",
