@@ -5,7 +5,6 @@ const {
   hideLoading,
   paramCheck,
 } = require("../../utils/utils");
-const OpenSeadragon = require("openseadragon");
 
 export class UrlSearchParamUpdate {
   fullSreen() {
@@ -831,7 +830,8 @@ export class UrlSearchParamUpdate {
         let hide = paramCheck(variants[v].hide, false);
 
         if (urlParam.get(opt) === null) {
-          if(variants[v].default === true) { // if default is true
+          if (variants[v].default === true) {
+            // if default is true
             count_active += 1;
             let selected = addMarkup(html_class, css_class, color, hide, style);
             try {
@@ -844,16 +844,16 @@ export class UrlSearchParamUpdate {
             } catch (err) {
               console.log(`slider class ${opt_slider} not found!`);
             }
-  
+
             if (
-              (document.getElementById(opt) as HTMLInputElement).checked === false
+              (document.getElementById(opt) as HTMLInputElement).checked ===
+              false
             ) {
               (document.getElementById(opt) as HTMLInputElement).checked = true;
               (document.getElementById(opt) as HTMLInputElement).classList.add(
                 active
               );
             }
-  
           } else {
             // urlParam.set(opt, "off");
             let selected = removeMarkup(
@@ -874,12 +874,14 @@ export class UrlSearchParamUpdate {
             }
 
             if (
-              (document.getElementById(opt) as HTMLInputElement).checked === true
+              (document.getElementById(opt) as HTMLInputElement).checked ===
+              true
             ) {
-              (document.getElementById(opt) as HTMLInputElement).checked = false;
-              (document.getElementById(opt) as HTMLInputElement).classList.remove(
-                active
-              );
+              (document.getElementById(opt) as HTMLInputElement).checked =
+                false;
+              (
+                document.getElementById(opt) as HTMLInputElement
+              ).classList.remove(active);
             }
           }
         } else if (!["on", "off"].includes(urlParam.get(opt))) {
@@ -965,7 +967,7 @@ export class UrlSearchParamUpdate {
 
           /* default value e.g. off should not be added to url */
           urlParam.delete(opt);
-        } 
+        }
 
         let citation_url_str = paramCheck(
           variants[v].chg_citation,
@@ -1025,6 +1027,7 @@ export class UrlSearchParamUpdate {
     // get session cookies as parameters
     let data = "image_loader";
     let storage = sessionStorage.getItem(data);
+    var OpenSeadragon = require("openseadragon");
 
     if (storage) {
       let options:

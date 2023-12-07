@@ -26,7 +26,6 @@
   },
   "homepage": "https://github.com/acdh-oeaw/de-micro-editor#readme",
   "devDependencies": {
-    "openseadragon": "^4.1.0",
     "path": "^0.12.7",
     "terser-webpack-plugin": "^5.3.3",
     "ts-loader": "^9.4.1",

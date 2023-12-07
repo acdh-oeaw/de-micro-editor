@@ -387,7 +387,7 @@ export class AnnotationSlider extends HTMLElement {
         var feat_leader = none_variant.find(
           (g: any) => g.features.class === features.class
         );
-        if (typeof feat_leader === "object") {
+        if (feat_leader instanceof Object) {
           let variants_checked = document.querySelectorAll(
             `input.${features.class}[aot-type="false"]:checked`
           );

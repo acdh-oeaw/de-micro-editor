@@ -1,15 +1,3 @@
-const { AnnotationSlider } = require("./src/components/annotation_slider/main");
-const { FullSize } = require("./src/components/full_screen/main");
-const { FontSize } = require("./src/components/font_size/main");
-const { FontFamily } = require("./src/components/font_family/main");
-const { ImageSwitch } = require("./src/components/image_switch/main");
-const { ImageLoader } = require("./src/components/image_loader/main");
-const {
-  EditionPagination,
-} = require("./src/components/image_loader/pagination");
-const { WindowResize } = require("./src/components/image_loader/resize");
-const { UrlSearchParamUpdate } = require("./src/components/search_params/main");
-const { MultiLanguage } = require("./src/components/multi_language/main");
 const { SetDataCookie } = require("./src/utils/setCookie");
 
 ("use strict");
@@ -47,37 +35,61 @@ class LoadEditor {
         */
     if (options && "aot" in options) {
       this.aot = options.aot;
+      var {
+        AnnotationSlider,
+      } = require("./src/components/annotation_slider/main");
     }
     if (options && "fs" in options) {
       this.fs = options.fs;
+      var { FullSize } = require("./src/components/full_screen/main");
     }
     if (options && "fos" in options) {
       this.fos = options.fos;
+      var { FontSize } = require("./src/components/font_size/main");
     }
     if (options && "ff" in options) {
       this.ff = options.ff;
+      var { FontFamily } = require("./src/components/font_family/main");
     }
     if (options && "is" in options) {
       this.is = options.is;
+      console.log(
+        "Warning 001: ImageSwitch parameter 'is' requires OpenSeadragon library: https://openseadragon.github.io/"
+      );
+      var { ImageSwitch } = require("./src/components/image_switch/main");
     }
     if (options && "il" in options) {
       this.il = options.il;
+      console.log(
+        "Warning 002: ImageLoader parameter 'il' requires OpenSeadragon library: https://openseadragon.github.io/"
+      );
+      var { ImageLoader } = require("./src/components/image_loader/main");
     }
     if (options && "ep" in options) {
       this.ep = options.ep;
+      console.log(
+        "Warning 003: Edition Pagination parameter 'ep' requires OpenSeadragon library: https://openseadragon.github.io/"
+      );
+      var {
+        EditionPagination,
+      } = require("./src/components/image_loader/pagination");
     }
-    if (options && "wr" in options) {
+    if (options && "wr" in options && options.wr === true) {
       this.wr = options.wr;
+      var { WindowResize } = require("./src/components/image_loader/resize");
     }
-    if (options && "up" in options) {
+    if (options && "up" in options && options.up === true) {
       this.up = options.up;
+      var {
+        UrlSearchParamUpdate,
+      } = require("./src/components/search_params/main");
+      // initialize imported functions
+      this.upc = new UrlSearchParamUpdate();
     }
     if (options && "lang" in options) {
       this.lang = options.lang;
+      var { MultiLanguage } = require("./src/components/multi_language/main");
     }
-
-    // initialize imported functions
-    this.upc = new UrlSearchParamUpdate();
 
     // set cookies if config options is available
     if (this.aot) {
