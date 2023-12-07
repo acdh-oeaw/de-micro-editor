@@ -53,7 +53,7 @@ var editor = new LoadEditor({
         },
         features: {
           all: false,
-          class: "features-1",
+          class: "features-2",
         },
       },
     ],
@@ -125,27 +125,27 @@ var editor = new LoadEditor({
       },
     ],
   },
-  is: {
-    name: "enable/disable right window",
-    variants: [
-      {
-        opt: "edition-switch1",
-        title: "Hide Right Window",
-        hide: {
-          hidden: true,
-          class_to_hide: "is-hide-container1",
-          class_to_show: "is-show-container1",
-          class_parent: "is-hide-show-wrapper",
-          resize: "resize-hide",
-        },
-        image_size: "1000px",
-      },
-    ],
-    rendered_element: {
-      a_class: "nav-link btn btn-round",
-      svg: "ON / OFF",
-    },
-  },
+  // is: {
+  //   name: "enable/disable right window",
+  //   variants: [
+  //     {
+  //       opt: "edition-switch1",
+  //       title: "Hide Right Window",
+  //       hide: {
+  //         hidden: true,
+  //         class_to_hide: "is-hide-container1",
+  //         class_to_show: "is-show-container1",
+  //         class_parent: "is-hide-show-wrapper",
+  //         resize: "resize-hide",
+  //       },
+  //       image_size: "1000px",
+  //     },
+  //   ],
+  //   rendered_element: {
+  //     a_class: "nav-link btn btn-round",
+  //     svg: "ON / OFF",
+  //   },
+  // },
   // il: {
   //     name: "load images in OSD viewer",
   //     opt: "image-loader",
