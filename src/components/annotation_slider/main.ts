@@ -77,9 +77,10 @@ export class AnnotationSlider extends HTMLElement {
       let id = this.getAttribute("id");
       if (!id) {
         console.log(
-          "ID of annotation slider custom child element not found. \
-                Make sure the annotation-slider element holds the attribute 'opt' with \
-                a defined string value."
+          "Error 001 in component annotation slider: \
+          ID of annotation slider custom child element not found. \
+          Make sure the annotation-slider element holds the attribute 'opt' with \
+          a defined string value."
         );
       }
 
@@ -90,7 +91,8 @@ export class AnnotationSlider extends HTMLElement {
         var variant_check = options.variants.find((v) => v.opt === id);
       } catch (err) {
         console.log(
-          "No option parameters found. Creating default parameters to continue."
+          "Error 002 in component annotation slider:\
+          No option parameters found. Creating default parameters to continue."
         );
       }
       // variant as selected in UI
@@ -103,7 +105,8 @@ export class AnnotationSlider extends HTMLElement {
       });
       if (!variant) {
         console.log(
-          "No variant found! Please define a variant object that contains \
+          "Error 003 in component annotation slider:\
+          No variant found! Please define a variant object that contains \
                 and 'opt' key holding a string value that matches the 'opt' value of custom \
                 element 'annotation#slider'."
         );
@@ -114,7 +117,8 @@ export class AnnotationSlider extends HTMLElement {
         var features_check = variant.features;
       } catch (err) {
         console.log(
-          "Features object in variant not found. Creating default parameters."
+          "Message 004 in component annotation slider:\
+          Features object in variant not found. Creating default parameters."
         );
       }
       // check if features params of UI variant are available
@@ -130,7 +134,8 @@ export class AnnotationSlider extends HTMLElement {
         );
       } catch (err) {
         console.log(
-          "No option parameters found. Creating default parameters to continue."
+          "Message 005 in component annotation slider:\
+          No option parameters found. Creating default parameters to continue."
         );
       }
       // all variants except all features
@@ -151,7 +156,8 @@ export class AnnotationSlider extends HTMLElement {
         );
       } catch (err) {
         console.log(
-          "No option parameters found. Creating default parameters to continue."
+          "Message 006 in component annotation slider:\
+          No option parameters found. Creating default parameters to continue."
         );
       }
       // all-features variant
@@ -167,7 +173,10 @@ export class AnnotationSlider extends HTMLElement {
       try {
         var style_check = options.span_element;
       } catch (err) {
-        console.log("style obj not found. Creating default parameters.");
+        console.log(
+          "Message 007 in component annotation slider:\
+        style obj not found. Creating default parameters."
+        );
       }
       var style = paramCheck(style_check, {
         css_class: "badge-item",
@@ -231,7 +240,8 @@ export class AnnotationSlider extends HTMLElement {
                 slider.removeAttribute("data");
                 slider.classList.remove("slider-number");
               } catch (err) {
-                console.log(`slider class ${slider_str} not found!`);
+                console.log(`Error 008 in component annotation slider: \
+                slider class ${slider_str} not found!`);
               }
 
               // disables the checked value from input element
@@ -285,7 +295,10 @@ export class AnnotationSlider extends HTMLElement {
                 slider.setAttribute("data", selected);
                 slider.classList.add("slider-number");
               } catch (err) {
-                console.log(`slider class ${slider_str} not found!`);
+                console.log(
+                  `Message 009 in component annotation slider: \
+                  slider class ${slider_str} not found!`
+                );
               }
 
               (document.getElementById(el.opt) as HTMLInputElement).checked =
@@ -304,7 +317,8 @@ export class AnnotationSlider extends HTMLElement {
       } else if (typeof all !== "boolean") {
         // if the all-features key is not a boolean it displays a waring in the console.
         console.log(
-          `Type of variant config. "features.all" must be Boolean (true or false)`
+          `Error 010 in component annotation slider: \
+          Type of variant config. "features.all" must be Boolean (true or false)`
         );
       } else {
         // if variant is a single-feature this part triggers
@@ -341,7 +355,8 @@ export class AnnotationSlider extends HTMLElement {
             slider.removeAttribute("data");
             slider.classList.remove("slider-number");
           } catch (err) {
-            console.log(`slider class ${slider_str} not found!`);
+            console.log(`Error 011 in component annotation slider: \
+            slider class ${slider_str} not found!`);
           }
 
           this.classList.remove(color);
@@ -357,7 +372,8 @@ export class AnnotationSlider extends HTMLElement {
             slider.setAttribute("data", selected);
             slider.classList.add("slider-number");
           } catch (err) {
-            console.log(`slider class ${slider_str} not found!`);
+            console.log(`Error 012 in component annotation slider: \
+            slider class ${slider_str} not found!`);
           }
 
           this.classList.add(color);
@@ -365,33 +381,35 @@ export class AnnotationSlider extends HTMLElement {
         }
 
         /*
-                    If all or not all annotation-sliders are selected the slider
-                    link will automatically be switched on or off.
-                */
-        let variants_checked = document.querySelectorAll(
-          `input.${features.class}[aot-type="false"]:checked`
-        );
-        let variants_group = variants.filter(
-          (v: any) =>
-            v.features.all === false && v.features.class === features.class
-        );
-        let nvg_leader = none_variant.find(
+          If all or not all annotation-sliders are selected the slider
+          link will automatically be switched on or off.
+        */
+        var feat_leader = none_variant.find(
           (g: any) => g.features.class === features.class
         );
-        if (variants_checked.length === variants_group.length) {
-          (
-            document.getElementById(nvg_leader.opt) as HTMLInputElement
-          ).checked = true;
-          (
-            document.getElementById(nvg_leader.opt) as HTMLInputElement
-          ).classList.add(active);
-        } else {
-          (
-            document.getElementById(nvg_leader.opt) as HTMLInputElement
-          ).checked = false;
-          (
-            document.getElementById(nvg_leader.opt) as HTMLInputElement
-          ).classList.remove(active);
+        if (typeof feat_leader === "object") {
+          let variants_checked = document.querySelectorAll(
+            `input.${features.class}[aot-type="false"]:checked`
+          );
+          let variants_group = variants.filter(
+            (v: any) =>
+              v.features.all === false && v.features.class === features.class
+          );
+          if (variants_checked.length === variants_group.length) {
+            (
+              document.getElementById(feat_leader.opt) as HTMLInputElement
+            ).checked = true;
+            (
+              document.getElementById(feat_leader.opt) as HTMLInputElement
+            ).classList.add(active);
+          } else {
+            (
+              document.getElementById(feat_leader.opt) as HTMLInputElement
+            ).checked = false;
+            (
+              document.getElementById(feat_leader.opt) as HTMLInputElement
+            ).classList.remove(active);
+          }
         }
       }
 
@@ -465,7 +483,10 @@ export class AnnotationSlider extends HTMLElement {
     let opt = this.getAttribute("opt");
     // check if user set opt attribute
     if (typeof opt !== "string") {
-      console.log("No 'opt' attribute in custom element font-family found!");
+      console.log(
+        "Error 013 in component annotation slider: \
+      No 'opt' attribute in custom element font-family found!"
+      );
     }
 
     // variant is found by comparing variant config opt with custom element attr opt
@@ -473,7 +494,8 @@ export class AnnotationSlider extends HTMLElement {
       var variant_check = options.variants.find((v) => v.opt === opt);
     } catch (err) {
       console.log(
-        "No option parameters found. Creating default parameters to continue."
+        "Message 014 in component annotation slider: \
+        No option parameters found. Creating default parameters to continue."
       );
     }
     var variant = paramCheck(variant_check, {
@@ -488,7 +510,8 @@ export class AnnotationSlider extends HTMLElement {
       var features_check = variant.features;
     } catch (err) {
       console.log(
-        "Features object in variant not found. Creating default parameters."
+        "Message 015 in component annotation slider: \
+        Features object in variant not found. Creating default parameters."
       );
     }
     let features = paramCheck(features_check, {
@@ -503,7 +526,10 @@ export class AnnotationSlider extends HTMLElement {
     try {
       var rendered_element_check = options.rendered_element;
     } catch (err) {
-      console.log("Hide object not found. Creating default parameters.");
+      console.log(
+        "Message 017 in component annotation slider: \
+      Hide object not found. Creating default parameters."
+      );
     }
     let rendered_element = paramCheck(rendered_element_check, {
       label_class: "switch",
