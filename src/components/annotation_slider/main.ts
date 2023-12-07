@@ -4,10 +4,13 @@ const {
   uptState,
   paramCheck,
 } = require("../../utils/utils");
+const { AnnotationType } = require("../../utils/types");
 
 export class AnnotationSlider extends HTMLElement {
+  options: typeof AnnotationType | null | undefined;
+
   static get observedAttributes() {
-    return ["opt"];
+    return ["opt", "onclick"];
   }
 
   connectedCallback() {
@@ -21,52 +24,12 @@ export class AnnotationSlider extends HTMLElement {
 
   // function to triggers on click of the rendered element
   textFeatures() {
-    // get session cookie with configartion json
+    // get session cookie with configuration json
     let data = "annotation_slider";
     let storage = sessionStorage.getItem(data);
     if (storage) {
-      let options:
-        | {
-            title: string | null | undefined;
-            variants:
-              | [
-                  {
-                    opt: string | null | undefined;
-                    opt_slider: string | null | undefined;
-                    title: string | null | undefined;
-                    color: string | null | undefined;
-                    html_class: string | null | undefined;
-                    css_class: string | null | undefined;
-                    hide: {
-                      hidden: boolean;
-                      class: string;
-                    } | null;
-                    chg_citation: string | null | undefined;
-                    features: {
-                      all: boolean | null | undefined;
-                      class: string | null | undefined;
-                    } | null;
-                  }
-                ]
-              | null
-              | undefined;
-            span_element:
-              | {
-                  css_class: string | null | undefined;
-                }
-              | null
-              | undefined;
-            active_class: string | null | undefined;
-            rendered_element:
-              | {
-                  label_class: string | null | undefined;
-                  slider_class: string | null | undefined;
-                }
-              | null
-              | undefined;
-          }
-        | null
-        | undefined = JSON.parse(storage);
+      let options: typeof AnnotationType | null | undefined =
+        JSON.parse(storage);
 
       // get current url parameters
       let url = new URL(window.location.href);
@@ -88,7 +51,7 @@ export class AnnotationSlider extends HTMLElement {
       // to match the custom element with the configuration the opt value must match.
       // variant is found by comparing variant config opt with custom element attr opt
       try {
-        var variant_check = options.variants.find((v) => v.opt === id);
+        var variant_check = options.variants.find((v: any) => v.opt === id);
       } catch (err) {
         console.log(
           "Error 002 in component annotation slider:\
@@ -130,7 +93,7 @@ export class AnnotationSlider extends HTMLElement {
       // use try/catch to verify if object exists in options
       try {
         var variants_check = options.variants.filter(
-          (v) => v.features.all === false
+          (v: any) => v.features.all === false
         );
       } catch (err) {
         console.log(
@@ -152,7 +115,7 @@ export class AnnotationSlider extends HTMLElement {
       // use try/catch to verify if object exists in options
       try {
         var none_variant_check = options.variants.filter(
-          (v) => v.features.all === true
+          (v: any) => v.features.all === true
         );
       } catch (err) {
         console.log(
@@ -440,45 +403,7 @@ export class AnnotationSlider extends HTMLElement {
     let data = "annotation_slider";
     let storage = sessionStorage.getItem(data);
 
-    let options:
-      | {
-          title: string | null | undefined;
-          variants:
-            | [
-                {
-                  opt: string | null | undefined;
-                  opt_slider: string | null | undefined;
-                  title: string | null | undefined;
-                  color: string | null | undefined;
-                  html_class: string | null | undefined;
-                  css_class: string | null | undefined;
-                  hide: boolean | null | undefined;
-                  chg_citation: string | null | undefined;
-                  features: {
-                    all: boolean | null | undefined;
-                    class: string | null | undefined;
-                  };
-                }
-              ]
-            | null
-            | undefined;
-          span_element:
-            | {
-                css_class: string | null | undefined;
-              }
-            | null
-            | undefined;
-          active_class: string | null | undefined;
-          rendered_element:
-            | {
-                label_class: string | null | undefined;
-                slider_class: string | null | undefined;
-              }
-            | null
-            | undefined;
-        }
-      | null
-      | undefined = JSON.parse(storage);
+    let options: typeof AnnotationType | null | undefined = JSON.parse(storage);
 
     let opt = this.getAttribute("opt");
     // check if user set opt attribute
@@ -489,9 +414,12 @@ export class AnnotationSlider extends HTMLElement {
       );
     }
 
+    // get attribute with onclick function
+    var dme_onclick = this.getAttribute("onclick");
+
     // variant is found by comparing variant config opt with custom element attr opt
     try {
-      var variant_check = options.variants.find((v) => v.opt === opt);
+      var variant_check = options.variants.find((v: any) => v.opt === opt);
     } catch (err) {
       console.log(
         "Message 014 in component annotation slider: \
@@ -546,6 +474,7 @@ export class AnnotationSlider extends HTMLElement {
             <label>${title}</label>
             <label class="${render_class}">
                 <input title="${title}"
+                    onclick="${dme_onclick}"
                     type="checkbox"
                     id="${opt}"
                     data-target="${data}"
@@ -556,9 +485,9 @@ export class AnnotationSlider extends HTMLElement {
         `;
   }
 
-  attributeChangedCallback() {
-    this.render();
-  }
+  // attributeChangedCallback() {
+  //   this.render();
+  // }
 
   disconnectedCallback() {
     this.childNodes[3].childNodes[1].removeEventListener(

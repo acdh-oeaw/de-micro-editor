@@ -144,7 +144,7 @@ export function hideLoading(id: string) {
 }
 
 export function paramCheck(
-  param: string | [] | {} | null | undefined,
+  param: Function | string | [] | {} | null | undefined,
   def: string | boolean | {} | []
 ) {
   if (param) {

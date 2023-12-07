@@ -47,7 +47,6 @@ var editor = new LoadEditor({
         color: "color-feature4",
         html_class: "html-class-feature4",
         css_class: "css-class-feature4",
-        default: true,
         hide: {
           hidden: true,
           class: "html-class-feature4",

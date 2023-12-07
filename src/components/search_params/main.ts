@@ -5,6 +5,7 @@ const {
   hideLoading,
   paramCheck,
 } = require("../../utils/utils");
+const { AnnotationType } = require("../../utils/types");
 
 export class UrlSearchParamUpdate {
   fullSreen() {
@@ -669,49 +670,8 @@ export class UrlSearchParamUpdate {
 
     let storage = sessionStorage.getItem(data);
     if (storage) {
-      let options:
-        | {
-            title: string | null | undefined;
-            variants:
-              | [
-                  {
-                    opt: string | null | undefined;
-                    opt_slider: string | null | undefined;
-                    title: string | null | undefined;
-                    color: string | null | undefined;
-                    html_class: string | null | undefined;
-                    css_class: string | null | undefined;
-                    default: boolean | null | undefined;
-                    hide: {
-                      hidden: boolean;
-                      class: string;
-                    } | null;
-                    chg_citation: string | null | undefined;
-                    features: {
-                      all: boolean | null | undefined;
-                      class: string | null | undefined;
-                    };
-                  }
-                ]
-              | null
-              | undefined;
-            span_element:
-              | {
-                  css_class: string | null | undefined;
-                }
-              | null
-              | undefined;
-            active_class: string | null | undefined;
-            rendered_element:
-              | {
-                  label_class: string | null | undefined;
-                  slider_class: string | null | undefined;
-                }
-              | null
-              | undefined;
-          }
-        | null
-        | undefined = JSON.parse(storage);
+      let options: typeof AnnotationType | null | undefined =
+        JSON.parse(storage);
 
       if (!options) {
         alert(`Please turn on cookies to display content.\n
@@ -724,7 +684,7 @@ export class UrlSearchParamUpdate {
       // variant is found by comparing variant config opt with custom element attr opt
       try {
         var variant_all_check = options.variants.filter(
-          (v) => v.features.all === true
+          (v: any) => v.features.all === true
         );
       } catch (err) {
         console.log(
@@ -744,7 +704,7 @@ export class UrlSearchParamUpdate {
       // variant is found by comparing variant config opt with custom element attr opt
       try {
         var variant_check = options.variants.filter(
-          (v) => v.features.all === false
+          (v: any) => v.features.all === false
         );
       } catch (err) {
         console.log(
@@ -784,7 +744,7 @@ export class UrlSearchParamUpdate {
       // variant is found by comparing variant config opt with custom element attr opt
       try {
         var variant_check_bool = options.variants.filter(
-          (v) => typeof v.features.all !== "boolean"
+          (v: any) => typeof v.features.all !== "boolean"
         );
       } catch (err) {
         console.log(

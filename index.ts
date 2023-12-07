@@ -1,9 +1,10 @@
 const { SetDataCookie } = require("./src/utils/setCookie");
+const { AnnotationType } = require("./src/utils/types");
 
 ("use strict");
 
 class LoadEditor {
-  aot: object | boolean;
+  aot: typeof AnnotationType | boolean;
   fs: object | boolean;
   fos: object | boolean;
   ff: object | boolean;
@@ -16,7 +17,7 @@ class LoadEditor {
   lang: object | boolean;
 
   constructor(options: {
-    aot: object | boolean;
+    aot: typeof AnnotationType | boolean;
     fs: object | boolean;
     fos: object | boolean;
     ff: object | boolean;
@@ -93,6 +94,11 @@ class LoadEditor {
 
     // set cookies if config options is available
     if (this.aot) {
+      [...this.aot.variants].forEach((variant: any) => {
+        if (variant.custom_function instanceof Function) {
+          variant.custom_function = variant.custom_function.toString();
+        }
+      });
       try {
         new SetDataCookie("annotation_slider", this.aot).build();
       } catch (e) {

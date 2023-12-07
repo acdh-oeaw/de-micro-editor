@@ -129,7 +129,7 @@
               <annotation-slider opt="feature2"></annotation-slider>
             </li>
             <li>
-              <annotation-slider opt="feature4"></annotation-slider>
+              <annotation-slider opt="feature4" onclick="myFunction()"></annotation-slider>
             </li>
             <li>
               <multi-language opt="en"></multi-language>
@@ -438,6 +438,20 @@
         </div> -->
       </div>
     </div>
+    <script>
+      function myFunction() {
+        var option = document.getElementById("feature4");
+        setTimeout(function () {
+          if (option.checked === true) {
+            // do something
+            console.log("do something");
+          } else {
+            // do something else
+            console.log("do something else");
+          }
+        }, 100);
+      }
+    </script>
     <script type="text/javascript" src="test/test.js"></script>
   </body>
 </html>
