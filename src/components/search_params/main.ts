@@ -674,8 +674,8 @@ export class UrlSearchParamUpdate {
         JSON.parse(storage);
 
       if (!options) {
-        alert(`Please turn on cookies to display content.\n
-                    Or check if configuration files path match data-target and data-path property.`);
+        alert(`WARNING 1 - search_params/main: Please turn on cookies to display content.\n
+              Or check if configuration files path match data-target and data-path property.`);
       }
 
       let url = new URL(location.href);
@@ -688,7 +688,8 @@ export class UrlSearchParamUpdate {
         );
       } catch (err) {
         console.log(
-          "No option parameters found. Creating default parameters to continue."
+          `WARNING 2 - search_params/main: No option parameters found. Creating default \n
+           parameters to continue.`
         );
       }
       let variantAll = paramCheck(variant_all_check, [
@@ -708,16 +709,18 @@ export class UrlSearchParamUpdate {
         );
       } catch (err) {
         console.log(
-          "No option parameters found. Creating default parameters to continue."
+          `WARNING 3 - search_params/main: No option parameters found.\n
+           Creating default parameters to continue.`
         );
       }
-      let allVariants = document.getElementsByTagName("annotation-slider");
-      let allVariantsObjs = [];
-      for (let i in allVariants) {
+      let allVariants = document.querySelectorAll("annotation-slider");
+      var allVariantsObjs: any[] = [];
+      [...allVariants].forEach((el: any) => {
         try {
-          var attrOpt = allVariants[i].getAttribute("opt");
+          var attrOpt = el.getAttribute("opt");
         } catch (err) {
-          // console.log(err);
+          console.log(`WARNING 4 - search_params/main: No variants found.
+                        add custom html element <annotation-slider> to your html file.`);
         }
         if (attrOpt) {
           allVariantsObjs.push({
@@ -728,7 +731,7 @@ export class UrlSearchParamUpdate {
             },
           });
         }
-      }
+      });
       let variants: any = paramCheck(variant_check, allVariantsObjs);
 
       // try {
@@ -748,14 +751,16 @@ export class UrlSearchParamUpdate {
         );
       } catch (err) {
         console.log(
-          "No option parameters found. Creating default parameters to continue."
+          `WARNING 5 - search_params/main: No option parameters found.\n
+           Creating default parameters to continue.`
         );
       }
       let wrg_ft = paramCheck(variant_check_bool, []);
       if (wrg_ft) {
         for (let w of wrg_ft) {
           console.log(
-            `Type of variant ${w} config. "features.all" must be boolean (true or false)`
+            `WARNING 6 - search_params/main: Type of variant ${w} config.\n
+            "features.all" must be boolean (true or false)`
           );
         }
       }
@@ -764,7 +769,9 @@ export class UrlSearchParamUpdate {
       try {
         var span_check = options.span_element;
       } catch (err) {
-        console.log("Hide object not found. Creating default parameters.");
+        console.log(
+          "WARNING 6 - search_params/main: Hide object not found. Creating default parameters."
+        );
       }
       let span_checked = paramCheck(span_check, {
         css_class: "badge-item",
@@ -775,11 +782,11 @@ export class UrlSearchParamUpdate {
       let active = paramCheck(options.active_class, "active");
 
       // set count to verify state of sliders
-      let count_active = 0;
+      let count_active: any = {};
       let count = 0;
-      var optAll = paramCheck(variantAll[0].opt, `text-features`);
       for (let v in variants) {
         let opt = paramCheck(variants[v].opt, `any-feature-${v}`);
+        let opt_class = paramCheck(variants[v].features.class, `class-${opt}`);
         let color = paramCheck(variants[v].color, `color-${opt}`);
         let html_class = paramCheck(
           variants[v].html_class,
@@ -792,7 +799,12 @@ export class UrlSearchParamUpdate {
         if (urlParam.get(opt) === null) {
           if (variants[v].default === true) {
             // if default is true
-            count_active += 1;
+            if (count_active.hasOwnProperty(opt_class)) {
+              count_active[opt_class] += 1;
+            } else {
+              count_active[opt_class] = 1;
+            }
+
             let selected = addMarkup(html_class, css_class, color, hide, style);
             try {
               let slider = document.getElementById(opt_slider) as HTMLElement;
@@ -830,7 +842,9 @@ export class UrlSearchParamUpdate {
               slider.removeAttribute("data");
               slider.classList.remove("slider-number");
             } catch (err) {
-              console.log(`slider class ${opt_slider} not found!`);
+              console.log(
+                `WARNING 7 - search_params/main: slider class ${opt_slider} not found!`
+              );
             }
 
             if (
@@ -864,7 +878,9 @@ export class UrlSearchParamUpdate {
             slider.removeAttribute("data");
             slider.classList.remove("slider-number");
           } catch (err) {
-            console.log(`slider class ${opt_slider} not found!`);
+            console.log(
+              `WARNING 8 - search_params/main: slider class ${opt_slider} not found!`
+            );
           }
 
           if (
@@ -876,7 +892,11 @@ export class UrlSearchParamUpdate {
             );
           }
         } else if (urlParam.get(opt) === "on") {
-          count_active += 1;
+          if (count_active.hasOwnProperty(opt_class)) {
+            count_active[opt_class] += 1;
+          } else {
+            count_active[opt_class] = 1;
+          }
 
           let selected = addMarkup(html_class, css_class, color, hide, style);
 
@@ -887,7 +907,9 @@ export class UrlSearchParamUpdate {
             slider.classList.add("slider-number");
             slider.classList.add(color);
           } catch (err) {
-            console.log(`slider class ${opt_slider} not found!`);
+            console.log(
+              `WARNING 9 - search_params/main: slider class ${opt_slider} not found!`
+            );
           }
 
           if (
@@ -913,7 +935,9 @@ export class UrlSearchParamUpdate {
             slider.removeAttribute("data");
             slider.classList.remove("slider-number");
           } catch (err) {
-            console.log(`slider class ${opt_slider} not found!`);
+            console.log(
+              `WARNING 10 - search_params/main: slider class ${opt_slider} not found!`
+            );
           }
 
           if (
@@ -938,40 +962,32 @@ export class UrlSearchParamUpdate {
         }
       }
 
-      if (String(count_active) === String(variants.length)) {
+      // handling features.all slider to receive active or inactive status
+      [...variantAll].forEach((el: any) => {
+        let optAll = paramCheck(el.opt, `all-features`);
+        var feat_leader = document.getElementById(optAll) as HTMLInputElement;
+        var feat_leader_class = el.features.class;
+        var variants_features_class = variants.filter(
+          (v: any) => v.features.class === feat_leader_class
+        );
         if (
-          (document.getElementById(optAll) as HTMLInputElement).checked ===
-          false
+          count_active[feat_leader_class] === variants_features_class.length
         ) {
-          try {
-            let slider_all = document.getElementById(
-              optAll
-            ) as HTMLInputElement;
-            slider_all.checked = true;
-            slider_all.classList.add(active);
-            slider_all.classList.add("slider-number");
-            slider_all.setAttribute("data", String(count));
-          } catch (err) {
-            console.log(`slider class ${optAll} not found!`);
+          if (feat_leader.checked === false) {
+            feat_leader.checked = true;
+            feat_leader.classList.add(active);
+            feat_leader.classList.add("slider-number");
+            feat_leader.setAttribute("data", String(count));
+          }
+        } else {
+          if (feat_leader.checked === true) {
+            feat_leader.checked = false;
+            feat_leader.classList.remove(active);
+            feat_leader.removeAttribute("data");
+            feat_leader.classList.remove("slider-number");
           }
         }
-      } else {
-        if (
-          (document.getElementById(optAll) as HTMLInputElement).checked === true
-        ) {
-          try {
-            let slider_all = document.getElementById(
-              optAll
-            ) as HTMLInputElement;
-            slider_all.checked = false;
-            slider_all.classList.remove(active);
-            slider_all.removeAttribute("data");
-            slider_all.classList.remove("slider-number");
-          } catch (err) {
-            console.log(`slider class ${optAll} not found!`);
-          }
-        }
-      }
+      });
 
       let href = `?${urlParam}${location.hash}`;
       uptState({

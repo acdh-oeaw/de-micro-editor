@@ -166,7 +166,7 @@ export class AnnotationSlider extends HTMLElement {
 
           // if current state is active remove class/state
           // find all element classes in DOM and remove CSS class
-          variants.forEach((el: any) => {
+          [...variants].forEach((el: any) => {
             if (
               (document.getElementById(el.opt) as HTMLInputElement).checked ===
                 true &&
