@@ -66,3 +66,65 @@ export type FullScreenType =
     }
   | null
   | undefined;
+export type FontSizeType =
+  | {
+      name: String_misc;
+      variants:
+        | [
+            {
+              opt: String_misc;
+              title: String_misc;
+              urlparam: String_misc;
+              sizes:
+                | {
+                    default: String_misc;
+                    font_size_14: String_misc;
+                    font_size_18: String_misc;
+                    font_size_22: String_misc;
+                    font_size_26: String_misc;
+                  }
+                | null
+                | undefined;
+              paragraph: String_misc;
+              p_class: String_misc;
+              css_class: String_misc;
+            }
+          ]
+        | null
+        | undefined;
+      active_class: String_misc;
+      html_class: String_misc;
+    }
+  | null
+  | undefined;
+export type FontFamilyType =
+  | {
+      name: string | null | undefined;
+      variants:
+        | [
+            {
+              opt: string | null | undefined;
+              title: string | null | undefined;
+              urlparam: string | null | undefined;
+              chg_citation: string | null | undefined;
+              fonts:
+                | {
+                    default: string | null | undefined;
+                    font1: string | null | undefined;
+                    font2: string | null | undefined;
+                    font3: string | null | undefined;
+                  }
+                | null
+                | undefined;
+              paragraph: string | null | undefined;
+              p_class: string | null | undefined;
+              css_class: string | null | undefined;
+            }
+          ]
+        | null
+        | undefined;
+      active_class: string | null | undefined;
+      html_class: string | null | undefined;
+    }
+  | null
+  | undefined;

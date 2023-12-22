@@ -133,10 +133,15 @@ export class UrlSearchParamUpdate {
   }
 
   fontSize() {
+    // import types from utils.types.ts
+    const { FontSizeType } = require("../../utils/types");
+
     // get element to access opt attribute
     // opt required to connect to specific custom element
-    let el = document.getElementsByTagName("font-size");
-    var id = el[0].getAttribute("opt");
+    let el = document.getElementsByTagName(
+      "font-size"
+    ) as HTMLCollectionOf<Element>;
+    var id: string = el[0].getAttribute("opt");
 
     // check if user set opt attribute
     if (typeof id !== "string") {
@@ -144,42 +149,12 @@ export class UrlSearchParamUpdate {
     }
 
     // string fontsize is variable to access session cookies
-    let data = "fontsize";
+    let data: string = "fontsize";
     let storage: string | null = sessionStorage.getItem(data);
 
     if (storage) {
       // define options object and parse session cookie as json
-      var options:
-        | {
-            name: string | null | undefined;
-            variants:
-              | [
-                  {
-                    opt: string | null | undefined;
-                    title: string | null | undefined;
-                    urlparam: string | null | undefined;
-                    sizes:
-                      | {
-                          default: string | null | undefined;
-                          font_size_14: string | null | undefined;
-                          font_size_18: string | null | undefined;
-                          font_size_22: string | null | undefined;
-                          font_size_26: string | null | undefined;
-                        }
-                      | null
-                      | undefined;
-                    paragraph: string | null | undefined;
-                    p_class: string | null | undefined;
-                    css_class: string | null | undefined;
-                  }
-                ]
-              | null
-              | undefined;
-            active_class: string | null | undefined;
-            html_class: string | null | undefined;
-          }
-        | null
-        | undefined = JSON.parse(storage);
+      var options: typeof FontSizeType = JSON.parse(storage);
 
       if (!options) {
         alert("Please turn on cookies to display content!");
@@ -197,31 +172,36 @@ export class UrlSearchParamUpdate {
           "No option parameters found. Creating default parameters to continue."
         );
       }
-      var variants = paramCheck(variant_check, [{ opt: id }]);
+      var variants: typeof FontSizeType.variants = paramCheck(variant_check, [
+        { opt: id },
+      ]);
 
       for (let v in variants) {
         // get urlparam key
-        var urlparam = paramCheck(variants[v].urlparam, "fontsize");
+        var urlparam: string = paramCheck(variants[v].urlparam, "fontsize");
 
         // get citation url key and HTMLElement
-        var citation_url_str = paramCheck(
+        var citation_url_str: string = paramCheck(
           variants[v].chg_citation,
           "citation-url"
         );
-        var citation_url = document.getElementById(citation_url_str);
+        var citation_url = document.getElementById(
+          citation_url_str
+        ) as HTMLElement;
 
         // define paragraph HTML element name
-        let p_change = paramCheck(variants[v].paragraph, "p");
+        let p_change: string = paramCheck(variants[v].paragraph, "p");
         // define class to change font sizes (not all paragraphs might need to be changed)
-        let p_class = paramCheck(variants[v].p_class, "yes-index");
+        let p_class: string = paramCheck(variants[v].p_class, "yes-index");
 
         // check if sizes object with font sizes is not null or undefined
         try {
-          var size_check = variants[v].sizes;
+          var size_check: typeof FontSizeType.variants.sizes =
+            variants[v].sizes;
         } catch (err) {
           console.log("Sizes obj not found. Creating default parameters.");
         }
-        let size = paramCheck(size_check, {
+        let size: typeof FontSizeType.variants.sizes = paramCheck(size_check, {
           default: "default",
           font_size_14: "14",
           font_size_18: "18",
@@ -230,7 +210,7 @@ export class UrlSearchParamUpdate {
         });
 
         // define font size name before size
-        var css_class = paramCheck(variants[v].css_class, "font-size-");
+        var css_class: string = paramCheck(variants[v].css_class, "font-size-");
 
         // check for null value in url params
         if (urlParam.get(urlparam) == null) {
@@ -245,9 +225,11 @@ export class UrlSearchParamUpdate {
           urlParam.set(urlparam, "default");
         } else {
           // if valid urlparam is found change font sizes of paragraphs
-          let paragraph = document.querySelectorAll(`${p_change}.${p_class}`);
+          let paragraph = document.querySelectorAll(
+            `${p_change}.${p_class}`
+          ) as NodeListOf<Element>;
 
-          var new_value =
+          var new_value: string =
             urlParam.get(urlparam) !== "default"
               ? css_class + urlParam.get(urlparam)
               : urlParam.get(urlparam);
@@ -259,7 +241,7 @@ export class UrlSearchParamUpdate {
           select.value = new_value;
 
           // finally, changing selected paragraph font size
-          paragraph.forEach((el) => {
+          [...paragraph].forEach((el) => {
             for (let s in size) {
               if (size[s] !== "default") {
                 el.classList.remove(css_class + size[s]);
@@ -278,7 +260,7 @@ export class UrlSearchParamUpdate {
       }
 
       // change browser history state
-      let href = `?${urlParam}${location.hash}`;
+      let href: string = `?${urlParam}${location.hash}`;
       uptState({
         hist: true,
         cit: citation_url,
@@ -289,6 +271,9 @@ export class UrlSearchParamUpdate {
   }
 
   fontFamily() {
+    // import types from utils.types.ts
+    const { FontFamilyType } = require("../../utils/types");
+
     let el = document.getElementsByTagName("font-family");
     let id = el[0].getAttribute("opt");
     // check if user set opt attribute
@@ -300,37 +285,7 @@ export class UrlSearchParamUpdate {
     let storage = sessionStorage.getItem(data);
 
     if (storage) {
-      let options:
-        | {
-            name: string | null | undefined;
-            variants:
-              | [
-                  {
-                    opt: string | null | undefined;
-                    title: string | null | undefined;
-                    urlparam: string | null | undefined;
-                    chg_citation: string | null | undefined;
-                    fonts:
-                      | {
-                          default: string | null | undefined;
-                          font1: string | null | undefined;
-                          font2: string | null | undefined;
-                          font3: string | null | undefined;
-                        }
-                      | null
-                      | undefined;
-                    paragraph: string | null | undefined;
-                    p_class: string | null | undefined;
-                    css_class: string | null | undefined;
-                  }
-                ]
-              | null
-              | undefined;
-            active_class: string | null | undefined;
-            html_class: string | null | undefined;
-          }
-        | null
-        | undefined = JSON.parse(storage);
+      let options: typeof FontFamilyType = JSON.parse(storage);
 
       if (!options) {
         alert("Please turn on cookies to display content!");
@@ -341,44 +296,52 @@ export class UrlSearchParamUpdate {
 
       // variant is found by comparing variant config opt with custom element attr opt
       try {
-        var variant_check = options.variants;
+        var variant_check: typeof FontFamilyType.variants = options.variants;
       } catch (err) {
         console.log(
           "No option parameters found. Creating default parameters to continue."
         );
       }
-      var variants = paramCheck(variant_check, [{ opt: id }]);
+      var variants: typeof FontFamilyType.variants = paramCheck(variant_check, [
+        { opt: id },
+      ]);
 
       for (let v in variants) {
         // get urlparam key
-        var urlparam = paramCheck(variants[v].urlparam, "font");
+        var urlparam: string = paramCheck(variants[v].urlparam, "font");
 
         // get citation url key and HTMLElement
-        var citation_url_str = paramCheck(
+        var citation_url_str: string = paramCheck(
           variants[v].chg_citation,
           "citation-url"
         );
-        var citation_url = document.getElementById(citation_url_str);
+        var citation_url = document.getElementById(
+          citation_url_str
+        ) as HTMLElement;
 
         // define paragraph HTML element name
-        let p_change = paramCheck(variants[v].paragraph, "p");
+        let p_change: string = paramCheck(variants[v].paragraph, "p");
         // define class to change font sizes (not all paragraphs might need to be changed)
-        let p_class = paramCheck(variants[v].p_class, "yes-index");
+        let p_class: string = paramCheck(variants[v].p_class, "yes-index");
 
         // check if sizes object with font sizes is not null or undefined
         try {
-          var family_check = variants[v].fonts;
+          var family_check: typeof FontFamilyType.variants.fonts =
+            variants[v].fonts;
         } catch (err) {
           console.log(
             "Font family object not found. Creating default parameters."
           );
         }
-        let family = paramCheck(family_check, {
-          default: "default",
-          font1: "Times-New-Roman",
-          font2: "Courier-New",
-          font3: "Arial-serif",
-        });
+        let family: typeof FontFamilyType.variants.fonts = paramCheck(
+          family_check,
+          {
+            default: "default",
+            font1: "Times-New-Roman",
+            font2: "Courier-New",
+            font3: "Arial-serif",
+          }
+        );
 
         if (urlParam.get(urlparam) == null) {
           urlParam.set(urlparam, "default");
@@ -390,11 +353,14 @@ export class UrlSearchParamUpdate {
           );
           urlParam.set(urlparam, "default");
         } else {
-          let paragraph = document.querySelectorAll(`${p_change}.${p_class}`);
+          let paragraph = document.querySelectorAll(
+            `${p_change}.${p_class}`
+          ) as NodeListOf<Element>;
+
           if (urlParam.get(urlparam) !== "default") {
-            var new_value = urlParam.get(urlparam);
+            var new_value: string = urlParam.get(urlparam);
           } else {
-            var new_value = urlParam.get(urlparam);
+            var new_value: string = urlParam.get(urlparam);
           }
 
           // change select option value based on provided url param
@@ -404,7 +370,7 @@ export class UrlSearchParamUpdate {
           select.value = new_value;
 
           // finally, change font-size of selected paragraphs
-          paragraph.forEach((el) => {
+          [...paragraph].forEach((el) => {
             for (let f in family) {
               if (family[f] !== "default") {
                 el.classList.remove(family[f].toLowerCase());
@@ -423,7 +389,7 @@ export class UrlSearchParamUpdate {
       }
 
       // update browser history state
-      let href = `?${urlParam}${location.hash}`;
+      let href: string = `?${urlParam}${location.hash}`;
       uptState({
         hist: true,
         cit: citation_url,
