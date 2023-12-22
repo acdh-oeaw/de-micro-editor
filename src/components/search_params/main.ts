@@ -5,73 +5,58 @@ const {
   hideLoading,
   paramCheck,
 } = require("../../utils/utils");
-const { AnnotationType } = require("../../utils/types");
 
 export class UrlSearchParamUpdate {
   fullSreen() {
+    // import types from utils.types.ts
+    const { FullScreenType } = require("../../utils/types");
+
     // get custom element and access opt attribute
-    let el = document.getElementsByTagName("full-size");
-    let opt = el[0].getAttribute("opt");
+    let el = document.getElementsByTagName(
+      "full-size"
+    ) as HTMLCollectionOf<Element>;
+    let opt: string = el[0].getAttribute("opt");
     if (typeof opt !== "string") {
       console.log("No 'opt' attribute in custom element font-size found!");
     }
 
-    // config name is predfined in index.ts
-    let data = "fullsize";
-
-    // get config by accessing sessions storage
+    // session storage key
+    // get config by accessing sessions storage cookies
+    let data: string = "fullsize";
     let storage: string | null = sessionStorage.getItem(data);
-
     if (storage) {
-      var options:
-        | {
-            name: string | null | undefined;
-            variants:
-              | [
-                  {
-                    opt: string | null | undefined;
-                    title: string | null | undefined;
-                    hide: string | null | undefined;
-                    to_hide: string | null | undefined;
-                    chg_citation: string | null | undefined;
-                    urlparam: string | null | undefined;
-                  }
-                ]
-              | null;
-            active_class: string | null | undefined;
-            render_class: string | null | undefined;
-            render_svg: string | null | undefined;
-          }
-        | null
-        | undefined = JSON.parse(storage);
-
+      var options: typeof FullScreenType = JSON.parse(storage);
       if (!options) {
         alert("Please turn on cookies to display content!");
       }
 
       // to manipulate url parameters construct url by getting current url
-      let url: any = new URL(location.href);
-      let urlParam: any = new URLSearchParams(url.search);
+      let url = new URL(location.href);
+      let urlParam = new URLSearchParams(url.search);
 
       // variant is found by comparing variant config opt with custom element attr opt
       try {
-        var variant_check = options.variants.find((v) => v.opt === opt);
+        var variant_check: (typeof FullScreenType.variants)[0] =
+          options.variants.find((v: any) => v.opt === opt);
       } catch (err) {
         console.log(
           "No option parameters found. Creating default parameters to continue."
         );
       }
-      var variant = paramCheck(variant_check, { opt: opt });
+      var variant: (typeof FullScreenType.variants)[0] = paramCheck(
+        variant_check,
+        {
+          opt: opt,
+        }
+      );
 
       // if variant obj contains urlparam string check urlparams parameters
-      var urlparam = paramCheck(variant.urlparam, "fullscreen");
+      var urlparam: string = paramCheck(variant.urlparam, "fullscreen");
 
       // check for option param or return default value
-      var active = paramCheck(options.active_class, "active");
-
-      var hide = paramCheck(variant.hide, "hide-container");
-
-      var hidden = paramCheck(variant.to_hide, "fade");
+      var active: string = paramCheck(options.active_class, "active");
+      var hide: string = paramCheck(variant.hide, "hide-container");
+      var hidden: string = paramCheck(variant.to_hide, "fade");
 
       if (urlParam.get(urlparam) == null) {
         urlParam.set(urlparam, "off");
@@ -85,13 +70,20 @@ export class UrlSearchParamUpdate {
       }
 
       if (urlParam.get(urlparam) == "off") {
-        document.querySelectorAll(`.${hide}`).forEach((el) => {
+        let hide_class: NodeListOf<Element> = document.querySelectorAll(
+          `.${hide}`
+        );
+        [...hide_class].forEach((el: any) => {
           el.classList.remove(hidden);
-          let svg_show = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fullscreen" viewBox="0 0 16 16">
-                                            <path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"/>
-                                        </svg>
-                                    `;
-          let btn = document.getElementById(opt);
+          let svg_show: string = `<svg xmlns="http://www.w3.org/2000/svg"
+                               width="16"
+                               height="16"
+                               fill="currentColor"
+                               class="bi bi-fullscreen"
+                               viewBox="0 0 16 16">
+                            <path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"/>
+                          </svg>`;
+          let btn = document.getElementById(opt) as HTMLElement;
           btn.innerHTML = svg_show;
           btn.classList.remove(active);
 
@@ -101,21 +93,36 @@ export class UrlSearchParamUpdate {
       }
 
       if (urlParam.get(urlparam) == "on") {
-        document.querySelectorAll(`.${hide}`).forEach((el) => {
+        let hide_class: NodeListOf<Element> = document.querySelectorAll(
+          `.${hide}`
+        );
+        [...hide_class].forEach((el: any) => {
           el.classList.add(hidden);
-          let svg_hide = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fullscreen-exit" viewBox="0 0 16 16">
-                                            <path d="M5.5 0a.5.5 0 0 1 .5.5v4A1.5 1.5 0 0 1 4.5 6h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 10 4.5v-4a.5.5 0 0 1 .5-.5zM0 10.5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 6 11.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zm10 1a1.5 1.5 0 0 1 1.5-1.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4z"/>
-                                        </svg>
-                                    `;
-          let btn = document.getElementById(opt);
+          let svg_hide = `<svg xmlns="http://www.w3.org/2000/svg"
+                               width="16"
+                               height="16"
+                               fill="currentColor"
+                               class="bi bi-fullscreen-exit"
+                               viewBox="0 0 16 16">
+                            <path d="M5.5 0a.5.5 0 0 1 .5.5v4A1.5 1.5 0 0 1 4.5 6h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 10 4.5v-4a.5.5 0 0 1 .5-.5zM0 10.5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 6 11.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zm10 1a1.5 1.5 0 0 1 1.5-1.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4z"/>
+                          </svg>`;
+          let btn = document.getElementById(opt) as HTMLElement;
           btn.innerHTML = svg_hide;
           btn.classList.add(active);
         });
       }
 
-      var citation_url_str = paramCheck(variant.chg_citation, "citation-url");
-      var citation_url = document.getElementById(citation_url_str);
-      let href = `?${urlParam}${location.hash}`;
+      // citation-url is an HTMLElement that is used to update the citation
+      var citation_url_str: string = paramCheck(
+        variant.chg_citation,
+        "citation-url"
+      );
+      var citation_url = document.getElementById(
+        citation_url_str
+      ) as HTMLElement;
+
+      // update browser history state
+      let href: string = `?${urlParam}${location.hash}`;
       uptState({
         hist: true,
         cit: citation_url,
@@ -666,8 +673,11 @@ export class UrlSearchParamUpdate {
   }
 
   textFeatures() {
-    let data = "annotation_slider";
+    // import types from utils.types.ts
+    const { AnnotationType } = require("../../utils/types");
 
+    // get key for session storage and access coockies
+    let data = "annotation_slider";
     let storage = sessionStorage.getItem(data);
     if (storage) {
       let options: typeof AnnotationType | null | undefined =
@@ -678,10 +688,18 @@ export class UrlSearchParamUpdate {
               Or check if configuration files path match data-target and data-path property.`);
       }
 
+      // define url and urlparams to manipulate and update
       let url = new URL(location.href);
       let urlParam = new URLSearchParams(url.search);
 
-      // variant is found by comparing variant config opt with custom element attr opt
+      // ########################################################################
+      // before using any config parameters check if they are defined
+      // if not create default parameters to continue
+      // ########################################################################
+
+      // variantAll is the group leader that controls the others
+      // it is determent by setting the features.all key to true and
+      // by sharing the same features.class in your config file
       try {
         var variant_all_check = options.variants.filter(
           (v: any) => v.features.all === true
@@ -704,25 +722,25 @@ export class UrlSearchParamUpdate {
 
       // variant is found by comparing variant config opt with custom element attr opt
       try {
-        var variant_check = options.variants.filter(
-          (v: any) => v.features.all === false
-        );
+        var variant_check: typeof AnnotationType.variants =
+          options.variants.filter((v: any) => v.features.all === false);
       } catch (err) {
         console.log(
           `WARNING 3 - search_params/main: No option parameters found.\n
            Creating default parameters to continue.`
         );
       }
-      let allVariants = document.querySelectorAll("annotation-slider");
+      let allVariants: NodeListOf<Element> =
+        document.querySelectorAll("annotation-slider");
       var allVariantsObjs: any[] = [];
       [...allVariants].forEach((el: any) => {
         try {
-          var attrOpt = el.getAttribute("opt");
+          var attrOpt: string = el.getAttribute("opt");
         } catch (err) {
           console.log(`WARNING 4 - search_params/main: No variants found.
-                        add custom html element <annotation-slider> to your html file.`);
+                      add custom html element <annotation-slider> to your html file.`);
         }
-        if (attrOpt) {
+        if (attrOpt.length > 0) {
           allVariantsObjs.push({
             opt: attrOpt,
             features: {
@@ -732,19 +750,13 @@ export class UrlSearchParamUpdate {
           });
         }
       });
-      let variants: any = paramCheck(variant_check, allVariantsObjs);
+      let variants: typeof AnnotationType.variants = paramCheck(
+        variant_check,
+        allVariantsObjs
+      );
 
-      // try {
-      //     var features_check = variants.features;
-      // } catch (err) {
-      //     console.log("Features object in variant not found. Creating default parameters.")
-      // }
-      // let features = paramCheck(features_check, {
-      //     all: false,
-      //     class: "single-feature"
-      // })
-
-      // variant is found by comparing variant config opt with custom element attr opt
+      // in case user config input for features.all is not a boolean value
+      // return Warning 6
       try {
         var variant_check_bool = options.variants.filter(
           (v: any) => typeof v.features.all !== "boolean"
@@ -755,7 +767,7 @@ export class UrlSearchParamUpdate {
            Creating default parameters to continue.`
         );
       }
-      let wrg_ft = paramCheck(variant_check_bool, []);
+      let wrg_ft: any[] = paramCheck(variant_check_bool, []);
       if (wrg_ft) {
         for (let w of wrg_ft) {
           console.log(
@@ -765,12 +777,14 @@ export class UrlSearchParamUpdate {
         }
       }
 
-      // check if sizes object with font sizes is not null or undefined
+      // check if span_element object is provided
+      // set to default params of not
       try {
         var span_check = options.span_element;
       } catch (err) {
         console.log(
-          "WARNING 6 - search_params/main: Hide object not found. Creating default parameters."
+          `WARNING 6 - search_params/main: span_element.css_class object not found.\n
+           Creating default parameters.`
         );
       }
       let span_checked = paramCheck(span_check, {
@@ -782,29 +796,67 @@ export class UrlSearchParamUpdate {
       let active = paramCheck(options.active_class, "active");
 
       // set count to verify state of sliders
-      let count_active: any = {};
-      let count = 0;
+      let count_active: {
+        [key: string]: number;
+      } = {};
+
+      // create general count for all sliders for each provided html element found
+      // that is connected to the slider via variants.html_class
+      let count: number = 0;
+
+      // ##############################################################################################
+      // task result 1: add markup to html element,
+      //                add active class to checkbox,
+      //                add data attribute to slider
+      // task result 2: remove markup from html element,
+      //                remove active class from checkbox,
+      //                remove data attribute from slider
+      // ****general task****: loop through all variants and check variant.opt against urlparam value
+      // task 1: allowed values = 'on' or 'off' -> task result 1 or 2
+      // task 2: values other than 'on' or 'off' are not selectable -> return warning -> task result 2
+      // task 3: if value is null check if variant has default value true:
+      // * if null and default: true -> task result 1
+      // * if null and default: false -> task result 2
+      // ##############################################################################################
       for (let v in variants) {
-        let opt = paramCheck(variants[v].opt, `any-feature-${v}`);
-        let opt_class = paramCheck(variants[v].features.class, `class-${opt}`);
-        let color = paramCheck(variants[v].color, `color-${opt}`);
-        let html_class = paramCheck(
+        // paramCheck verifies if config is avaliable
+        // if not default parameters are created
+        let opt: string = paramCheck(variants[v].opt, `any-feature-${v}`);
+        let opt_class: string = paramCheck(
+          variants[v].features.class,
+          `class-${opt}`
+        );
+        let color: string = paramCheck(variants[v].color, `color-${opt}`);
+        let html_class: string = paramCheck(
           variants[v].html_class,
           `html-class-${opt}`
         );
-        let css_class = paramCheck(variants[v].css_class, `css-class-${opt}`);
-        let opt_slider = paramCheck(variants[v].opt_slider, `${opt}-slider`);
-        let hide = paramCheck(variants[v].hide, false);
-
+        let css_class: string = paramCheck(
+          variants[v].css_class,
+          `css-class-${opt}`
+        );
+        let opt_slider: string = paramCheck(
+          variants[v].opt_slider,
+          `${opt}-slider`
+        );
+        let hide: typeof AnnotationType.variants.hide | boolean = paramCheck(
+          variants[v].hide,
+          false
+        );
         if (urlParam.get(opt) === null) {
+          // ##############################################
+          // check if urlparam is null
+          // if true also check if variant default is true
+          // ##############################################
           if (variants[v].default === true) {
             // if default is true
+            // count active sliders of each given features.class
             if (count_active.hasOwnProperty(opt_class)) {
               count_active[opt_class] += 1;
             } else {
               count_active[opt_class] = 1;
             }
-
+            // add markup to html elemet
             let selected = addMarkup(html_class, css_class, color, hide, style);
             try {
               let slider = document.getElementById(opt_slider) as HTMLElement;
@@ -817,17 +869,15 @@ export class UrlSearchParamUpdate {
               console.log(`slider class ${opt_slider} not found!`);
             }
 
-            if (
-              (document.getElementById(opt) as HTMLInputElement).checked ===
-              false
-            ) {
-              (document.getElementById(opt) as HTMLInputElement).checked = true;
-              (document.getElementById(opt) as HTMLInputElement).classList.add(
-                active
-              );
+            // update checkbox: add active class and checked attribute
+            let checkbox = document.getElementById(opt) as HTMLInputElement;
+            if (checkbox.checked === false) {
+              checkbox.checked = true;
+              checkbox.classList.add(active);
             }
           } else {
-            // urlParam.set(opt, "off");
+            // if default is false
+            // remove markup from html element
             let selected = removeMarkup(
               html_class,
               css_class,
@@ -836,6 +886,7 @@ export class UrlSearchParamUpdate {
               style
             );
 
+            // update slider: remove color, data, slider-number class
             try {
               let slider = document.getElementById(opt_slider) as HTMLElement;
               slider.classList.remove(color);
@@ -847,23 +898,23 @@ export class UrlSearchParamUpdate {
               );
             }
 
-            if (
-              (document.getElementById(opt) as HTMLInputElement).checked ===
-              true
-            ) {
-              (document.getElementById(opt) as HTMLInputElement).checked =
-                false;
-              (
-                document.getElementById(opt) as HTMLInputElement
-              ).classList.remove(active);
+            // update checkbox: remove active class and checked attribute
+            let checkbox = document.getElementById(opt) as HTMLInputElement;
+            if (checkbox.checked === true) {
+              checkbox.checked = false;
+              checkbox.classList.remove(active);
             }
           }
         } else if (!["on", "off"].includes(urlParam.get(opt))) {
+          // ########################################################
+          // if urlparam is not null and not on or off return warning
+          // ########################################################
           console.log(
             `${opt}=${urlParam.get(opt)} is not a selectable option.`
           );
-          urlParam.set(opt, "off");
+          urlParam.delete(opt);
 
+          // add markup to html element
           let selected = removeMarkup(
             html_class,
             css_class,
@@ -872,6 +923,7 @@ export class UrlSearchParamUpdate {
             style
           );
 
+          // update slider: remove color, data, slider-number class
           try {
             let slider = document.getElementById(opt_slider) as HTMLElement;
             slider.classList.remove(color);
@@ -883,23 +935,28 @@ export class UrlSearchParamUpdate {
             );
           }
 
-          if (
-            (document.getElementById(opt) as HTMLInputElement).checked === true
-          ) {
-            (document.getElementById(opt) as HTMLInputElement).checked = false;
-            (document.getElementById(opt) as HTMLInputElement).classList.remove(
-              active
-            );
+          // update checkbox: remove active class and checked attribute
+          let checkbox = document.getElementById(opt) as HTMLInputElement;
+          if (checkbox.checked === true) {
+            checkbox.checked = false;
+            checkbox.classList.remove(active);
           }
         } else if (urlParam.get(opt) === "on") {
+          // ##############################################
+          // ############ if urlparam is on ###############
+          // ##############################################
+
+          // count active sliders of each given features.class
           if (count_active.hasOwnProperty(opt_class)) {
             count_active[opt_class] += 1;
           } else {
             count_active[opt_class] = 1;
           }
 
+          // remove markup from html element
           let selected = addMarkup(html_class, css_class, color, hide, style);
 
+          // update slider: add color, data, slider-number class
           try {
             let slider = document.getElementById(opt_slider) as HTMLElement;
             slider.setAttribute("data", selected);
@@ -912,15 +969,18 @@ export class UrlSearchParamUpdate {
             );
           }
 
-          if (
-            (document.getElementById(opt) as HTMLInputElement).checked === false
-          ) {
-            (document.getElementById(opt) as HTMLInputElement).checked = true;
-            (document.getElementById(opt) as HTMLInputElement).classList.add(
-              active
-            );
+          // update checkbox: add active class and checked attribute
+          let checkbox = document.getElementById(opt) as HTMLInputElement;
+          if (checkbox.checked === false) {
+            checkbox.checked = true;
+            checkbox.classList.add(active);
           }
         } else if (urlParam.get(opt) === "off") {
+          // ##############################################
+          // ######### urlparam value is off ##############
+          // ##############################################
+
+          // remove markup from html element
           let selected = removeMarkup(
             html_class,
             css_class,
@@ -929,6 +989,7 @@ export class UrlSearchParamUpdate {
             style
           );
 
+          // update slider: remove color, data, slider-number class
           try {
             let slider = document.getElementById(opt_slider) as HTMLElement;
             slider.classList.remove(color);
@@ -940,13 +1001,11 @@ export class UrlSearchParamUpdate {
             );
           }
 
-          if (
-            (document.getElementById(opt) as HTMLInputElement).checked === true
-          ) {
-            (document.getElementById(opt) as HTMLInputElement).checked = false;
-            (document.getElementById(opt) as HTMLInputElement).classList.remove(
-              active
-            );
+          // update checkbox: remove active class and checked attribute
+          let checkbox = document.getElementById(opt) as HTMLInputElement;
+          if (checkbox.checked === true) {
+            checkbox.checked = false;
+            checkbox.classList.remove(active);
           }
 
           /* default value e.g. off should not be added to url */
@@ -962,12 +1021,16 @@ export class UrlSearchParamUpdate {
         }
       }
 
+      // ####################################################################################
       // handling features.all slider to receive active or inactive status
+      // algorithm:
+      // if all group variants are active turn group leader active -> task result 1
+      // if none or not all variants are active turn group leader inactive -> task result 2
       [...variantAll].forEach((el: any) => {
-        let optAll = paramCheck(el.opt, `all-features`);
+        let optAll: string = paramCheck(el.opt, `all-features`);
         var feat_leader = document.getElementById(optAll) as HTMLInputElement;
-        var feat_leader_class = el.features.class;
-        var variants_features_class = variants.filter(
+        var feat_leader_class: string = el.features.class;
+        var variants_features_class: any[] = variants.filter(
           (v: any) => v.features.class === feat_leader_class
         );
         if (
@@ -989,7 +1052,10 @@ export class UrlSearchParamUpdate {
         }
       });
 
-      let href = `?${urlParam}${location.hash}`;
+      // ########################################################################
+      // uptState changes the browser history state to reflect the current state
+      // of all variants (html elements, slider, checkbox) and their urlparams
+      let href: string = `?${urlParam}${location.hash}`;
       uptState({
         hist: true,
         cit: citation_url,
