@@ -1,10 +1,4 @@
-const {
-  addMarkup,
-  removeMarkup,
-  uptState,
-  hideLoading,
-  paramCheck,
-} = require("../../utils/utils");
+const { uptState, paramCheck } = require("../../utils/utils");
 
 export class UrlSearchParamUpdate {
   fullSreen() {
@@ -400,66 +394,21 @@ export class UrlSearchParamUpdate {
   }
 
   viewerSwitch() {
-    let el = document.getElementsByTagName("image-switch");
-    let opt = el[0].getAttribute("opt");
+    // import types from utils.types.ts
+    const { ImageSwitchType } = require("../../utils/types");
+
+    let el = document.querySelectorAll("image-switch") as NodeListOf<Element>;
+    let opt: string = el[0].getAttribute("opt");
     // check if user set opt attribute
     if (typeof opt !== "string") {
       console.log("No 'opt' attribute in custom element font-family found!");
     }
 
-    let data = "image_switch";
-    let storage = sessionStorage.getItem(data);
+    let data: string = "image_switch";
+    let storage: string = sessionStorage.getItem(data);
 
     if (storage) {
-      let options:
-        | {
-            name: string | null | undefined;
-            variants: [
-              {
-                opt: string | null | undefined;
-                title: string | null | undefined;
-                urlparam: string | null | undefined;
-                chg_citation: string | null | undefined;
-                fade: string | null | undefined;
-                column_small:
-                  | {
-                      class: string | null | undefined;
-                      percent: string | null | undefined;
-                    }
-                  | null
-                  | undefined;
-                column_full:
-                  | {
-                      class: string | null | undefined;
-                      percent: string | null | undefined;
-                    }
-                  | null
-                  | undefined;
-                hide:
-                  | {
-                      hidden: true;
-                      class_to_hide: string | null | undefined;
-                      class_to_show: string | null | undefined;
-                      class_parent: string | null | undefined;
-                      resize: string | null | undefined;
-                    }
-                  | null
-                  | undefined;
-                image_size: string | null | undefined;
-              }
-            ];
-            active_class: string | null | undefined;
-            rendered_element:
-              | {
-                  a_class: string | null | undefined;
-                  svg: string | null | undefined;
-                }
-              | null
-              | undefined;
-          }
-        | null
-        | undefined = JSON.parse(storage);
-
+      let options: typeof ImageSwitchType = JSON.parse(storage);
       if (!options) {
         alert("Please turn on cookies to display content!");
       }
@@ -469,81 +418,100 @@ export class UrlSearchParamUpdate {
 
       // variant is found by comparing variant config opt with custom element attr opt
       try {
-        var variant_check = options.variants.find((v) => v.opt === opt);
+        var variant_check: typeof ImageSwitchType.variants =
+          options.variants.find((v: any) => v.opt === opt);
       } catch (err) {
         console.log(
           "No option parameters found. Creating default parameters to continue."
         );
       }
-      var variant = paramCheck(variant_check, { opt: opt });
+      var variant: typeof ImageSwitchType.variants = paramCheck(variant_check, {
+        opt: opt,
+      });
 
       // check for option param or return default value
-      var active = paramCheck(options.active_class, "active");
+      var active: string = paramCheck(options.active_class, "active");
 
       // check if sizes object with font sizes is not null or undefined
       try {
-        var hide_check = variant.hide;
+        var hide_check: typeof ImageSwitchType.variants.hide = variant.hide;
       } catch (err) {
         console.log("Hide object not found. Creating default parameters.");
       }
-      let hide_checked = paramCheck(hide_check, {
-        hidden: true,
-        class_to_hide: "hide-container1",
-        class_to_show: "show-container1",
-        class_parent: "hide-show-wrapper",
-        resize: "resize-hide",
-      });
+      let hide_checked: typeof ImageSwitchType.variants.hide = paramCheck(
+        hide_check,
+        {
+          hidden: true,
+          class_to_hide: "hide-container1",
+          class_to_show: "show-container1",
+          class_parent: "hide-show-wrapper",
+          resize: "resize-hide",
+        }
+      );
 
       // get classes from params for container to hide and show
-      let hidden = paramCheck(hide_checked.hidden, true);
-      let hide = paramCheck(hide_checked.class_to_hide, "hide-container1");
-      let show = paramCheck(hide_checked.class_to_show, "show-container1");
-      let resize = paramCheck(hide_checked.resize, "resize-hide");
+      let hidden: boolean = paramCheck(hide_checked.hidden, true);
+      let hide: string = paramCheck(
+        hide_checked.class_to_hide,
+        "hide-container1"
+      );
+      let show: string = paramCheck(
+        hide_checked.class_to_show,
+        "show-container1"
+      );
+      let resize: string = paramCheck(hide_checked.resize, "resize-hide");
 
       // get class for wrapper of hide show container
-      let parent = paramCheck(hide_checked.class_parent, "hide-show-wrapper");
+      let parent: string = paramCheck(
+        hide_checked.class_parent,
+        "hide-show-wrapper"
+      );
 
       // get urlparam key
-      var urlparam = paramCheck(variant.urlparam, "image");
+      var urlparam: string = paramCheck(variant.urlparam, "image");
 
       // get fade class
-      let fade = paramCheck(variant.fade, "fade");
+      let fade: string = paramCheck(variant.fade, "fade");
 
       // check if sizes object with font sizes is not null or undefined
       try {
-        var small_check = variant.column_small;
+        var small_check: typeof ImageSwitchType.variants.column_small =
+          variant.column_small;
       } catch (err) {
         console.log("Hide object not found. Creating default parameters.");
       }
-      let column_small_check = paramCheck(small_check, {
-        class: "col-md-6",
-        percent: "50%",
-      });
+      let column_small_check: typeof ImageSwitchType.variants.column_small =
+        paramCheck(small_check, {
+          class: "col-md-6",
+          percent: "50%",
+        });
 
       // check if sizes object with font sizes is not null or undefined
       try {
-        var large_check = variant.column_full;
+        var large_check: typeof ImageSwitchType.variants.column_full =
+          variant.column_full;
       } catch (err) {
         console.log("Hide object not found. Creating default parameters.");
       }
-      let column_full_checked = paramCheck(large_check, {
-        class: "col-md-12",
-        percent: "100%",
-      });
+      let column_full_checked: typeof ImageSwitchType.variants.column_full =
+        paramCheck(large_check, {
+          class: "col-md-12",
+          percent: "100%",
+        });
 
       // get classes and style for hide show container resizing
-      let column_small = [
+      let column_small: any[] = [
         paramCheck(column_small_check.class, "col-md-6"),
         paramCheck(column_small_check.percent, "50%"),
       ];
-      let column_full = [
+      let column_full: any[] = [
         paramCheck(column_full_checked.class, "col-md-12"),
         paramCheck(column_full_checked.percent, "100%"),
       ];
 
       // check if urlparam value is null and set to default
       if (urlParam.get(urlparam) == null) {
-        urlParam.set(urlparam, "on");
+        urlParam.set(urlparam, "off");
       }
 
       // if urlparam value is not valid set to default
@@ -551,47 +519,66 @@ export class UrlSearchParamUpdate {
         console.log(
           `image=${urlParam.get(urlparam)} is not a selectable option.`
         );
-        urlParam.set(urlparam, "on");
+        urlParam.delete(urlparam);
       }
 
       // if urlparam value is 'on' show container
       if (urlParam.get(urlparam) == "on") {
-        document.querySelectorAll(`.${hide}`).forEach((el: HTMLElement) => {
+        let hide_elements = document.querySelectorAll(
+          `.${hide}`
+        ) as NodeListOf<Element>;
+        [...hide_elements].forEach((el: HTMLElement) => {
           el.classList.remove(fade);
           el.classList.add(column_small[0]);
           el.style.maxWidth = column_small[1];
           el.classList.add(active);
         });
-        document.querySelectorAll(`.${show}`).forEach((el: HTMLElement) => {
+
+        let show_elements = document.querySelectorAll(
+          `.${show}`
+        ) as NodeListOf<Element>;
+        [...show_elements].forEach((el: HTMLElement) => {
           el.classList.add(column_small[0]);
           el.classList.remove(column_full[0]);
           el.style.maxWidth = column_small[1];
           el.classList.add(active);
         });
-        document.querySelectorAll(`.${resize}`).forEach((el: HTMLElement) => {
+        let resize_elements = document.querySelectorAll(
+          `.${resize}`
+        ) as NodeListOf<Element>;
+        [...resize_elements].forEach((el: HTMLElement) => {
           el.classList.remove(fade);
         });
-        document.getElementById(opt).classList.add(active);
-
-        /* if value is off it should not be part of the urlsearchparams */
-        urlParam.delete(urlparam);
+        let checkbox = document.getElementById(opt) as HTMLElement;
+        checkbox.classList.add(active);
       }
 
       // if urlparam value is 'off' hide container
       if (urlParam.get(urlparam) == "off") {
-        document.querySelectorAll(`.${hide}`).forEach((el: HTMLElement) => {
+        let hide_elements = document.querySelectorAll(
+          `.${hide}`
+        ) as NodeListOf<Element>;
+        [...hide_elements].forEach((el: HTMLElement) => {
           el.classList.add(fade);
           el.classList.remove(column_small[0]);
           el.style.maxWidth = column_full[1];
           el.classList.remove(active);
         });
-        document.querySelectorAll(`.${show}`).forEach((el: HTMLElement) => {
+
+        let show_elements = document.querySelectorAll(
+          `.${show}`
+        ) as NodeListOf<Element>;
+        [...show_elements].forEach((el: HTMLElement) => {
           el.classList.remove(column_small[0]);
           el.classList.add(column_full[0]);
           el.style.maxWidth = column_full[1];
           el.classList.remove(active);
         });
-        document.querySelectorAll(`.${resize}`).forEach((el: HTMLElement) => {
+
+        let resize_elements = document.querySelectorAll(
+          `.${resize}`
+        ) as NodeListOf<Element>;
+        [...resize_elements].forEach((el: HTMLElement) => {
           el.classList.add(fade);
         });
 
@@ -620,15 +607,24 @@ export class UrlSearchParamUpdate {
         }
 
         // remove active class
-        document.getElementById(opt).classList.remove(active);
+        let checkbox = document.getElementById(opt) as HTMLElement;
+        checkbox.classList.remove(active);
+
+        /* if value is off it should not be part of the urlsearchparams */
+        urlParam.delete(urlparam);
       }
 
       // get citation url class and update citation
-      let citation_url_str = paramCheck(variant.chg_citation, "citation-url");
-      let citation_url = document.getElementById(citation_url_str);
+      let citation_url_str: string = paramCheck(
+        variant.chg_citation,
+        "citation-url"
+      );
+      let citation_url = document.getElementById(
+        citation_url_str
+      ) as HTMLElement;
 
       // update browser history state
-      let href = `?${urlParam}${location.hash}`;
+      let href: string = `?${urlParam}${location.hash}`;
       uptState({
         hist: true,
         cit: citation_url,
@@ -641,6 +637,7 @@ export class UrlSearchParamUpdate {
   textFeatures() {
     // import types from utils.types.ts
     const { AnnotationType } = require("../../utils/types");
+    const { addMarkup, removeMarkup } = require("../../utils/utils");
 
     // get key for session storage and access coockies
     let data = "annotation_slider";
@@ -1032,6 +1029,7 @@ export class UrlSearchParamUpdate {
   }
 
   pageUrl() {
+    const { hideLoading } = require("../../utils/utils");
     // get session cookies as parameters
     let data = "image_loader";
     let storage = sessionStorage.getItem(data);

@@ -118,3 +118,51 @@ export type FontFamilyType =
     }
   | null
   | undefined;
+export type ImageSwitchType =
+  | {
+      name: string | null | undefined;
+      variants: [
+        {
+          opt: string | null | undefined;
+          title: string | null | undefined;
+          urlparam: string | null | undefined;
+          chg_citation: string | null | undefined;
+          fade: string | null | undefined;
+          column_small:
+            | {
+                class: string | null | undefined;
+                percent: string | null | undefined;
+              }
+            | null
+            | undefined;
+          column_full:
+            | {
+                class: string | null | undefined;
+                percent: string | null | undefined;
+              }
+            | null
+            | undefined;
+          hide:
+            | {
+                hidden: true;
+                class_to_hide: string | null | undefined;
+                class_to_show: string | null | undefined;
+                class_parent: string | null | undefined;
+                resize: string | null | undefined;
+              }
+            | null
+            | undefined;
+          image_size: string | null | undefined;
+        }
+      ];
+      active_class: string | null | undefined;
+      rendered_element:
+        | {
+            a_class: string | null | undefined;
+            svg: string | null | undefined;
+          }
+        | null
+        | undefined;
+    }
+  | null
+  | undefined;
