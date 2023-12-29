@@ -526,7 +526,7 @@ export class UrlSearchParamUpdate {
       if (urlParam.get(urlparam) == "on") {
         let hide_elements = document.querySelectorAll(
           `.${hide}`
-        ) as NodeListOf<Element>;
+        ) as NodeListOf<HTMLElement>;
         [...hide_elements].forEach((el: HTMLElement) => {
           el.classList.remove(fade);
           el.classList.add(column_small[0]);
@@ -536,7 +536,7 @@ export class UrlSearchParamUpdate {
 
         let show_elements = document.querySelectorAll(
           `.${show}`
-        ) as NodeListOf<Element>;
+        ) as NodeListOf<HTMLElement>;
         [...show_elements].forEach((el: HTMLElement) => {
           el.classList.add(column_small[0]);
           el.classList.remove(column_full[0]);
@@ -545,7 +545,7 @@ export class UrlSearchParamUpdate {
         });
         let resize_elements = document.querySelectorAll(
           `.${resize}`
-        ) as NodeListOf<Element>;
+        ) as NodeListOf<HTMLElement>;
         [...resize_elements].forEach((el: HTMLElement) => {
           el.classList.remove(fade);
         });
@@ -557,7 +557,7 @@ export class UrlSearchParamUpdate {
       if (urlParam.get(urlparam) == "off") {
         let hide_elements = document.querySelectorAll(
           `.${hide}`
-        ) as NodeListOf<Element>;
+        ) as NodeListOf<HTMLElement>;
         [...hide_elements].forEach((el: HTMLElement) => {
           el.classList.add(fade);
           el.classList.remove(column_small[0]);
@@ -567,7 +567,7 @@ export class UrlSearchParamUpdate {
 
         let show_elements = document.querySelectorAll(
           `.${show}`
-        ) as NodeListOf<Element>;
+        ) as NodeListOf<HTMLElement>;
         [...show_elements].forEach((el: HTMLElement) => {
           el.classList.remove(column_small[0]);
           el.classList.add(column_full[0]);
@@ -577,7 +577,7 @@ export class UrlSearchParamUpdate {
 
         let resize_elements = document.querySelectorAll(
           `.${resize}`
-        ) as NodeListOf<Element>;
+        ) as NodeListOf<HTMLElement>;
         [...resize_elements].forEach((el: HTMLElement) => {
           el.classList.add(fade);
         });
@@ -1030,33 +1030,14 @@ export class UrlSearchParamUpdate {
 
   pageUrl() {
     const { hideLoading } = require("../../utils/utils");
+    const { PageUrl } = require("../../utils/types");
     // get session cookies as parameters
     let data = "image_loader";
     let storage = sessionStorage.getItem(data);
     var OpenSeadragon = require("openseadragon");
 
     if (storage) {
-      let options:
-        | {
-            name: string | null | undefined;
-            opt: string | null | undefined;
-            title: string | null | undefined;
-            urlparam: string | null | undefined;
-            chg_citation: string | null | undefined;
-            pag_link: string | null | undefined;
-            pag_tab: string | null | undefined;
-            img_size: string | null | undefined; // to be deprecated
-            url: string | null | undefined;
-            url_param: string | null | undefined;
-            osd_target: string | null | undefined;
-            img_source: string | null | undefined;
-            img_types: [] | null | undefined;
-            active_class: string | null | undefined;
-            inactive_class: string | null | undefined;
-            bootstrap_class: string | null | undefined;
-          }
-        | null
-        | undefined = JSON.parse(storage);
+      let options: typeof PageUrl = JSON.parse(storage);
 
       // get url params
       let url = new URL(location.href);
@@ -1072,23 +1053,30 @@ export class UrlSearchParamUpdate {
       }
 
       // set all nav links to inactive
-      let pag_link = paramCheck(options.pag_link, ".pagination-link");
-      let active = paramCheck(options.active_class, "active");
-      let inactive = paramCheck(options.inactive_class, "fade");
-      let bootstrap_class = paramCheck(options.bootstrap_class, "show");
-      let pag_tab = paramCheck(options.pag_tab, ".pagination-tab.tab-pane");
+      let pag_link: string = paramCheck(options.pag_link, ".pagination-link");
+      let active: string = paramCheck(options.active_class, "active");
+      let inactive: string = paramCheck(options.inactive_class, "fade");
+      let bootstrap_class: string = paramCheck(options.bootstrap_class, "show");
+      let pag_tab: string = paramCheck(
+        options.pag_tab,
+        ".pagination-tab.tab-pane"
+      );
 
       // deactivate all tabs
-      let tabs = document.querySelectorAll(`${pag_tab}[data-tab="paginate"]`);
-      tabs.forEach(function (el: HTMLElement) {
+      let tabs: NodeListOf<HTMLElement> = document.querySelectorAll(
+        `${pag_tab}[data-tab="paginate"]`
+      );
+      [...tabs].forEach(function (el: HTMLElement) {
         el.classList.remove(active);
         el.classList.add(inactive);
       });
 
       // deactivate pagination linksshow metadata
-      let link = document.querySelectorAll(`${pag_link}`);
+      let link: NodeListOf<HTMLElement> = document.querySelectorAll(
+        `${pag_link}`
+      );
       let pgOpt: any = [];
-      link.forEach(function (el: HTMLElement) {
+      [...link].forEach(function (el: HTMLElement) {
         el.classList.remove(active);
         el.classList.remove(bootstrap_class);
         let el_id = el.getAttribute("id");
@@ -1113,10 +1101,10 @@ export class UrlSearchParamUpdate {
       tab.classList.add(bootstrap_class);
 
       // get all nav tabs matching href tabs based on urlparams and set to active
-      let linkActive = document.querySelectorAll(
+      let linkActive: NodeListOf<HTMLElement> = document.querySelectorAll(
         `${pag_link}[href="#paginate-${_current}"]`
       );
-      linkActive.forEach(function (el: HTMLElement) {
+      [...linkActive].forEach(function (el: HTMLElement) {
         el.classList.add(active);
         el.classList.add(bootstrap_class);
       });
@@ -1124,19 +1112,19 @@ export class UrlSearchParamUpdate {
       // create OSD container
       // check if sizes object with font sizes is not null or undefined
       try {
-        var type_check = options.img_types;
+        var type_check: [] = options.img_types;
       } catch (err) {
         console.log("Hide object not found. Creating default parameters.");
       }
-      let type_checked = paramCheck(type_check, ["type1", "type2"]);
+      let type_checked: [] = paramCheck(type_check, ["type1", "type2"]);
 
       // get class where osd img are inserted
-      let opt_osd_target = paramCheck(options.osd_target, "container");
-      let opt_img_source = paramCheck(options.img_source, "container2");
-      let opt_image_size = paramCheck(options.img_size, "500px"); // to be deprecated
+      let opt_osd_target: string = paramCheck(options.osd_target, "container");
+      let opt_img_source: string = paramCheck(options.img_source, "container2");
+      let opt_image_size: string = paramCheck(options.img_size, "500px"); // to be deprecated
 
       // find correct image type
-      let i = 0;
+      let i: number = 0;
       while (i < type_checked.length) {
         if (
           document.getElementById(
@@ -1148,8 +1136,8 @@ export class UrlSearchParamUpdate {
         i++;
       }
 
-      let _osd_container_id = `${_image_type}_${opt_osd_target}_${_current}`;
-      let _osd_container_id2 = `${_image_type}_${opt_img_source}_${_current}`;
+      let _osd_container_id: string = `${_image_type}_${opt_osd_target}_${_current}`;
+      let _osd_container_id2: string = `${_image_type}_${opt_img_source}_${_current}`;
       let osd_container = document.getElementById(
         _osd_container_id
       ) as HTMLElement;
@@ -1160,19 +1148,21 @@ export class UrlSearchParamUpdate {
       /* ancestor wrapper of osd viewer */
       let osd_container_2_img = document.getElementById(
         `img-resize-${_current}`
-      );
+      ) as HTMLElement;
 
       /* wrapper sibling of resize container to get correct height */
       let test_container_height = document.getElementById(
         `text-resize-${_current}`
-      ).offsetHeight;
+      ).offsetHeight as number;
 
       if (osd_container_2 && !osd_container_2_img.classList.contains("fade")) {
         osd_container.style.height = `${test_container_height}px`;
-        let image = document.getElementById(`${_image_type}_img_${_current}`);
+        let image = document.getElementById(
+          `${_image_type}_img_${_current}`
+        ) as HTMLElement;
 
-        let image_src = image.getAttribute("data-src");
-        let image_url = { type: "image", url: image_src };
+        let image_src: string = image.getAttribute("data-src");
+        let image_url: object = { type: "image", url: image_src };
 
         let viewer = OpenSeadragon({
           id: _osd_container_id,
@@ -1210,10 +1200,15 @@ export class UrlSearchParamUpdate {
       }
 
       // get citation url class and update citation
-      let citation_url_str = paramCheck(options.chg_citation, "citation-url");
-      let citation_url = document.getElementById(citation_url_str);
+      let citation_url_str: string = paramCheck(
+        options.chg_citation,
+        "citation-url"
+      );
+      let citation_url = document.getElementById(
+        citation_url_str
+      ) as HTMLElement;
 
-      let href = `?${urlParam}${location.hash}`;
+      let href: string = `?${urlParam}${location.hash}`;
       uptState({
         hist: true,
         cit: citation_url,
@@ -1225,27 +1220,11 @@ export class UrlSearchParamUpdate {
 
   multiLanguage() {
     // get session cookie with configartion json
+    const { MultiLanguage } = require("../../utils/types");
     const data = "multi_language";
     const storage = sessionStorage.getItem(data);
     if (storage) {
-      const options:
-        | {
-            title: string | null | undefined;
-            variants:
-              | [
-                  {
-                    opt: string | null | undefined;
-                    title: string | null | undefined;
-                    class: string | null | undefined;
-                    map: object | null | undefined;
-                  }
-                ]
-              | null
-              | undefined;
-            active_class: string | null | undefined;
-          }
-        | null
-        | undefined = JSON.parse(storage);
+      const options: typeof MultiLanguage = JSON.parse(storage);
 
       /* get current ur */
       var url = new URL(document.location.href);
@@ -1254,10 +1233,10 @@ export class UrlSearchParamUpdate {
       var urlParam = new URLSearchParams(url.search);
 
       /* check if active class was defined or set to default class */
-      var active = paramCheck(options.active_class, "lang_active");
+      var active: string = paramCheck(options.active_class, "lang_active");
 
       /* create array of all configured user languages  */
-      var userLang = [];
+      var userLang: any[] = [];
       for (let x of options.variants) {
         userLang.push(x.opt);
       }
@@ -1281,14 +1260,13 @@ export class UrlSearchParamUpdate {
                     set to default language.`);
       } else {
         /* get urlparam set */
-        var langUpdate = urlParam.get("lang");
+        var langUpdate: string = urlParam.get("lang");
       }
 
       // use try/catch to verify if object exists in options
       try {
-        var variants_check = options.variants.filter(
-          (v) => v.opt !== langUpdate
-        );
+        var variants_check: typeof MultiLanguage.variants =
+          options.variants.filter((v: any) => v.opt !== langUpdate);
       } catch (err) {
         console.log(
           "No option parameters found. Creating default parameters to continue."
@@ -1296,7 +1274,7 @@ export class UrlSearchParamUpdate {
       }
 
       // all variants except current clicked
-      var variants = paramCheck(variants_check, [
+      var variants: typeof MultiLanguage.variants = paramCheck(variants_check, [
         {
           opt: langUpdate,
         },
@@ -1306,7 +1284,8 @@ export class UrlSearchParamUpdate {
       // to match the custom element with the configuration the opt value must match.
       // variant is found by comparing variant config opt with custom element attr opt
       try {
-        var variant_check = options.variants.find((v) => v.opt === langUpdate);
+        var variant_check: (typeof MultiLanguage.variants)[0] =
+          options.variants.find((v: any) => v.opt === langUpdate);
       } catch (err) {
         console.log(
           "No option parameters found. Creating default parameters to continue."
@@ -1314,9 +1293,12 @@ export class UrlSearchParamUpdate {
       }
 
       // variant as selected in UI
-      let variant = paramCheck(variant_check, {
-        opt: langUpdate,
-      });
+      let variant: (typeof MultiLanguage.variants)[0] = paramCheck(
+        variant_check,
+        {
+          opt: langUpdate,
+        }
+      );
       if (!variant) {
         console.log(
           "No variant found! Please define a variant object that contains \
@@ -1326,23 +1308,25 @@ export class UrlSearchParamUpdate {
       }
 
       /* remove active class from variants not clicked */
-      variants.forEach((el: any) => {
+      [...variants].forEach((el: any) => {
         document.getElementById(`ml_${el.opt}`).classList.remove(active);
       });
 
       /* set current clicked variant active with class and change state of urlparam */
-      let current = document.getElementById(`ml_${variant.opt}`);
+      let current = document.getElementById(`ml_${variant.opt}`) as HTMLElement;
       current.classList.add(active);
 
       /* check if language mappings is available */
-      var map = paramCheck(variant.map, { "index.html": "index-en.html" });
+      var map: typeof MultiLanguage.variants.map = paramCheck(variant.map, {
+        "index.html": "index-en.html",
+      });
 
       if (map) {
         /* must be replaced in production
           get pathname and specific filename
           set new path based on mappings from mappings json
           key in mappings = filename */
-        let path = location.pathname.split("/");
+        let path: string[] = location.pathname.split("/");
         let newPath =
           path.length == 3 && path[2].length > 0
             ? map[path[2]]
@@ -1357,7 +1341,7 @@ export class UrlSearchParamUpdate {
             lang: variant.opt,
           };
 
-          let href = `${newPath}?${urlParam}${location.hash}`;
+          let href: string = `${newPath}?${urlParam}${location.hash}`;
           uptState({
             hist: true,
             state: state,

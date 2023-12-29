@@ -120,49 +120,88 @@ export type FontFamilyType =
   | undefined;
 export type ImageSwitchType =
   | {
-      name: string | null | undefined;
+      name: String_misc;
       variants: [
         {
-          opt: string | null | undefined;
-          title: string | null | undefined;
-          urlparam: string | null | undefined;
-          chg_citation: string | null | undefined;
-          fade: string | null | undefined;
+          opt: String_misc;
+          title: String_misc;
+          urlparam: String_misc;
+          chg_citation: String_misc;
+          fade: String_misc;
           column_small:
             | {
-                class: string | null | undefined;
-                percent: string | null | undefined;
+                class: String_misc;
+                percent: String_misc;
               }
             | null
             | undefined;
           column_full:
             | {
-                class: string | null | undefined;
-                percent: string | null | undefined;
+                class: String_misc;
+                percent: String_misc;
               }
             | null
             | undefined;
           hide:
             | {
                 hidden: true;
-                class_to_hide: string | null | undefined;
-                class_to_show: string | null | undefined;
-                class_parent: string | null | undefined;
-                resize: string | null | undefined;
+                class_to_hide: String_misc;
+                class_to_show: String_misc;
+                class_parent: String_misc;
+                resize: String_misc;
               }
             | null
             | undefined;
-          image_size: string | null | undefined;
+          image_size: String_misc;
         }
       ];
-      active_class: string | null | undefined;
+      active_class: String_misc;
       rendered_element:
         | {
-            a_class: string | null | undefined;
-            svg: string | null | undefined;
+            a_class: String_misc;
+            svg: String_misc;
           }
         | null
         | undefined;
+    }
+  | null
+  | undefined;
+export type PageUrl =
+  | {
+      name: String_misc;
+      opt: String_misc;
+      title: String_misc;
+      urlparam: String_misc;
+      chg_citation: String_misc;
+      pag_link: String_misc;
+      pag_tab: String_misc;
+      img_size: String_misc; // to be deprecated
+      url: String_misc;
+      url_param: String_misc;
+      osd_target: String_misc;
+      img_source: String_misc;
+      img_types: [] | null | undefined;
+      active_class: String_misc;
+      inactive_class: String_misc;
+      bootstrap_class: String_misc;
+    }
+  | null
+  | undefined;
+export type MultiLanguage =
+  | {
+      title: String_misc;
+      variants:
+        | [
+            {
+              opt: String_misc;
+              title: String_misc;
+              class: String_misc;
+              map: object | null | undefined;
+            }
+          ]
+        | null
+        | undefined;
+      active_class: String_misc;
     }
   | null
   | undefined;
