@@ -1,10 +1,3 @@
-export type AnnotationType = {
-  title: Title;
-  variants: Variants;
-  span_element: Span_element;
-  active_class: String_misc;
-  rendered_element: Rendered_element;
-};
 type String_misc = string | null | undefined;
 type Bool_misc = boolean | null | undefined;
 type Rendered_element =
@@ -45,6 +38,13 @@ type Variants =
     ]
   | null
   | undefined;
+export type AnnotationType = {
+  title: Title;
+  variants: Variants;
+  span_element: Span_element;
+  active_class: String_misc;
+  rendered_element: Rendered_element;
+};
 export type FullScreenType =
   | {
       name: String_misc;

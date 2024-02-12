@@ -1048,7 +1048,10 @@ export class UrlSearchParamUpdate {
       // const item = document.querySelector('.pagination .nav-tabs .nav-item .nav-link.active');
       // const href = item.getAttribute('href').replace('#', '');
       if (_current == null) {
-        urlParam.set(urlparam, "1");
+        let default_pagination = document
+          .querySelector("edition-pagination")
+          .getAttribute("pos");
+        urlParam.set(urlparam, default_pagination);
         _current = urlParam.get(urlparam);
       }
 
@@ -1089,8 +1092,11 @@ export class UrlSearchParamUpdate {
 
       // check if page url param is valid
       if (!pgOpt.includes(_current)) {
+        let default_pagination = document
+          .querySelector("edition-pagination")
+          .getAttribute("pos");
         console.log(`${urlparam}=${_current} is not a selectable option.`);
-        urlParam.set(urlparam, "1");
+        urlParam.set(urlparam, default_pagination);
         _current = urlParam.get(urlparam);
       }
 
