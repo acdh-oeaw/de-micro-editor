@@ -228,8 +228,8 @@ export class ImageSwitch extends HTMLElement {
           ).offsetWidth;
 
           /* set osd container width and height */
-          osd_container.style.height = `${text_container_height}px`;
-          osd_container.style.width = `${image_container_width - 25}px`;
+          osd_container.style.height = `${text_container_height / 1.2}px`;
+          osd_container.style.width = `${image_container_width}px`;
 
           /* get image url of iiif server */
           let image_src = image.getAttribute("data-src");
@@ -290,7 +290,9 @@ export class ImageSwitch extends HTMLElement {
             facs.style.width = `${viewer_loaded.offsetWidth}px`;
             facs.style.height = `${viewer_loaded.offsetHeight}px`;
             facsContainer.style.width = `${viewer_loaded.offsetWidth - 25}px`;
-            facsContainer.style.height = `${viewer_loaded.offsetHeight}px`;
+            facsContainer.style.height = `${
+              viewer_loaded.offsetHeight / 1.2
+            }px`;
           } catch (err) {
             console.log(
               `HTML class elements .${parent}.${active} .${hide} not found. Please make sure your HTML site contains them.`
