@@ -1,6 +1,6 @@
 {
   "name": "de-micro-editor",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Digital Edition Editor building blocks",
   "module": "index.ts",
   "scripts": {

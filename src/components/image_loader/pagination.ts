@@ -209,7 +209,7 @@ export class EditionPagination extends HTMLElement {
     this.innerHTML = `
             <a title="Tab ${pos}"
                 class="nav-link pagination-link active"
-                data-toggle="tab"
+                data-bs-toggle="tab"
                 data-tab="paginate"
                 id="${data_type}_link_${pos}"
                 href="#paginate-${pos}"
