@@ -271,33 +271,32 @@ export class ImageSwitch extends HTMLElement {
           });
         } else {
           /* works only with one image viewer */
-          try {
-            var viewer_loaded = document.querySelector(
-              `.${parent}.${active} .${hide}`
-            ) as HTMLElement;
-          } catch (err) {
-            console.log(
-              `HTML class elements .${parent}.${active} .${hide} not found. Please make sure your HTML site contains them.`
-            );
-          }
-
-          try {
-            var facs = viewer_loaded.querySelectorAll("*")[0] as HTMLElement;
-            var facsContainer = facs.childNodes[0] as HTMLElement;
-            // set style height and width
-            // get iamge_size from params
-            // let image_size = paramCheck(variant.image_size, "500px");
-            facs.style.width = `${viewer_loaded.offsetWidth}px`;
-            facs.style.height = `${viewer_loaded.offsetHeight}px`;
-            facsContainer.style.width = `${viewer_loaded.offsetWidth - 25}px`;
-            facsContainer.style.height = `${
-              viewer_loaded.offsetHeight / 1.2
-            }px`;
-          } catch (err) {
-            console.log(
-              `HTML class elements .${parent}.${active} .${hide} not found. Please make sure your HTML site contains them.`
-            );
-          }
+          // try {
+          //   var viewer_loaded = document.querySelector(
+          //     `.${parent}.${active} .${hide}`
+          //   ) as HTMLElement;
+          // } catch (err) {
+          //   console.log(
+          //     `HTML class elements .${parent}.${active} .${hide} not found. Please make sure your HTML site contains them.`
+          //   );
+          // }
+          // try {
+          //   var facs = viewer_loaded.querySelectorAll("*")[0] as HTMLElement;
+          //   var facsContainer = facs.childNodes[0] as HTMLElement;
+          //   // set style height and width
+          //   // get iamge_size from params
+          //   // let image_size = paramCheck(variant.image_size, "500px");
+          //   facs.style.width = `${viewer_loaded.offsetWidth}px`;
+          //   facs.style.height = `${viewer_loaded.offsetHeight}px`;
+          //   facsContainer.style.width = `${viewer_loaded.offsetWidth - 25}px`;
+          //   facsContainer.style.height = `${
+          //     viewer_loaded.offsetHeight / 1.2
+          //   }px`;
+          // } catch (err) {
+          //   console.log(
+          //     `HTML class elements .${parent}.${active} .${hide} not found. Please make sure your HTML site contains them.`
+          //   );
+          // }
         }
 
         this.classList.add(active);

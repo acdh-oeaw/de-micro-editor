@@ -583,28 +583,28 @@ export class UrlSearchParamUpdate {
         });
 
         // works only with one image viewer
-        try {
-          var viewer = document.querySelector(
-            `.${parent}.${active} .${hide}`
-          ) as HTMLElement;
-        } catch (err) {
-          console.log(
-            `HTML class elements .${parent}.${active} .${hide} not found. Please make sure your HTML site contains them.`
-          );
-        }
+        // try {
+        //   var viewer = document.querySelector(
+        //     `.${parent}.${active} .${hide}`
+        //   ) as HTMLElement;
+        // } catch (err) {
+        //   console.log(
+        //     `HTML class elements .${parent}.${active} .${hide} not found. Please make sure your HTML site contains them.`
+        //   );
+        // }
 
-        try {
-          var facs = viewer.querySelectorAll("*")[0] as HTMLElement;
-          // set style height and width
-          // get iamge_size from params
-          // let image_size = paramCheck(variant.image_size, "500px");
-          facs.style.width = `${viewer.offsetWidth}px`;
-          facs.style.height = `${viewer.offsetHeight}px`;
-        } catch (err) {
-          console.log(
-            `HTML class elements .${parent}.${active} .${hide} not found. Please make sure your HTML site contains them.`
-          );
-        }
+        // try {
+        //   var facs = viewer.querySelectorAll("*")[0] as HTMLElement;
+        //   // set style height and width
+        //   // get iamge_size from params
+        //   // let image_size = paramCheck(variant.image_size, "500px");
+        //   facs.style.width = `${viewer.offsetWidth}px`;
+        //   facs.style.height = `${viewer.offsetHeight}px`;
+        // } catch (err) {
+        //   console.log(
+        //     `HTML class elements .${parent}.${active} .${hide} not found. Please make sure your HTML site contains them.`
+        //   );
+        // }
 
         // remove active class
         let checkbox = document.getElementById(opt) as HTMLElement;
