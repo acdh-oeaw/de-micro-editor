@@ -1,4 +1,9 @@
-const config: any = [];
+type Config = {
+  opt: string;
+  pos: string;
+  size: string;
+};
+const config: Array<Config> = [];
 
 export class WindowResize extends HTMLElement {
   static get observedAttributes() {

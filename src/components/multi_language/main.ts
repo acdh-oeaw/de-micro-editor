@@ -1,4 +1,8 @@
-const { uptState, paramCheck } = require("../../utils/utils");
+import { uptState, paramCheck } from "../../utils/utils";
+import type {
+  MultiLanguageType,
+  MultiLanguageVariant,
+} from "../../utils/types";
 
 export class MultiLanguage extends HTMLElement {
   static get observedAttributes() {
@@ -17,24 +21,7 @@ export class MultiLanguage extends HTMLElement {
     let data = "multi_language";
     let storage = sessionStorage.getItem(data);
     if (storage) {
-      let options:
-        | {
-            title: string | null | undefined;
-            variants:
-              | [
-                  {
-                    opt: string | null | undefined;
-                    title: string | null | undefined;
-                    class: string | null | undefined;
-                    map: object | null | undefined;
-                  }
-                ]
-              | null
-              | undefined;
-            active_class: string | null | undefined;
-          }
-        | null
-        | undefined = JSON.parse(storage);
+      let options: MultiLanguageType = JSON.parse(storage);
 
       // get current url parameters
       let url = new URL(window.location.href);
@@ -55,16 +42,16 @@ export class MultiLanguage extends HTMLElement {
       // to match the custom element with the configuration the opt value must match.
       // variant is found by comparing variant config opt with custom element attr opt
       try {
-        var variant_check = options.variants.find((v) => v.opt === id);
+        var variant_check: MultiLanguageVariant = options.variants.find(
+          (v) => v.opt === id
+        );
       } catch (err) {
         console.log(
           "No option parameters found. Creating default parameters to continue."
         );
       }
       // variant as selected in UI
-      let variant = paramCheck(variant_check, {
-        opt: id,
-      });
+      let variant = variant_check ? variant_check : { opt: id };
       if (!variant) {
         console.log(
           "No variant found! Please define a variant object that contains \
@@ -74,7 +61,7 @@ export class MultiLanguage extends HTMLElement {
       }
 
       /* check if language mappings is available */
-      var map = paramCheck(variant.map, { "index.html": "index-en.html" });
+      var map = variant.map ? variant.map : { "index.html": "index-en.html" };
 
       /* save state in urlparam lang */
       urlParam.set("lang", variant.opt);
@@ -119,24 +106,7 @@ export class MultiLanguage extends HTMLElement {
     let data = "multi_language";
     let storage = sessionStorage.getItem(data);
 
-    let options:
-      | {
-          title: string | null | undefined;
-          variants:
-            | [
-                {
-                  opt: string | null | undefined;
-                  title: string | null | undefined;
-                  class: string | null | undefined;
-                  map: object | null | undefined;
-                }
-              ]
-            | null
-            | undefined;
-          active_class: string | null | undefined;
-        }
-      | null
-      | undefined = JSON.parse(storage);
+    let options: MultiLanguageType = JSON.parse(storage);
 
     let opt = this.getAttribute("opt");
     // check if user set opt attribute
@@ -146,18 +116,22 @@ export class MultiLanguage extends HTMLElement {
 
     // variant is found by comparing variant config opt with custom element attr opt
     try {
-      var variant_check = options.variants.find((v) => v.opt === opt);
+      var variant_check: MultiLanguageVariant = options.variants.find(
+        (v) => v.opt === opt
+      );
     } catch (err) {
       console.log(
         "No option parameters found. Creating default parameters to continue."
       );
     }
-    var variant = paramCheck(variant_check, {
-      opt: opt,
-    });
+    var variant = variant_check
+      ? variant_check
+      : {
+          opt: opt,
+        };
 
-    let title = paramCheck(variant.title, "English");
-    let v_class = paramCheck(variant.class, "nav-link pointer");
+    let title = variant.title ? variant.title : "English";
+    let v_class = variant.class ? variant.class : "nav-link pointer";
 
     this.innerHTML = `
         <a id="ml_${variant.opt}" class="${v_class}">${title}</a>

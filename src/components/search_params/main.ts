@@ -1,10 +1,27 @@
-const { uptState, paramCheck } = require("../../utils/utils");
+// @ts-noncheck
+import {
+  uptState,
+  addMarkup,
+  removeMarkup,
+  hideLoading,
+} from "../../utils/utils";
+import type {
+  FullScreenType,
+  FontSizeType,
+  FontVariant,
+  FontFamilyType,
+  ImageSwitchType,
+  AnnotationType,
+  Variant,
+  PageUrlType,
+  MultiLanguageType,
+  FullScreenVariant,
+} from "../../utils/types";
+// @ts-ignore
+import { OpenSeadragon } from "openseadragon";
 
 export class UrlSearchParamUpdate {
   fullSreen() {
-    // import types from utils.types.ts
-    const { FullScreenType } = require("../../utils/types");
-
     // get custom element and access opt attribute
     let el = document.getElementsByTagName(
       "full-size"
@@ -19,7 +36,7 @@ export class UrlSearchParamUpdate {
     let data: string = "fullsize";
     let storage: string | null = sessionStorage.getItem(data);
     if (storage) {
-      var options: typeof FullScreenType = JSON.parse(storage);
+      var options: FullScreenType = JSON.parse(storage);
       if (!options) {
         alert("Please turn on cookies to display content!");
       }
@@ -30,27 +47,27 @@ export class UrlSearchParamUpdate {
 
       // variant is found by comparing variant config opt with custom element attr opt
       try {
-        var variant_check: (typeof FullScreenType.variants)[0] =
-          options.variants.find((v: any) => v.opt === opt);
+        var variant_check: FullScreenVariant = options.variants.find(
+          (v: any) => v.opt === opt
+        );
       } catch (err) {
         console.log(
           "No option parameters found. Creating default parameters to continue."
         );
       }
-      var variant: (typeof FullScreenType.variants)[0] = paramCheck(
-        variant_check,
-        {
-          opt: opt,
-        }
-      );
+      var variant = variant_check
+        ? variant_check
+        : {
+            opt: opt,
+          };
 
       // if variant obj contains urlparam string check urlparams parameters
-      var urlparam: string = paramCheck(variant.urlparam, "fullscreen");
+      var urlparam = variant.urlparam ? variant.urlparam : "fullscreen";
 
       // check for option param or return default value
-      var active: string = paramCheck(options.active_class, "active");
-      var hide: string = paramCheck(variant.hide, "hide-container");
-      var hidden: string = paramCheck(variant.to_hide, "fade");
+      var active = options.active_class ? options.active_class : "active";
+      var hide = variant.hide ? variant.hide : "hide-container";
+      var hidden = variant.to_hide ? variant.to_hide : "fade";
 
       if (urlParam.get(urlparam) == null) {
         urlParam.set(urlparam, "off");
@@ -107,10 +124,9 @@ export class UrlSearchParamUpdate {
       }
 
       // citation-url is an HTMLElement that is used to update the citation
-      var citation_url_str: string = paramCheck(
-        variant.chg_citation,
-        "citation-url"
-      );
+      var citation_url_str = variant.chg_citation
+        ? variant.chg_citation
+        : "citation-url";
       var citation_url = document.getElementById(
         citation_url_str
       ) as HTMLElement;
@@ -127,9 +143,6 @@ export class UrlSearchParamUpdate {
   }
 
   fontSize() {
-    // import types from utils.types.ts
-    const { FontSizeType } = require("../../utils/types");
-
     // get element to access opt attribute
     // opt required to connect to specific custom element
     let el = document.getElementsByTagName(
@@ -143,12 +156,12 @@ export class UrlSearchParamUpdate {
     }
 
     // string fontsize is variable to access session cookies
-    let data: string = "fontsize";
+    let data = "fontsize";
     let storage: string | null = sessionStorage.getItem(data);
 
     if (storage) {
       // define options object and parse session cookie as json
-      var options: typeof FontSizeType = JSON.parse(storage);
+      var options: FontSizeType = JSON.parse(storage);
 
       if (!options) {
         alert("Please turn on cookies to display content!");
@@ -159,52 +172,35 @@ export class UrlSearchParamUpdate {
       let urlParam = new URLSearchParams(url.search);
 
       // variant is found by comparing variant config opt with custom element attr opt
-      try {
-        var variant_check = options.variants;
-      } catch (err) {
-        console.log(
-          "No option parameters found. Creating default parameters to continue."
-        );
-      }
-      var variants: typeof FontSizeType.variants = paramCheck(variant_check, [
-        { opt: id },
-      ]);
-
-      for (let v in variants) {
+      var variants = options.variants ? options.variants : [{ opt: id }];
+      [...variants].forEach((v: FontVariant) => {
         // get urlparam key
-        var urlparam: string = paramCheck(variants[v].urlparam, "fontsize");
+        var urlparam = v.urlparam ? v.urlparam : "fontsize";
 
         // get citation url key and HTMLElement
-        var citation_url_str: string = paramCheck(
-          variants[v].chg_citation,
-          "citation-url"
-        );
+        var citation_url_str = v.chg_citation ? v.chg_citation : "citation-url";
         var citation_url = document.getElementById(
           citation_url_str
         ) as HTMLElement;
 
         // define paragraph HTML element name
-        let p_change: string = paramCheck(variants[v].paragraph, "p");
+        let p_change = v.paragraph ? v.paragraph : "p";
         // define class to change font sizes (not all paragraphs might need to be changed)
-        let p_class: string = paramCheck(variants[v].p_class, "yes-index");
+        let p_class = v.p_class ? v.p_class : "yes-index";
 
         // check if sizes object with font sizes is not null or undefined
-        try {
-          var size_check: typeof FontSizeType.variants.sizes =
-            variants[v].sizes;
-        } catch (err) {
-          console.log("Sizes obj not found. Creating default parameters.");
-        }
-        let size: typeof FontSizeType.variants.sizes = paramCheck(size_check, {
-          default: "default",
-          font_size_14: "14",
-          font_size_18: "18",
-          font_size_22: "22",
-          font_size_26: "26",
-        });
+        let size = v.sizes
+          ? v.sizes
+          : {
+              default: "default",
+              font_size_14: "14",
+              font_size_18: "18",
+              font_size_22: "22",
+              font_size_26: "26",
+            };
 
         // define font size name before size
-        var css_class: string = paramCheck(variants[v].css_class, "font-size-");
+        var css_class = v.css_class ? v.css_class : "font-size-";
 
         // check for null value in url params
         if (urlParam.get(urlparam) == null) {
@@ -229,9 +225,7 @@ export class UrlSearchParamUpdate {
               : urlParam.get(urlparam);
 
           // change select option value based on provided url param
-          var select = document.getElementById(
-            variants[v].opt
-          ) as HTMLSelectElement;
+          var select = document.getElementById(v.opt) as HTMLSelectElement;
           select.value = new_value;
 
           // finally, changing selected paragraph font size
@@ -246,28 +240,24 @@ export class UrlSearchParamUpdate {
             }
           });
         }
-      }
+        /* if value is off it should not be part of the urlsearchparams */
+        if (urlParam.get(urlparam) == "default") {
+          urlParam.delete(urlparam);
+        }
 
-      /* if value is off it should not be part of the urlsearchparams */
-      if (urlParam.get(urlparam) == "default") {
-        urlParam.delete(urlparam);
-      }
-
-      // change browser history state
-      let href: string = `?${urlParam}${location.hash}`;
-      uptState({
-        hist: true,
-        cit: citation_url,
-        state: false,
-        href: href,
+        // change browser history state
+        let href = `?${urlParam}${location.hash}`;
+        uptState({
+          hist: true,
+          cit: citation_url,
+          state: false,
+          href: href,
+        });
       });
     }
   }
 
   fontFamily() {
-    // import types from utils.types.ts
-    const { FontFamilyType } = require("../../utils/types");
-
     let el = document.getElementsByTagName("font-family");
     let id = el[0].getAttribute("opt");
     // check if user set opt attribute
@@ -279,7 +269,7 @@ export class UrlSearchParamUpdate {
     let storage = sessionStorage.getItem(data);
 
     if (storage) {
-      let options: typeof FontFamilyType = JSON.parse(storage);
+      let options: FontFamilyType = JSON.parse(storage);
 
       if (!options) {
         alert("Please turn on cookies to display content!");
@@ -289,53 +279,31 @@ export class UrlSearchParamUpdate {
       let urlParam = new URLSearchParams(url.search);
 
       // variant is found by comparing variant config opt with custom element attr opt
-      try {
-        var variant_check: typeof FontFamilyType.variants = options.variants;
-      } catch (err) {
-        console.log(
-          "No option parameters found. Creating default parameters to continue."
-        );
-      }
-      var variants: typeof FontFamilyType.variants = paramCheck(variant_check, [
-        { opt: id },
-      ]);
-
-      for (let v in variants) {
+      var variants = options.variants ? options.variants : [{ opt: id }];
+      [...variants].forEach((v: FontVariant) => {
         // get urlparam key
-        var urlparam: string = paramCheck(variants[v].urlparam, "font");
+        var urlparam = v.urlparam ? v.urlparam : "font";
 
         // get citation url key and HTMLElement
-        var citation_url_str: string = paramCheck(
-          variants[v].chg_citation,
-          "citation-url"
-        );
+        var citation_url_str = v.chg_citation ? v.chg_citation : "citation-url";
         var citation_url = document.getElementById(
           citation_url_str
         ) as HTMLElement;
 
         // define paragraph HTML element name
-        let p_change: string = paramCheck(variants[v].paragraph, "p");
+        let p_change = v.paragraph ? v.paragraph : "p";
         // define class to change font sizes (not all paragraphs might need to be changed)
-        let p_class: string = paramCheck(variants[v].p_class, "yes-index");
+        let p_class = v.p_class ? v.p_class : "yes-index";
 
         // check if sizes object with font sizes is not null or undefined
-        try {
-          var family_check: typeof FontFamilyType.variants.fonts =
-            variants[v].fonts;
-        } catch (err) {
-          console.log(
-            "Font family object not found. Creating default parameters."
-          );
-        }
-        let family: typeof FontFamilyType.variants.fonts = paramCheck(
-          family_check,
-          {
-            default: "default",
-            font1: "Times-New-Roman",
-            font2: "Courier-New",
-            font3: "Arial-serif",
-          }
-        );
+        let family = v.fonts
+          ? v.fonts
+          : {
+              default: "default",
+              font1: "Times-New-Roman",
+              font2: "Courier-New",
+              font3: "Arial-serif",
+            };
 
         if (urlParam.get(urlparam) == null) {
           urlParam.set(urlparam, "default");
@@ -358,9 +326,7 @@ export class UrlSearchParamUpdate {
           }
 
           // change select option value based on provided url param
-          var select = document.getElementById(
-            variants[v].opt
-          ) as HTMLSelectElement;
+          var select = document.getElementById(v.opt) as HTMLSelectElement;
           select.value = new_value;
 
           // finally, change font-size of selected paragraphs
@@ -375,28 +341,24 @@ export class UrlSearchParamUpdate {
             }
           });
         }
-      }
+        /* if value is off it should not be part of the urlsearchparams */
+        if (urlParam.get(urlparam) == "default") {
+          urlParam.delete(urlparam);
+        }
 
-      /* if value is off it should not be part of the urlsearchparams */
-      if (urlParam.get(urlparam) == "default") {
-        urlParam.delete(urlparam);
-      }
-
-      // update browser history state
-      let href: string = `?${urlParam}${location.hash}`;
-      uptState({
-        hist: true,
-        cit: citation_url,
-        state: false,
-        href: href,
+        // update browser history state
+        let href: string = `?${urlParam}${location.hash}`;
+        uptState({
+          hist: true,
+          cit: citation_url,
+          state: false,
+          href: href,
+        });
       });
     }
   }
 
   viewerSwitch() {
-    // import types from utils.types.ts
-    const { ImageSwitchType } = require("../../utils/types");
-
     let el = document.querySelectorAll("image-switch") as NodeListOf<Element>;
     let opt: string = el[0].getAttribute("opt");
     // check if user set opt attribute
@@ -408,7 +370,7 @@ export class UrlSearchParamUpdate {
     let storage: string = sessionStorage.getItem(data);
 
     if (storage) {
-      let options: typeof ImageSwitchType = JSON.parse(storage);
+      let options: ImageSwitchType = JSON.parse(storage);
       if (!options) {
         alert("Please turn on cookies to display content!");
       }
@@ -418,95 +380,77 @@ export class UrlSearchParamUpdate {
 
       // variant is found by comparing variant config opt with custom element attr opt
       try {
-        var variant_check: typeof ImageSwitchType.variants =
-          options.variants.find((v: any) => v.opt === opt);
+        var variant_check = options.variants.find((v: any) => v.opt === opt);
       } catch (err) {
         console.log(
           "No option parameters found. Creating default parameters to continue."
         );
       }
-      var variant: typeof ImageSwitchType.variants = paramCheck(variant_check, {
-        opt: opt,
-      });
+      var variant = variant_check
+        ? variant_check
+        : {
+            opt: opt,
+          };
 
       // check for option param or return default value
-      var active: string = paramCheck(options.active_class, "active");
+      var active = options.active_class ? options.active_class : "active";
 
       // check if sizes object with font sizes is not null or undefined
-      try {
-        var hide_check: typeof ImageSwitchType.variants.hide = variant.hide;
-      } catch (err) {
-        console.log("Hide object not found. Creating default parameters.");
-      }
-      let hide_checked: typeof ImageSwitchType.variants.hide = paramCheck(
-        hide_check,
-        {
-          hidden: true,
-          class_to_hide: "hide-container1",
-          class_to_show: "show-container1",
-          class_parent: "hide-show-wrapper",
-          resize: "resize-hide",
-        }
-      );
+      let hide_checked = variant.hide
+        ? variant.hide
+        : {
+            hidden: true,
+            class_to_hide: "hide-container1",
+            class_to_show: "show-container1",
+            class_parent: "hide-show-wrapper",
+            resize: "resize-hide",
+          };
 
       // get classes from params for container to hide and show
-      let hidden: boolean = paramCheck(hide_checked.hidden, true);
-      let hide: string = paramCheck(
-        hide_checked.class_to_hide,
-        "hide-container1"
-      );
-      let show: string = paramCheck(
-        hide_checked.class_to_show,
-        "show-container1"
-      );
-      let resize: string = paramCheck(hide_checked.resize, "resize-hide");
+      let hidden = hide_checked.hidden ? hide_checked.hidden : true;
+      let hide = hide_checked.class_to_hide
+        ? hide_checked.class_to_hide
+        : "hide-container1";
+      let show = hide_checked.class_to_show
+        ? hide_checked.class_to_show
+        : "show-container1";
+      let resize = hide_checked.resize ? hide_checked.resize : "resize-hide";
 
       // get class for wrapper of hide show container
-      let parent: string = paramCheck(
-        hide_checked.class_parent,
-        "hide-show-wrapper"
-      );
+      let parent = hide_checked.class_parent
+        ? hide_checked.class_parent
+        : "hide-show-wrapper";
 
       // get urlparam key
-      var urlparam: string = paramCheck(variant.urlparam, "image");
+      var urlparam = variant.urlparam ? variant.urlparam : "image";
 
       // get fade class
-      let fade: string = paramCheck(variant.fade, "fade");
+      let fade = variant.fade ? variant.fade : "fade";
 
       // check if sizes object with font sizes is not null or undefined
-      try {
-        var small_check: typeof ImageSwitchType.variants.column_small =
-          variant.column_small;
-      } catch (err) {
-        console.log("Hide object not found. Creating default parameters.");
-      }
-      let column_small_check: typeof ImageSwitchType.variants.column_small =
-        paramCheck(small_check, {
-          class: "col-md-6",
-          percent: "50%",
-        });
+      let column_small_check = variant.column_small
+        ? variant.column_small
+        : {
+            class: "col-md-6",
+            percent: "50%",
+          };
 
       // check if sizes object with font sizes is not null or undefined
-      try {
-        var large_check: typeof ImageSwitchType.variants.column_full =
-          variant.column_full;
-      } catch (err) {
-        console.log("Hide object not found. Creating default parameters.");
-      }
-      let column_full_checked: typeof ImageSwitchType.variants.column_full =
-        paramCheck(large_check, {
-          class: "col-md-12",
-          percent: "100%",
-        });
+      let column_full_checked = variant.column_full
+        ? variant.column_full
+        : {
+            class: "col-md-12",
+            percent: "100%",
+          };
 
       // get classes and style for hide show container resizing
       let column_small: any[] = [
-        paramCheck(column_small_check.class, "col-md-6"),
-        paramCheck(column_small_check.percent, "50%"),
+        column_small_check.class ? column_small_check.class : "col-md-6",
+        column_small_check.percent ? column_small_check.percent : "50%",
       ];
       let column_full: any[] = [
-        paramCheck(column_full_checked.class, "col-md-12"),
-        paramCheck(column_full_checked.percent, "100%"),
+        column_full_checked.class ? column_full_checked.class : "col-md-12",
+        column_full_checked.percent ? column_full_checked.percent : "100%",
       ];
 
       // check if urlparam value is null and set to default
@@ -615,10 +559,9 @@ export class UrlSearchParamUpdate {
       }
 
       // get citation url class and update citation
-      let citation_url_str: string = paramCheck(
-        variant.chg_citation,
-        "citation-url"
-      );
+      let citation_url_str = variant.chg_citation
+        ? variant.chg_citation
+        : "citation-url";
       let citation_url = document.getElementById(
         citation_url_str
       ) as HTMLElement;
@@ -635,16 +578,11 @@ export class UrlSearchParamUpdate {
   }
 
   textFeatures() {
-    // import types from utils.types.ts
-    const { AnnotationType } = require("../../utils/types");
-    const { addMarkup, removeMarkup } = require("../../utils/utils");
-
     // get key for session storage and access coockies
     let data = "annotation_slider";
     let storage = sessionStorage.getItem(data);
     if (storage) {
-      let options: typeof AnnotationType | null | undefined =
-        JSON.parse(storage);
+      let options: AnnotationType = JSON.parse(storage);
 
       if (!options) {
         alert(`WARNING 1 - search_params/main: Please turn on cookies to display content.\n
@@ -673,20 +611,23 @@ export class UrlSearchParamUpdate {
            parameters to continue.`
         );
       }
-      let variantAll = paramCheck(variant_all_check, [
-        {
-          opt: "text-features",
-          features: {
-            all: true,
-            class: "all-features",
-          },
-        },
-      ]);
+      let variantAll = variant_all_check
+        ? variant_all_check
+        : [
+            {
+              opt: "text-features",
+              features: {
+                all: true,
+                class: "all-features",
+              },
+            },
+          ];
 
       // variant is found by comparing variant config opt with custom element attr opt
       try {
-        var variant_check: typeof AnnotationType.variants =
-          options.variants.filter((v: any) => v.features.all === false);
+        var variant_check = options.variants.filter(
+          (v: any) => v.features.all === false
+        );
       } catch (err) {
         console.log(
           `WARNING 3 - search_params/main: No option parameters found.\n
@@ -695,7 +636,8 @@ export class UrlSearchParamUpdate {
       }
       let allVariants: NodeListOf<Element> =
         document.querySelectorAll("annotation-slider");
-      var allVariantsObjs: any[] = [];
+
+      var allVariantsObjs: Array<Variant> = [];
       [...allVariants].forEach((el: any) => {
         try {
           var attrOpt: string = el.getAttribute("opt");
@@ -713,16 +655,13 @@ export class UrlSearchParamUpdate {
           });
         }
       });
-      let variants: typeof AnnotationType.variants = paramCheck(
-        variant_check,
-        allVariantsObjs
-      );
+      let variants = variant_check ? variant_check : allVariantsObjs;
 
       // in case user config input for features.all is not a boolean value
       // return Warning 6
       try {
         var variant_check_bool = options.variants.filter(
-          (v: any) => typeof v.features.all !== "boolean"
+          (v: Variant) => typeof v.features.all !== "boolean"
         );
       } catch (err) {
         console.log(
@@ -730,7 +669,7 @@ export class UrlSearchParamUpdate {
            Creating default parameters to continue.`
         );
       }
-      let wrg_ft: any[] = paramCheck(variant_check_bool, []);
+      let wrg_ft: Array<Variant> = variant_check_bool ? variant_check_bool : [];
       if (wrg_ft) {
         for (let w of wrg_ft) {
           console.log(
@@ -742,21 +681,13 @@ export class UrlSearchParamUpdate {
 
       // check if span_element object is provided
       // set to default params of not
-      try {
-        var span_check = options.span_element;
-      } catch (err) {
-        console.log(
-          `WARNING 6 - search_params/main: span_element.css_class object not found.\n
-           Creating default parameters.`
-        );
-      }
-      let span_checked = paramCheck(span_check, {
-        css_class: "badge-item",
-      });
+      let style = options.span_element
+        ? options.span_element
+        : {
+            css_class: "badge-item",
+          };
 
-      // get params from options
-      let style = paramCheck(span_checked, "badge-item");
-      let active = paramCheck(options.active_class, "active");
+      let active = options.active_class ? options.active_class : "active";
 
       // set count to verify state of sliders
       let count_active: {
@@ -781,37 +712,22 @@ export class UrlSearchParamUpdate {
       // * if null and default: true -> task result 1
       // * if null and default: false -> task result 2
       // ##############################################################################################
-      for (let v in variants) {
+      [...variants].forEach((v: Variant, idx) => {
         // paramCheck verifies if config is avaliable
         // if not default parameters are created
-        let opt: string = paramCheck(variants[v].opt, `any-feature-${v}`);
-        let opt_class: string = paramCheck(
-          variants[v].features.class,
-          `class-${opt}`
-        );
-        let color: string = paramCheck(variants[v].color, `color-${opt}`);
-        let html_class: string = paramCheck(
-          variants[v].html_class,
-          `html-class-${opt}`
-        );
-        let css_class: string = paramCheck(
-          variants[v].css_class,
-          `css-class-${opt}`
-        );
-        let opt_slider: string = paramCheck(
-          variants[v].opt_slider,
-          `${opt}-slider`
-        );
-        let hide: typeof AnnotationType.variants.hide | boolean = paramCheck(
-          variants[v].hide,
-          false
-        );
+        let opt = v.opt ? v.opt : `any-feature-${idx}`;
+        let opt_class = v.features.class ? v.features.class : `class-${opt}`;
+        let color = v.color ? v.color : `color-${opt}`;
+        let html_class = v.html_class ? v.html_class : `html-class-${opt}`;
+        let css_class = v.css_class ? v.css_class : `css-class-${opt}`;
+        let opt_slider = v.opt_slider ? v.opt_slider : `${opt}-slider`;
+        let hide = v.hide ? v.hide : { hidden: true, class: "hide" };
         if (urlParam.get(opt) === null) {
           // ##############################################
           // check if urlparam is null
           // if true also check if variant default is true
           // ##############################################
-          if (variants[v].default === true) {
+          if (v.default === true) {
             // if default is true
             // count active sliders of each given features.class
             if (count_active.hasOwnProperty(opt_class)) {
@@ -975,26 +891,33 @@ export class UrlSearchParamUpdate {
           urlParam.delete(opt);
         }
 
-        let citation_url_str = paramCheck(
-          variants[v].chg_citation,
-          "citation-url"
-        );
+        let citation_url_str = v.chg_citation ? v.chg_citation : "citation-url";
         if (citation_url_str) {
           var citation_url = document.getElementById(citation_url_str);
         }
-      }
+        // ########################################################################
+        // uptState changes the browser history state to reflect the current state
+        // of all variants (html elements, slider, checkbox) and their urlparams
+        let href: string = `?${urlParam}${location.hash}`;
+        uptState({
+          hist: true,
+          cit: citation_url,
+          state: false,
+          href: href,
+        });
+      });
 
       // ####################################################################################
       // handling features.all slider to receive active or inactive status
       // algorithm:
       // if all group variants are active turn group leader active -> task result 1
       // if none or not all variants are active turn group leader inactive -> task result 2
-      [...variantAll].forEach((el: any) => {
-        let optAll: string = paramCheck(el.opt, `all-features`);
+      [...variantAll].forEach((el) => {
+        let optAll = el.opt ? el.opt : `all-features`;
         var feat_leader = document.getElementById(optAll) as HTMLInputElement;
-        var feat_leader_class: string = el.features.class;
-        var variants_features_class: any[] = variants.filter(
-          (v: any) => v.features.class === feat_leader_class
+        var feat_leader_class = el.features.class;
+        var variants_features_class = variants.filter(
+          (v) => v.features.class === feat_leader_class
         );
         if (
           count_active[feat_leader_class] === variants_features_class.length
@@ -1014,35 +937,21 @@ export class UrlSearchParamUpdate {
           }
         }
       });
-
-      // ########################################################################
-      // uptState changes the browser history state to reflect the current state
-      // of all variants (html elements, slider, checkbox) and their urlparams
-      let href: string = `?${urlParam}${location.hash}`;
-      uptState({
-        hist: true,
-        cit: citation_url,
-        state: false,
-        href: href,
-      });
     }
   }
 
   pageUrl() {
-    const { hideLoading } = require("../../utils/utils");
-    const { PageUrl } = require("../../utils/types");
     // get session cookies as parameters
     let data = "image_loader";
     let storage = sessionStorage.getItem(data);
-    var OpenSeadragon = require("openseadragon");
 
     if (storage) {
-      let options: typeof PageUrl = JSON.parse(storage);
+      let options: PageUrlType = JSON.parse(storage);
 
       // get url params
       let url = new URL(location.href);
       let urlParam = new URLSearchParams(url.search);
-      var urlparam = paramCheck(options.urlparam);
+      var urlparam = options.urlparam ? options.urlparam : "page";
       var _current = urlParam.get(urlparam);
 
       // const item = document.querySelector('.pagination .nav-tabs .nav-item .nav-link.active');
@@ -1056,14 +965,15 @@ export class UrlSearchParamUpdate {
       }
 
       // set all nav links to inactive
-      let pag_link: string = paramCheck(options.pag_link, ".pagination-link");
-      let active: string = paramCheck(options.active_class, "active");
-      let inactive: string = paramCheck(options.inactive_class, "fade");
-      let bootstrap_class: string = paramCheck(options.bootstrap_class, "show");
-      let pag_tab: string = paramCheck(
-        options.pag_tab,
-        ".pagination-tab.tab-pane"
-      );
+      let pag_link = options.pag_link ? options.pag_link : ".pagination-link";
+      let active = options.active_class ? options.active_class : "active";
+      let inactive = options.inactive_class ? options.inactive_class : "fade";
+      let bootstrap_class = options.bootstrap_class
+        ? options.bootstrap_class
+        : "show";
+      let pag_tab = options.pag_tab
+        ? options.pag_tab
+        : ".pagination-tab.tab-pane";
 
       // deactivate all tabs
       let tabs: NodeListOf<HTMLElement> = document.querySelectorAll(
@@ -1122,12 +1032,16 @@ export class UrlSearchParamUpdate {
       } catch (err) {
         console.log("Hide object not found. Creating default parameters.");
       }
-      let type_checked: [] = paramCheck(type_check, ["type1", "type2"]);
+      let type_checked = type_check ? type_check : ["type1", "type2"];
 
       // get class where osd img are inserted
-      let opt_osd_target: string = paramCheck(options.osd_target, "container");
-      let opt_img_source: string = paramCheck(options.img_source, "container2");
-      let opt_image_size: string = paramCheck(options.img_size, "500px"); // to be deprecated
+      let opt_osd_target = options.osd_target
+        ? options.osd_target
+        : "container";
+      let opt_img_source = options.img_source
+        ? options.img_source
+        : "container2";
+      let opt_image_size = options.img_size ? options.img_size : "500px"; // to be deprecated
 
       // find correct image type
       let i: number = 0;
@@ -1142,8 +1056,8 @@ export class UrlSearchParamUpdate {
         i++;
       }
 
-      let _osd_container_id: string = `${_image_type}_${opt_osd_target}_${_current}`;
-      let _osd_container_id2: string = `${_image_type}_${opt_img_source}_${_current}`;
+      let _osd_container_id = `${_image_type}_${opt_osd_target}_${_current}`;
+      let _osd_container_id2 = `${_image_type}_${opt_img_source}_${_current}`;
       let osd_container = document.getElementById(
         _osd_container_id
       ) as HTMLElement;
@@ -1206,15 +1120,14 @@ export class UrlSearchParamUpdate {
       }
 
       // get citation url class and update citation
-      let citation_url_str: string = paramCheck(
-        options.chg_citation,
-        "citation-url"
-      );
+      let citation_url_str = options.chg_citation
+        ? options.chg_citation
+        : "citation-url";
       let citation_url = document.getElementById(
         citation_url_str
       ) as HTMLElement;
 
-      let href: string = `?${urlParam}${location.hash}`;
+      let href = `?${urlParam}${location.hash}`;
       uptState({
         hist: true,
         cit: citation_url,
@@ -1226,11 +1139,10 @@ export class UrlSearchParamUpdate {
 
   multiLanguage() {
     // get session cookie with configartion json
-    const { MultiLanguage } = require("../../utils/types");
     const data = "multi_language";
     const storage = sessionStorage.getItem(data);
     if (storage) {
-      const options: typeof MultiLanguage = JSON.parse(storage);
+      const options: MultiLanguageType = JSON.parse(storage);
 
       /* get current ur */
       var url = new URL(document.location.href);
@@ -1239,7 +1151,7 @@ export class UrlSearchParamUpdate {
       var urlParam = new URLSearchParams(url.search);
 
       /* check if active class was defined or set to default class */
-      var active: string = paramCheck(options.active_class, "lang_active");
+      var active = options.active_class ? options.active_class : "lang_active";
 
       /* create array of all configured user languages  */
       var userLang: any[] = [];
@@ -1271,8 +1183,9 @@ export class UrlSearchParamUpdate {
 
       // use try/catch to verify if object exists in options
       try {
-        var variants_check: typeof MultiLanguage.variants =
-          options.variants.filter((v: any) => v.opt !== langUpdate);
+        var variants_check = options.variants.filter(
+          (v: any) => v.opt !== langUpdate
+        );
       } catch (err) {
         console.log(
           "No option parameters found. Creating default parameters to continue."
@@ -1280,18 +1193,21 @@ export class UrlSearchParamUpdate {
       }
 
       // all variants except current clicked
-      var variants: typeof MultiLanguage.variants = paramCheck(variants_check, [
-        {
-          opt: langUpdate,
-        },
-      ]);
+      var variants = variants_check
+        ? variants_check
+        : [
+            {
+              opt: langUpdate,
+            },
+          ];
 
       // configuration holds an array with variants with at least one variant object.
       // to match the custom element with the configuration the opt value must match.
       // variant is found by comparing variant config opt with custom element attr opt
       try {
-        var variant_check: (typeof MultiLanguage.variants)[0] =
-          options.variants.find((v: any) => v.opt === langUpdate);
+        var variant_check = options.variants.find(
+          (v: any) => v.opt === langUpdate
+        );
       } catch (err) {
         console.log(
           "No option parameters found. Creating default parameters to continue."
@@ -1299,12 +1215,12 @@ export class UrlSearchParamUpdate {
       }
 
       // variant as selected in UI
-      let variant: (typeof MultiLanguage.variants)[0] = paramCheck(
-        variant_check,
-        {
-          opt: langUpdate,
-        }
-      );
+      let variant = variant_check
+        ? variant_check
+        : {
+            opt: langUpdate,
+          };
+
       if (!variant) {
         console.log(
           "No variant found! Please define a variant object that contains \
@@ -1314,7 +1230,7 @@ export class UrlSearchParamUpdate {
       }
 
       /* remove active class from variants not clicked */
-      [...variants].forEach((el: any) => {
+      [...variants].forEach((el) => {
         document.getElementById(`ml_${el.opt}`).classList.remove(active);
       });
 
@@ -1323,9 +1239,11 @@ export class UrlSearchParamUpdate {
       current.classList.add(active);
 
       /* check if language mappings is available */
-      var map: typeof MultiLanguage.variants.map = paramCheck(variant.map, {
-        "index.html": "index-en.html",
-      });
+      var map = variant.map
+        ? variant.map
+        : {
+            "index.html": "index-en.html",
+          };
 
       if (map) {
         /* must be replaced in production

@@ -1,4 +1,6 @@
-const { paramCheck } = require("../../utils/utils");
+// @ts-noncheck
+import { paramCheck } from "../../utils/utils";
+import type { ImageLoaderType } from "../../utils/types";
 
 export class ImageLoader extends HTMLElement {
   static get observedAttributes() {
@@ -14,27 +16,7 @@ export class ImageLoader extends HTMLElement {
     let storage = sessionStorage.getItem(data);
 
     // get session storage (not all variables are required)
-    let options:
-      | {
-          name: string | null | undefined;
-          opt: string | null | undefined;
-          title: string | null | undefined;
-          urlparam: string | null | undefined;
-          chg_citation: string | null | undefined;
-          pag_link: string | null | undefined;
-          pag_tab: string | null | undefined;
-          img_size: string | null | undefined;
-          url: string | null | undefined;
-          url_param: string | null | undefined;
-          osd_target: string | null | undefined;
-          img_source: string | null | undefined;
-          img_types: [] | null | undefined;
-          active_class: string | null | undefined;
-          inactive_class: string | null | undefined;
-          bootstrap_class: string | null | undefined;
-        }
-      | null
-      | undefined = JSON.parse(storage);
+    let options: ImageLoaderType = JSON.parse(storage);
 
     // define url and param to access images
     let url = paramCheck(options.url, "provide-url");

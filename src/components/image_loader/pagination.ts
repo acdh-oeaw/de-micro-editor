@@ -1,7 +1,15 @@
-const OpenSeadragon = require("openseadragon");
-const { uptState, paramCheck } = require("../../utils/utils");
+import { uptState } from "../../utils/utils";
+import type { PageUrlType } from "../../utils/types";
+// @ts-ignore
+import { OpenSeadragon } from "openseadragon";
 
-const config: any = [];
+type Config = {
+  opt: string;
+  dataType?: string;
+  dataSource?: string;
+  pos?: string;
+};
+const config: Array<Config> = [];
 
 export class EditionPagination extends HTMLElement {
   static get observedAttributes() {
@@ -18,26 +26,7 @@ export class EditionPagination extends HTMLElement {
     let storage = sessionStorage.getItem(data);
 
     if (storage) {
-      let options:
-        | {
-            name: string | null | undefined;
-            opt: string | null | undefined;
-            title: string | null | undefined;
-            urlparam: string | null | undefined;
-            chg_citation: string | null | undefined;
-            pag_link: string | null | undefined;
-            pag_tab: string | null | undefined;
-            img_size: string | null | undefined;
-            active_class: string | null | undefined;
-            inactive_class: string | null | undefined;
-            bootstrap_class: string | null | undefined;
-            url: string | null | undefined;
-            url_param: string | null | undefined;
-            osd_target: string | null | undefined;
-            img_source: string | null | undefined;
-          }
-        | null
-        | undefined = JSON.parse(storage);
+      let options: PageUrlType = JSON.parse(storage);
 
       // get urlparam
       let url = new URL(window.location.href);
@@ -58,14 +47,16 @@ export class EditionPagination extends HTMLElement {
       }
 
       // update urlparam
-      let urlparam = paramCheck(options.urlparam, "page");
+      let urlparam = options.urlparam ? options.urlparam : "page";
       urlParam.set(urlparam, href.replace(/[^0-9]+/, ""));
       var state = {
         [urlparam]: href.replace(/[^0-9]+/, ""),
       };
 
       // get citation url class and update citation
-      let citation_url_str = paramCheck(options.chg_citation, "citation-url");
+      let citation_url_str = options.chg_citation
+        ? options.chg_citation
+        : "citation-url";
       let citation_url = document.getElementById(citation_url_str);
 
       let hrefState = `?${urlParam}${location.hash}`;
@@ -77,11 +68,15 @@ export class EditionPagination extends HTMLElement {
       });
 
       // set all nav links to inactive
-      let pag_link = paramCheck(options.pag_link, ".pagination-link");
+      let pag_link = options.pag_link ? options.pag_link : ".pagination-link";
       let link = document.querySelectorAll(`${pag_link}`);
-      let active = paramCheck(options.active_class, "active");
-      let bootstrap_class = paramCheck(options.bootstrap_class, "show");
-      let pag_tab = paramCheck(options.pag_tab, ".pagination-tab.tab-pane");
+      let active = options.active_class ? options.active_class : "active";
+      let bootstrap_class = options.bootstrap_class
+        ? options.bootstrap_class
+        : "show";
+      let pag_tab = options.pag_tab
+        ? options.pag_link
+        : ".pagination-tab.tab-pane";
 
       link.forEach(function (el: HTMLElement) {
         el.classList.remove(active);
@@ -119,13 +114,17 @@ export class EditionPagination extends HTMLElement {
           "No option parameters found. Creating default parameters to continue."
         );
       }
-      var variant = paramCheck(variant_check, { opt: id });
+      var variant = variant_check ? variant_check : { opt: id };
 
-      let opt_url = paramCheck(options.url, "provide-url");
-      let opt_urlparam = paramCheck(options.url_param, "");
-      let opt_osd_target = paramCheck(options.osd_target, "container");
-      let opt_img_source = paramCheck(options.img_source, "container2");
-      let opt_image_size = paramCheck(options.img_size, "500px");
+      let opt_url = options.url ? options.url : "provide-url";
+      let opt_urlparam = options.url_param ? options.url_param : "";
+      let opt_osd_target = options.osd_target
+        ? options.osd_target
+        : "container";
+      let opt_img_source = options.img_source
+        ? options.img_source
+        : "container2";
+      let opt_image_size = options.img_size ? options.img_size : "500px";
 
       let dataSource = `${opt_url}${variant.dataSource}${opt_urlparam}`;
       let targetID0 = `${variant.dataType}_${opt_osd_target}_${variant.pos}`;

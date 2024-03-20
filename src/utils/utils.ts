@@ -3,7 +3,7 @@
 // defined by the user separately.
 
 export function removeMarkup(
-  html_class: string,
+  html_class: string | boolean,
   css_class: string | [],
   color: string,
   hide: {
@@ -115,12 +115,7 @@ export function addMarkup(
   return String(selected.length);
 }
 
-export function uptState(options: {
-  hist: string;
-  cit: any;
-  state: boolean;
-  href: string;
-}) {
+export function uptState(options) {
   if (options.hist) {
     // update url and state of history
     window.history.replaceState({}, "", options.href);
@@ -145,7 +140,7 @@ export function hideLoading(id: string) {
 
 export function paramCheck(
   param: Function | string | [] | {} | null | undefined,
-  def: string | boolean | {} | []
+  def: string | boolean | {} | [] | null | undefined
 ) {
   if (param) {
     return param;

@@ -1,13 +1,8 @@
-const {
-  addMarkup,
-  removeMarkup,
-  uptState,
-  paramCheck,
-} = require("../../utils/utils");
-const { AnnotationType } = require("../../utils/types");
+import { addMarkup, removeMarkup, uptState } from "../../utils/utils";
+import type { AnnotationType, Features, Variant } from "../../utils/types";
 
 export class AnnotationSlider extends HTMLElement {
-  options: typeof AnnotationType | null | undefined;
+  options: AnnotationType | null | undefined;
 
   static get observedAttributes() {
     return ["opt", "onclick"];
@@ -28,8 +23,7 @@ export class AnnotationSlider extends HTMLElement {
     let data = "annotation_slider";
     let storage = sessionStorage.getItem(data);
     if (storage) {
-      let options: typeof AnnotationType | null | undefined =
-        JSON.parse(storage);
+      let options: AnnotationType | null | undefined = JSON.parse(storage);
 
       // get current url parameters
       let url = new URL(window.location.href);
@@ -51,7 +45,9 @@ export class AnnotationSlider extends HTMLElement {
       // to match the custom element with the configuration the opt value must match.
       // variant is found by comparing variant config opt with custom element attr opt
       try {
-        var variant_check = options.variants.find((v: any) => v.opt === id);
+        var variant_check: Variant = options.variants.find(
+          (v: any) => v.opt === id
+        );
       } catch (err) {
         console.log(
           "Error 002 in component annotation slider:\
@@ -59,13 +55,15 @@ export class AnnotationSlider extends HTMLElement {
         );
       }
       // variant as selected in UI
-      let variant = paramCheck(variant_check, {
-        opt: id,
-        features: {
-          all: false,
-          class: "single-feature",
-        },
-      });
+      let variant: Variant = variant_check
+        ? variant_check
+        : {
+            opt: id,
+            features: {
+              all: false,
+              class: "single-feature",
+            },
+          };
       if (!variant) {
         console.log(
           "Error 003 in component annotation slider:\
@@ -77,7 +75,7 @@ export class AnnotationSlider extends HTMLElement {
 
       // use try/catch to verify if object exists in options
       try {
-        var features_check = variant.features;
+        var features_check: Features = variant.features;
       } catch (err) {
         console.log(
           "Message 004 in component annotation slider:\
@@ -85,10 +83,12 @@ export class AnnotationSlider extends HTMLElement {
         );
       }
       // check if features params of UI variant are available
-      var features = paramCheck(features_check, {
-        all: false,
-        class: "single-feature",
-      });
+      var features: Features = features_check
+        ? features_check
+        : {
+            all: false,
+            class: "single-feature",
+          };
 
       // use try/catch to verify if object exists in options
       try {
@@ -102,15 +102,17 @@ export class AnnotationSlider extends HTMLElement {
         );
       }
       // all variants except all features
-      var variants = paramCheck(variants_check, [
-        {
-          opt: id,
-          features: {
-            all: false,
-            class: "single-feature",
-          },
-        },
-      ]);
+      var variants = variants_check
+        ? variants_check
+        : [
+            {
+              opt: id,
+              features: {
+                all: false,
+                class: "single-feature",
+              },
+            },
+          ];
 
       // use try/catch to verify if object exists in options
       try {
@@ -124,13 +126,17 @@ export class AnnotationSlider extends HTMLElement {
         );
       }
       // all-features variant
-      var none_variant = paramCheck(none_variant_check, {
-        opt: "text-features",
-        features: {
-          all: true,
-          class: "features-1",
-        },
-      });
+      var none_variant = none_variant_check
+        ? none_variant_check
+        : [
+            {
+              opt: "text-features",
+              features: {
+                all: true,
+                class: "features-1",
+              },
+            },
+          ];
 
       // use try/catch to verify if object exists in options
       try {
@@ -141,11 +147,13 @@ export class AnnotationSlider extends HTMLElement {
         style obj not found. Creating default parameters."
         );
       }
-      var style = paramCheck(style_check, {
-        css_class: "badge-item",
-      });
+      var style = style_check
+        ? style_check
+        : {
+            css_class: "badge-item",
+          };
 
-      var active = paramCheck(options.active_class, "active");
+      var active = options.active_class ? options.active_class : "active";
 
       // variants are either single-feature or all-features
       // single-features manipulate the DOM based on a given class
@@ -174,13 +182,14 @@ export class AnnotationSlider extends HTMLElement {
             ) {
               // for all found DOM elements remove color class and css_class
               // if hide is true hide elements with display:none
-              var color = paramCheck(el.color, `color-${el.opt}`);
-              let html_class = paramCheck(
-                el.html_class,
-                `html-class-${el.opt}`
-              );
-              let css_class = paramCheck(el.css_class, `css-class-${el.opt}`);
-              let hide = paramCheck(el.hide, false);
+              var color = el.color ? el.color : `color-${el.opt}`;
+              let html_class = el.html_class
+                ? el.html_class
+                : `html-class-${el.opt}`;
+              let css_class = el.css_class
+                ? el.css_class
+                : `css-class-${el.opt}`;
+              let hide = el.hide ? el.hide : false;
 
               // besides removing marktup the function 'removemarkup()' returns
               // the number of elements nodes found as string
@@ -193,7 +202,9 @@ export class AnnotationSlider extends HTMLElement {
               );
 
               // the color class is also removed from the slider element
-              var slider_str = paramCheck(el.opt_slider, `${el.opt}-slider`);
+              var slider_str = el.opt_slider
+                ? el.opt_slider
+                : `${el.opt}-slider`;
 
               try {
                 let slider = document.getElementById(slider_str) as HTMLElement;
@@ -228,20 +239,20 @@ export class AnnotationSlider extends HTMLElement {
           // adds markup, count and changes state to active
           var count = 0;
           this.classList.add(active);
-
-          variants.forEach((el: any) => {
+          [...variants].forEach((el: any) => {
             if (
               (document.getElementById(el.opt) as HTMLInputElement).checked ===
                 false &&
               el.features.class === allClass
             ) {
-              var color = paramCheck(el.color, `color-${el.opt}`);
-              let html_class = paramCheck(
-                el.html_class,
-                `html-class-${el.opt}`
-              );
-              let css_class = paramCheck(el.css_class, `css-class-${el.opt}`);
-              let hide = paramCheck(el.hide, false);
+              var color = el.color ? el.color : `color-${el.opt}`;
+              let html_class = el.html_class
+                ? el.html_class
+                : `html-class-${el.opt}`;
+              let css_class = el.css_class
+                ? el.css_class
+                : `css-class-${el.opt}`;
+              let hide = el.hide ? el.hide : false;
               var selected = addMarkup(
                 html_class,
                 css_class,
@@ -249,7 +260,9 @@ export class AnnotationSlider extends HTMLElement {
                 hide,
                 style
               );
-              var slider_str = paramCheck(el.opt_slider, `${el.opt}-slider`);
+              var slider_str = el.opt_slider
+                ? el.opt_slider
+                : `${el.opt}-slider`;
 
               try {
                 let slider = document.getElementById(slider_str) as HTMLElement;
@@ -286,20 +299,17 @@ export class AnnotationSlider extends HTMLElement {
       } else {
         // if variant is a single-feature this part triggers
         // either adds or removes markup (classes) depending on the state of the slider
-        var color = paramCheck(variant.color, `color-${variant.opt}`);
-        var html_class = paramCheck(
-          variant.html_class,
-          `html-class-${variant.opt}`
-        );
-        var css_class = paramCheck(
-          variant.css_class,
-          `css-class-${variant.opt}`
-        );
-        var hide = paramCheck(variant.hide, false);
-        var slider_str = paramCheck(
-          variant.opt_slider,
-          `${variant.opt}-slider`
-        );
+        var color = variant.color ? variant.color : `color-${variant.opt}`;
+        var html_class = variant.html_class
+          ? variant.html_class
+          : `html-class-${variant.opt}`;
+        var css_class = variant.css_class
+          ? variant.css_class
+          : `css-class-${variant.opt}`;
+        var hide = variant.hide ? variant.hide : { hidden: false, class: "" };
+        var slider_str = variant.opt_slider
+          ? variant.opt_slider
+          : `${variant.opt}-slider`;
 
         if (this.classList.contains(active)) {
           // state == active (remove state and markup)
@@ -385,7 +395,9 @@ export class AnnotationSlider extends HTMLElement {
 
       // try to find elment holding an ID matching the 'chg_citation' string value
       // get citation url key and HTMLElement
-      var citation_url_str = paramCheck(variant.chg_citation, "citation-url");
+      var citation_url_str = variant.chg_citation
+        ? variant.chg_citation
+        : "citation-url";
       var citation_url = document.getElementById(citation_url_str);
 
       let href = `?${urlParam}${location.hash}`;
@@ -403,7 +415,7 @@ export class AnnotationSlider extends HTMLElement {
     let data = "annotation_slider";
     let storage = sessionStorage.getItem(data);
 
-    let options: typeof AnnotationType | null | undefined = JSON.parse(storage);
+    let options: AnnotationType | null | undefined = JSON.parse(storage);
 
     let opt = this.getAttribute("opt");
     // check if user set opt attribute
@@ -426,13 +438,15 @@ export class AnnotationSlider extends HTMLElement {
         No option parameters found. Creating default parameters to continue."
       );
     }
-    var variant = paramCheck(variant_check, {
-      opt: opt,
-      features: {
-        class: "features-1",
-        all: false,
-      },
-    });
+    var variant = variant_check
+      ? variant_check
+      : {
+          opt: opt,
+          features: {
+            class: "features-1",
+            all: false,
+          },
+        };
 
     try {
       var features_check = variant.features;
@@ -442,13 +456,15 @@ export class AnnotationSlider extends HTMLElement {
         Features object in variant not found. Creating default parameters."
       );
     }
-    let features = paramCheck(features_check, {
-      all: false,
-      class: "feature-1",
-    });
+    let features = features_check
+      ? features_check
+      : {
+          all: false,
+          class: "feature-1",
+        };
 
-    let title = paramCheck(variant.title, "Text Feature");
-    let opt_slider = paramCheck(variant.opt_slider, `${opt}-slider`);
+    let title = variant.title ? variant.title : "Text Feature";
+    let opt_slider = variant.opt_slider ? variant.opt_slider : `${opt}-slider`;
 
     // check if sizes object with font sizes is not null or undefined
     try {
@@ -459,17 +475,19 @@ export class AnnotationSlider extends HTMLElement {
       Hide object not found. Creating default parameters."
       );
     }
-    let rendered_element = paramCheck(rendered_element_check, {
-      label_class: "switch",
-      slider_class: "i-slider round",
-    });
+    let rendered_element = rendered_element_check
+      ? rendered_element_check
+      : {
+          label_class: "switch",
+          slider_class: "i-slider round",
+        };
 
-    let render_class = paramCheck(rendered_element.label_class, "switch");
-    let slider_class = paramCheck(
-      rendered_element.slider_class,
-      "i-slider round"
-    );
-
+    let render_class = rendered_element.label_class
+      ? rendered_element.label_class
+      : "switch";
+    let slider_class = rendered_element.slider_class
+      ? rendered_element.slider_class
+      : "i-slider round";
     this.innerHTML = `
             <label>${title}</label>
             <label class="${render_class}">

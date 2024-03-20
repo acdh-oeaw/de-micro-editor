@@ -1,4 +1,5 @@
-const { uptState, paramCheck } = require("../../utils/utils");
+import { uptState } from "../../utils/utils";
+import type { FullScreenType, FullScreenVariant } from "../../utils/types";
 
 export class FullSize extends HTMLElement {
   static get observedAttributes() {
@@ -18,27 +19,7 @@ export class FullSize extends HTMLElement {
     let storage: string | null = sessionStorage.getItem(data);
 
     if (storage) {
-      var options:
-        | {
-            name: string | null | undefined;
-            variants:
-              | [
-                  {
-                    opt: string | null | undefined;
-                    title: string | null | undefined;
-                    hide: string | null | undefined;
-                    to_hide: string | null | undefined;
-                    chg_citation: string | null | undefined;
-                    urlparam: string | null | undefined;
-                  }
-                ]
-              | null;
-            active_class: string | null | undefined;
-            render_class: string | null | undefined;
-            render_svg: string | null | undefined;
-          }
-        | null
-        | undefined = JSON.parse(storage);
+      var options: FullScreenType = JSON.parse(storage);
 
       let url = new URL(window.location.href);
       let urlParam = new URLSearchParams(url.search);
@@ -47,20 +28,22 @@ export class FullSize extends HTMLElement {
 
       // variant is found by comparing variant config opt with custom element attr opt
       try {
-        var variant_check = options.variants.find((v) => v.opt === id);
+        var variant_check: FullScreenVariant = options.variants.find(
+          (v) => v.opt === id
+        );
       } catch (err) {
         console.log(
           "No option parameters found. Creating default parameters to continue."
         );
       }
-      var variant = paramCheck(variant_check, { opt: id });
+      var variant = variant_check ? variant_check : { opt: id };
 
       // check for option param or return default value
-      var active = paramCheck(options.active_class, "active");
+      var active = options.active_class ? options.active_class : "active";
 
-      var hide = paramCheck(variant.hide, "hide-container");
+      var hide = variant.hide ? variant.hide : "hide-container";
 
-      var hidden = paramCheck(variant.to_hide, "fade");
+      var hidden = variant.to_hide ? variant.to_hide : "fade";
 
       var svg_show = `
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fullscreen" viewBox="0 0 16 16">
@@ -73,7 +56,7 @@ export class FullSize extends HTMLElement {
                 </svg>
             `;
 
-      var urlparam = paramCheck(variant.urlparam, "fullscreen");
+      var urlparam = variant.urlparam ? variant.urlparam : "fullscreen";
 
       if (urlParam.get(urlparam) == "off" || urlParam.get(urlparam) == null) {
         urlParam.set(urlparam, "on");
@@ -91,13 +74,15 @@ export class FullSize extends HTMLElement {
         this.classList.add(active);
       }
 
-      var stateName = paramCheck(variant.opt, "edition-fullscreen");
+      var stateName = variant.opt ? variant.opt : "edition-fullscreen";
       var stateParam = urlParam.get(urlparam);
       var state = {
         [stateName]: stateParam,
       };
 
-      var citation_url_str = paramCheck(variant.chg_citation, "citation-url");
+      var citation_url_str = variant.chg_citation
+        ? variant.chg_citation
+        : "citation-url";
       var citation_url = document.getElementById(citation_url_str);
 
       let href = `?${urlParam}${location.hash}`;
@@ -112,45 +97,28 @@ export class FullSize extends HTMLElement {
 
   render() {
     let data = "fullsize";
-    var options:
-      | {
-          name: string | null | undefined;
-          variants:
-            | [
-                {
-                  opt: string | null | undefined;
-                  title: string | null | undefined;
-                  hide: string | null | undefined;
-                  to_hide: string | null | undefined;
-                  chg_citation: string | null | undefined;
-                  urlparam: string | null | undefined;
-                }
-              ]
-            | null;
-          active_class: string | null | undefined;
-          render_class: string | null | undefined;
-          render_svg: string | null | undefined;
-        }
-      | null
-      | undefined = JSON.parse(sessionStorage.getItem(data));
+    var options: FullScreenType = JSON.parse(sessionStorage.getItem(data));
 
     let opt = this.getAttribute("opt");
     try {
-      var variant_check = options.variants.find((v) => v.opt === opt);
+      var variant_check: FullScreenVariant = options.variants.find(
+        (v) => v.opt === opt
+      );
     } catch (err) {
       console.log(
         "No option parameters found. Creating default parameters to continue."
       );
     }
-    var variant = paramCheck(variant_check, { opt: opt });
+    var variant = variant_check ? variant_check : { opt: opt };
 
-    var a_class = paramCheck(options.active_class, "nav-link btn btn-round");
-    var svg = paramCheck(
-      options.render_svg,
-      "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-fullscreen' viewBox='0 0 16 16'><path d='M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z'/></svg>"
-    );
-    var opt_title = paramCheck(variant.title, "Full screen on/off");
-    var var_opt = paramCheck(variant.opt, "edition-fullscreen");
+    var a_class = options.active_class
+      ? options.active_class
+      : "nav-link btn btn-round";
+    var svg = options.render_svg
+      ? options.render_svg
+      : "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-fullscreen' viewBox='0 0 16 16'><path d='M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z'/></svg>";
+    var opt_title = variant.title ? variant.title : "Full screen on/off";
+    var var_opt = variant.opt ? variant.opt : "edition-fullscreen";
 
     this.innerHTML = `
             <small><label style="padding:.2em;">${opt_title}:</label></small>

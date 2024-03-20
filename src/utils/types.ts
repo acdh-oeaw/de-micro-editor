@@ -1,72 +1,81 @@
-type String_misc = string | null | undefined;
-type Bool_misc = boolean | null | undefined;
-type Rendered_element =
+export type String_misc = string | null | undefined;
+export type Bool_misc = boolean | null | undefined;
+
+export type Rendered_element =
   | {
       label_class: String_misc;
       slider_class: String_misc;
     }
   | null
   | undefined;
-type Span_element =
+
+export type Span_element =
   | {
       css_class: String_misc;
     }
   | null
   | undefined;
-type Title = String_misc;
-type Hide = {
+export type Title = String_misc;
+
+export type Hide = {
   hidden: boolean;
   class: string;
 } | null;
-type Features = {
+
+export type Features = {
   all: Bool_misc;
   class: String_misc;
 } | null;
-type Variants =
-  | [
-      {
-        opt: String_misc;
-        opt_slider: String_misc;
-        title: String_misc;
-        color: String_misc;
-        html_class: String_misc;
-        css_class: String_misc;
-        hide: Hide;
-        chg_citation: String_misc;
-        features: Features;
-      }
-    ]
+
+export type Variant = {
+  opt: String_misc;
+  opt_slider?: String_misc;
+  title?: String_misc;
+  color?: String_misc;
+  html_class?: String_misc;
+  css_class?: String_misc;
+  hide?: Hide;
+  chg_citation?: String_misc;
+  features: Features;
+  default?: Bool_misc;
+  custom_function?: Object;
+};
+
+export type Variants = [Variant] | null | undefined;
+
+export type AnnotationType =
+  | {
+      title: Title;
+      variants: Variants;
+      span_element: Span_element;
+      active_class: String_misc;
+      rendered_element: Rendered_element;
+    }
   | null
   | undefined;
-export type AnnotationType = {
-  title: Title;
-  variants: Variants;
-  span_element: Span_element;
-  active_class: String_misc;
-  rendered_element: Rendered_element;
+
+export type FullScreenVariant = {
+  opt: String_misc;
+  title?: String_misc;
+  hide?: String_misc;
+  to_hide?: String_misc;
+  chg_citation?: String_misc;
+  urlparam?: String_misc;
 };
+
+export type FullScreenVariants = [FullScreenVariant] | null;
+
 export type FullScreenType =
   | {
       name: String_misc;
-      variants:
-        | [
-            {
-              opt: String_misc;
-              title: String_misc;
-              hide: String_misc;
-              to_hide: String_misc;
-              chg_citation: String_misc;
-              urlparam: String_misc;
-            }
-          ]
-        | null;
+      variants: FullScreenVariants;
       active_class: String_misc;
       render_class: String_misc;
       render_svg: String_misc;
     }
   | null
   | undefined;
-type Sizes =
+export type Sizes =
   | {
       default: String_misc;
       font_size_14: String_misc;
@@ -76,7 +85,7 @@ type Sizes =
     }
   | null
   | undefined;
-type Fonts =
+export type Fonts =
   | {
       default: String_misc;
       font1: String_misc;
@@ -85,21 +94,21 @@ type Fonts =
     }
   | null
   | undefined;
-type FontVariants =
-  | [
-      {
-        opt: String_misc;
-        title: String_misc;
-        urlparam: String_misc;
-        sizes?: Sizes;
-        fonts?: Fonts;
-        paragraph: String_misc;
-        p_class: String_misc;
-        css_class: String_misc;
-      }
-    ]
-  | null
-  | undefined;
+
+export type FontVariant = {
+  opt: String_misc;
+  title?: String_misc;
+  urlparam?: String_misc;
+  sizes?: Sizes;
+  fonts?: Fonts;
+  paragraph?: String_misc;
+  p_class?: String_misc;
+  css_class?: String_misc;
+  chg_citation?: String_misc;
+};
+
+export type FontVariants = [FontVariant] | null | undefined;
+
 export type FontSizeType =
   | {
       name: String_misc;
@@ -109,6 +118,7 @@ export type FontSizeType =
     }
   | null
   | undefined;
+
 export type FontFamilyType =
   | {
       name: String_misc;
@@ -118,43 +128,44 @@ export type FontFamilyType =
     }
   | null
   | undefined;
+
+export type ImageSwitchVariant = {
+  opt: String_misc;
+  title?: String_misc;
+  urlparam?: String_misc;
+  chg_citation?: String_misc;
+  fade?: String_misc;
+  column_small?:
+    | {
+        class: String_misc;
+        percent: String_misc;
+      }
+    | null
+    | undefined;
+  column_full?:
+    | {
+        class: String_misc;
+        percent: String_misc;
+      }
+    | null
+    | undefined;
+  hide?:
+    | {
+        hidden: true;
+        class_to_hide: String_misc;
+        class_to_show: String_misc;
+        class_parent: String_misc;
+        resize: String_misc;
+      }
+    | null
+    | undefined;
+  image_size?: String_misc;
+};
+
 export type ImageSwitchType =
   | {
       name: String_misc;
-      variants: [
-        {
-          opt: String_misc;
-          title: String_misc;
-          urlparam: String_misc;
-          chg_citation: String_misc;
-          fade: String_misc;
-          column_small:
-            | {
-                class: String_misc;
-                percent: String_misc;
-              }
-            | null
-            | undefined;
-          column_full:
-            | {
-                class: String_misc;
-                percent: String_misc;
-              }
-            | null
-            | undefined;
-          hide:
-            | {
-                hidden: true;
-                class_to_hide: String_misc;
-                class_to_show: String_misc;
-                class_parent: String_misc;
-                resize: String_misc;
-              }
-            | null
-            | undefined;
-          image_size: String_misc;
-        }
-      ];
+      variants: [ImageSwitchVariant];
       active_class: String_misc;
       rendered_element:
         | {
@@ -166,7 +177,8 @@ export type ImageSwitchType =
     }
   | null
   | undefined;
-export type PageUrl =
+
+export type PageUrlType =
   | {
       name: String_misc;
       opt: String_misc;
@@ -187,21 +199,41 @@ export type PageUrl =
     }
   | null
   | undefined;
-export type MultiLanguage =
+
+export type MultiLanguageVariant = {
+  opt: String_misc;
+  title?: String_misc;
+  class?: String_misc;
+  map?: object | null | undefined;
+};
+
+export type MultiLanguageType =
   | {
       title: String_misc;
-      variants:
-        | [
-            {
-              opt: String_misc;
-              title: String_misc;
-              class: String_misc;
-              map: object | null | undefined;
-            }
-          ]
-        | null
-        | undefined;
+      variants: [MultiLanguageVariant] | null | undefined;
       active_class: String_misc;
+    }
+  | null
+  | undefined;
+
+export type ImageLoaderType =
+  | {
+      name: string | null | undefined;
+      opt: string | null | undefined;
+      title: string | null | undefined;
+      urlparam: string | null | undefined;
+      chg_citation: string | null | undefined;
+      pag_link: string | null | undefined;
+      pag_tab: string | null | undefined;
+      img_size: string | null | undefined;
+      url: string | null | undefined;
+      url_param: string | null | undefined;
+      osd_target: string | null | undefined;
+      img_source: string | null | undefined;
+      img_types: [] | null | undefined;
+      active_class: string | null | undefined;
+      inactive_class: string | null | undefined;
+      bootstrap_class: string | null | undefined;
     }
   | null
   | undefined;

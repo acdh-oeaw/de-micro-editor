@@ -1,32 +1,51 @@
-const { SetDataCookie } = require("./src/utils/setCookie");
-const { AnnotationType } = require("./src/utils/types");
+import { SetDataCookie } from "./src/utils/setCookie";
+import type {
+  AnnotationType,
+  FontFamilyType,
+  FullScreenType,
+  FontSizeType,
+  ImageSwitchType,
+  MultiLanguageType,
+  PageUrlType,
+  ImageLoaderType,
+} from "./src/utils/types";
+import { AnnotationSlider } from "./src/components/annotation_slider/main";
+import { FullSize } from "./src/components/full_screen/main";
+import { FontSize } from "./src/components/font_size/main";
+import { FontFamily } from "./src/components/font_family/main";
+import { ImageSwitch } from "./src/components/image_switch/main";
+import { ImageLoader } from "./src/components/image_loader/main";
+import { EditionPagination } from "./src/components/image_loader/pagination";
+import { WindowResize } from "./src/components/image_loader/resize";
+import { UrlSearchParamUpdate } from "./src/components/search_params/main";
+import { MultiLanguage } from "./src/components/multi_language/main";
 
 ("use strict");
 
 class LoadEditor {
-  aot: typeof AnnotationType | boolean;
-  fs: object | boolean;
-  fos: object | boolean;
-  ff: object | boolean;
-  is: object | boolean;
-  il: object | boolean;
-  ep: object | boolean;
-  wr: object | boolean;
-  up: object | boolean;
+  aot: AnnotationType | boolean;
+  fs: FullScreenType | boolean;
+  fos: FontSizeType | boolean;
+  ff: FontFamilyType | boolean;
+  is: ImageSwitchType | boolean;
+  il: ImageLoaderType | boolean;
+  ep: PageUrlType | boolean;
+  wr: boolean;
+  up: boolean;
   upc: any;
-  lang: object | boolean;
+  lang: MultiLanguageType | boolean;
 
   constructor(options: {
-    aot: typeof AnnotationType | boolean;
-    fs: object | boolean;
-    fos: object | boolean;
-    ff: object | boolean;
-    is: object | boolean;
-    il: object | boolean;
-    ep: object | boolean;
-    wr: object | boolean;
-    up: object | boolean;
-    lang: object | boolean;
+    aot: AnnotationType | boolean;
+    fs: FullScreenType | boolean;
+    fos: FontSizeType | boolean;
+    ff: FontFamilyType | boolean;
+    is: ImageSwitchType | boolean;
+    il: ImageLoaderType | boolean;
+    ep: PageUrlType | boolean;
+    wr: boolean;
+    up: boolean;
+    lang: MultiLanguageType | boolean;
   }) {
     /*
         define configuration options
@@ -36,65 +55,49 @@ class LoadEditor {
         */
     if (options && "aot" in options) {
       this.aot = options.aot;
-      var {
-        AnnotationSlider,
-      } = require("./src/components/annotation_slider/main");
     }
     if (options && "fs" in options) {
       this.fs = options.fs;
-      var { FullSize } = require("./src/components/full_screen/main");
     }
     if (options && "fos" in options) {
       this.fos = options.fos;
-      var { FontSize } = require("./src/components/font_size/main");
     }
     if (options && "ff" in options) {
       this.ff = options.ff;
-      var { FontFamily } = require("./src/components/font_family/main");
     }
     if (options && "is" in options) {
       this.is = options.is;
       console.log(
         "Warning 001: ImageSwitch parameter 'is' requires OpenSeadragon library: https://openseadragon.github.io/"
       );
-      var { ImageSwitch } = require("./src/components/image_switch/main");
     }
     if (options && "il" in options) {
       this.il = options.il;
       console.log(
         "Warning 002: ImageLoader parameter 'il' requires OpenSeadragon library: https://openseadragon.github.io/"
       );
-      var { ImageLoader } = require("./src/components/image_loader/main");
     }
     if (options && "ep" in options) {
       this.ep = options.ep;
       console.log(
         "Warning 003: Edition Pagination parameter 'ep' requires OpenSeadragon library: https://openseadragon.github.io/"
       );
-      var {
-        EditionPagination,
-      } = require("./src/components/image_loader/pagination");
     }
     if (options && "wr" in options && options.wr === true) {
       this.wr = options.wr;
-      var { WindowResize } = require("./src/components/image_loader/resize");
     }
     if (options && "up" in options && options.up === true) {
       this.up = options.up;
-      var {
-        UrlSearchParamUpdate,
-      } = require("./src/components/search_params/main");
       // initialize imported functions
       this.upc = new UrlSearchParamUpdate();
     }
     if (options && "lang" in options) {
       this.lang = options.lang;
-      var { MultiLanguage } = require("./src/components/multi_language/main");
     }
 
     // set cookies if config options is available
-    if (this.aot) {
-      [...this.aot.variants].forEach((variant: any) => {
+    if (typeof this.aot === "object") {
+      [...this.aot.variants].forEach((variant) => {
         if (variant.custom_function instanceof Function) {
           variant.custom_function = variant.custom_function.toString();
         }
@@ -105,49 +108,49 @@ class LoadEditor {
         console.log(e);
       }
     }
-    if (this.fs) {
+    if (typeof this.fs === "object") {
       try {
         new SetDataCookie("fullsize", this.fs).build();
       } catch (e) {
         console.log(e);
       }
     }
-    if (this.fos) {
+    if (typeof this.fos === "object") {
       try {
         new SetDataCookie("fontsize", this.fos).build();
       } catch (e) {
         console.log(e);
       }
     }
-    if (this.ff) {
+    if (typeof this.ff === "object") {
       try {
         new SetDataCookie("font_family", this.ff).build();
       } catch (e) {
         console.log(e);
       }
     }
-    if (this.il) {
+    if (typeof this.il === "object") {
       try {
         new SetDataCookie("image_loader", this.il).build();
       } catch (e) {
         console.log(e);
       }
     }
-    if (this.is) {
+    if (typeof this.is === "object") {
       try {
         new SetDataCookie("image_switch", this.is).build();
       } catch (e) {
         console.log(e);
       }
     }
-    if (this.ep) {
+    if (typeof this.ep === "object") {
       try {
         new SetDataCookie("ed_pagination", this.ep).build();
       } catch (e) {
         console.log(e);
       }
     }
-    if (this.lang) {
+    if (typeof this.lang === "object") {
       try {
         new SetDataCookie("multi_language", this.lang).build();
       } catch (e) {

@@ -1,4 +1,5 @@
-const { uptState, paramCheck } = require("../../utils/utils");
+import { uptState } from "../../utils/utils";
+import type { FontFamilyType, FontVariant } from "../../utils/types";
 
 export class FontFamily extends HTMLElement {
   static get observedAttributes() {
@@ -16,37 +17,7 @@ export class FontFamily extends HTMLElement {
     let storage = sessionStorage.getItem(data);
 
     if (storage) {
-      let options:
-        | {
-            name: string | null | undefined;
-            variants:
-              | [
-                  {
-                    opt: string | null | undefined;
-                    title: string | null | undefined;
-                    urlparam: string | null | undefined;
-                    chg_citation: string | null | undefined;
-                    fonts:
-                      | {
-                          default: string | null | undefined;
-                          font1: string | null | undefined;
-                          font2: string | null | undefined;
-                          font3: string | null | undefined;
-                        }
-                      | null
-                      | undefined;
-                    paragraph: string | null | undefined;
-                    p_class: string | null | undefined;
-                    css_class: string | null | undefined;
-                  }
-                ]
-              | null
-              | undefined;
-            active_class: string | null | undefined;
-            html_class: string | null | undefined;
-          }
-        | null
-        | undefined = JSON.parse(storage);
+      let options: FontFamilyType = JSON.parse(storage);
 
       let url = new URL(window.location.href);
       let urlParam = new URLSearchParams(url.search);
@@ -54,25 +25,29 @@ export class FontFamily extends HTMLElement {
       let id = this.getAttribute("id");
       // variant is found by comparing variant config opt with custom element attr opt
       try {
-        var variant_check = options.variants.find((v) => v.opt === id);
+        var variant_check: FontVariant = options.variants.find(
+          (v) => v.opt === id
+        );
       } catch (err) {
         console.log(
           "No option parameters found. Creating default parameters to continue."
         );
       }
-      var variant = paramCheck(variant_check, { opt: id });
+      var variant = variant_check ? variant_check : { opt: id };
 
       // get citation url key and HTMLElement
-      var citation_url_str = paramCheck(variant.chg_citation, "citation-url");
+      var citation_url_str = variant.chg_citation
+        ? variant.chg_citation
+        : "citation-url";
       var citation_url = document.getElementById(citation_url_str);
 
       // get urlparam key
-      var urlparam = paramCheck(variant.urlparam, "font");
+      var urlparam = variant.urlparam ? variant.urlparam : "font";
 
       // define paragraph HTML element name
-      let p_change = paramCheck(variant.paragraph, "p");
+      let p_change = variant.paragraph ? variant.paragraph : "p";
       // define class to change font sizes (not all paragraphs might need to be changed)
-      let p_class = paramCheck(variant.p_class, "yes-index");
+      let p_class = variant.p_class ? variant.p_class : "yes-index";
 
       // check if sizes object with font sizes is not null or undefined
       try {
@@ -82,12 +57,14 @@ export class FontFamily extends HTMLElement {
           "Font family object not found. Creating default parameters."
         );
       }
-      let family = paramCheck(family_check, {
-        default: "default",
-        font1: "Times-New-Roman",
-        font2: "Courier-New",
-        font3: "Arial-serif",
-      });
+      let family = family_check
+        ? family_check
+        : {
+            default: "default",
+            font1: "Times-New-Roman",
+            font2: "Courier-New",
+            font3: "Arial-serif",
+          };
 
       // change select option value based on provided url param
       var select = document.getElementById(variant.opt) as HTMLSelectElement;
@@ -128,37 +105,7 @@ export class FontFamily extends HTMLElement {
     let data = "font_family";
     let storage = sessionStorage.getItem(data);
 
-    let options:
-      | {
-          name: string | null | undefined;
-          variants:
-            | [
-                {
-                  opt: string | null | undefined;
-                  title: string | null | undefined;
-                  urlparam: string | null | undefined;
-                  chg_citation: string | null | undefined;
-                  fonts:
-                    | {
-                        default: string | null | undefined;
-                        font1: string | null | undefined;
-                        font2: string | null | undefined;
-                        font3: string | null | undefined;
-                      }
-                    | null
-                    | undefined;
-                  paragraph: string | null | undefined;
-                  p_class: string | null | undefined;
-                  css_class: string | null | undefined;
-                }
-              ]
-            | null
-            | undefined;
-          active_class: string | null | undefined;
-          html_class: string | null | undefined;
-        }
-      | null
-      | undefined = JSON.parse(storage);
+    let options: FontFamilyType = JSON.parse(storage);
 
     let opt = this.getAttribute("opt");
     // check if user set opt attribute
@@ -168,30 +115,29 @@ export class FontFamily extends HTMLElement {
 
     // variant is found by comparing variant config opt with custom element attr opt
     try {
-      var variant_check = options.variants.find((v) => v.opt === opt);
+      var variant_check: FontVariant = options.variants.find(
+        (v) => v.opt === opt
+      );
     } catch (err) {
       console.log(
         "No option parameters found. Creating default parameters to continue."
       );
     }
-    var variant = paramCheck(variant_check, [{ opt: opt }]);
+    var variant = variant_check ? variant_check : { opt: opt };
 
     // check if sizes object with font sizes is not null or undefined
-    try {
-      var family_check = variant.fonts;
-    } catch (err) {
-      console.log("Font family object not found. Creating default parameters.");
-    }
-    let family = paramCheck(family_check, {
-      default: "default",
-      font1: "Times-New-Roman",
-      font2: "Courier-New",
-      font3: "Arial-serif",
-    });
+    var family = variant.fonts
+      ? variant.fonts
+      : {
+          default: "default",
+          font1: "Times-New-Roman",
+          font2: "Courier-New",
+          font3: "Arial-serif",
+        };
 
-    let html_class = paramCheck(options.html_class, "custom-select");
-    let css_class = paramCheck(variant.css_class, "");
-    let opt_title = paramCheck(variant.title, "Font Family");
+    let html_class = options.html_class ? options.html_class : "custom-select";
+    let css_class = variant.css_class ? variant.css_class : "";
+    let opt_title = variant.title ? variant.title : "Font Family";
 
     let s_html = `
             <small><label style="padding:.2em;">${opt_title}:</label></small>
