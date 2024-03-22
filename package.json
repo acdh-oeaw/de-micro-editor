@@ -1,6 +1,6 @@
 {
   "name": "de-micro-editor",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "license": "MIT",
   "type": "module",
   "description": "Digital Edition Editor building blocks",
