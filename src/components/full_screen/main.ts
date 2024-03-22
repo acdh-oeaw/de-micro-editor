@@ -1,5 +1,5 @@
 import { uptState } from "../../utils/utils";
-import type { FullScreenType, FullScreenVariant } from "../../utils/types";
+import type { FullScreenType } from "../../utils/types";
 
 export class FullSize extends HTMLElement {
   static get observedAttributes() {
@@ -27,16 +27,10 @@ export class FullSize extends HTMLElement {
       let id = this.getAttribute("id");
 
       // variant is found by comparing variant config opt with custom element attr opt
-      try {
-        var variant_check: FullScreenVariant = options.variants.find(
-          (v) => v.opt === id
-        );
-      } catch (err) {
-        console.log(
-          "No option parameters found. Creating default parameters to continue."
-        );
-      }
-      var variant = variant_check ? variant_check : { opt: id };
+      var variant_check = options.variants.find((v) => v.opt === id);
+      var variant = variant_check
+        ? variant_check
+        : { opt: id ? id : "fullscreen" };
 
       // check for option param or return default value
       var active = options.active_class ? options.active_class : "active";
@@ -60,14 +54,14 @@ export class FullSize extends HTMLElement {
 
       if (urlParam.get(urlparam) == "off" || urlParam.get(urlparam) == null) {
         urlParam.set(urlparam, "on");
-        document.querySelectorAll(`.${hide}`).forEach((el: HTMLElement) => {
+        document.querySelectorAll(`.${hide}`).forEach((el) => {
           el.classList.add(hidden);
         });
         this.innerHTML = svg_hide;
         this.classList.remove(active);
       } else {
         urlParam.delete(urlparam);
-        document.querySelectorAll(`.${hide}`).forEach((el: HTMLElement) => {
+        document.querySelectorAll(`.${hide}`).forEach((el) => {
           el.classList.remove(hidden);
         });
         this.innerHTML = svg_show;
@@ -97,19 +91,15 @@ export class FullSize extends HTMLElement {
 
   render() {
     let data = "fullsize";
-    var options: FullScreenType = JSON.parse(sessionStorage.getItem(data));
+    var storage = sessionStorage.getItem(data);
+    if (storage === null) return;
+    var options: FullScreenType = JSON.parse(storage);
 
     let opt = this.getAttribute("opt");
-    try {
-      var variant_check: FullScreenVariant = options.variants.find(
-        (v) => v.opt === opt
-      );
-    } catch (err) {
-      console.log(
-        "No option parameters found. Creating default parameters to continue."
-      );
-    }
-    var variant = variant_check ? variant_check : { opt: opt };
+    var variant_check = options.variants.find((v) => v.opt === opt);
+    var variant = variant_check
+      ? variant_check
+      : { opt: opt ? opt : "fullscreen" };
 
     var a_class = options.active_class
       ? options.active_class

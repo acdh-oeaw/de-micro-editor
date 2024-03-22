@@ -19,7 +19,10 @@ export class WindowResize extends HTMLElement {
     var isResizing = true;
 
     let id = this.getAttribute("id");
-    let variant = config.find((v: any) => `${v.opt}-${v.pos}` === id);
+    let variant_check = config.find((v) => `${v.opt}-${v.pos}` === id);
+    let variant = variant_check
+      ? variant_check
+      : { opt: id ? id : "resize", pos: "1", size: "0.5" };
 
     let container = document.getElementById(
       `container-resize-${variant.pos}`
@@ -40,10 +43,10 @@ export class WindowResize extends HTMLElement {
     let text = left_container.childNodes[0] as HTMLElement;
 
     /* reset width height */
-    viewer_wrapper.style.width = null;
-    viewer_wrapper.style.height = null;
+    viewer_wrapper.style.width = "";
+    viewer_wrapper.style.height = "";
 
-    document.addEventListener("mousemove", function (e) {
+    document.addEventListener("mousemove", (e) => {
       // we don't want to do anything if we aren't resizing.
       if (!isResizing) return;
 
@@ -99,16 +102,14 @@ export class WindowResize extends HTMLElement {
     if (typeof pos !== "string") {
       console.log("No 'pos' attribute in custom element window-resize found!");
     }
-    let size = this.getAttribute("size");
+    let size_check = this.getAttribute("size");
     // check if user set opt attribute
-    if (typeof size !== "string") {
-      console.log("No 'size' attribute in custom element window-resize found!");
-    }
+    let size = size_check ? size_check : "0.5";
 
     config.push({
-      opt: opt,
-      pos: pos,
-      size: size,
+      opt: opt ? opt : "resize",
+      pos: pos ? pos : "1",
+      size: size ? size : "0.5",
     });
 
     this.innerHTML = `

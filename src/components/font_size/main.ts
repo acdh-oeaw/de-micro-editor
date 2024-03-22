@@ -1,9 +1,5 @@
 import { uptState } from "../../utils/utils";
-import type {
-  FontFamilyType,
-  FontSizeType,
-  FontVariant,
-} from "../../utils/types";
+import type { FontSizeType } from "../../utils/types";
 
 export class FontSize extends HTMLElement {
   static get observedAttributes() {
@@ -28,27 +24,16 @@ export class FontSize extends HTMLElement {
 
       let id = this.getAttribute("id");
       // variant is found by comparing variant config opt with custom element attr opt
-      try {
-        var variant_check: FontVariant = options.variants.find(
-          (v) => v.opt === id
-        );
-      } catch (err) {
-        console.log(
-          "No option parameters found. Creating default parameters to continue."
-        );
-      }
-      var variant = variant_check ? variant_check : { opt: id };
+      var variant_check = options.variants.find((v) => v.opt === id);
+      var variant = variant_check
+        ? variant_check
+        : { opt: id ? id : "font-size" };
 
       let p_change = variant.paragraph ? variant.paragraph : "p";
       let p_class = variant.p_class ? variant.p_class : "yes-index";
 
-      try {
-        var size_check = variant.sizes;
-      } catch (err) {
-        console.log("Sizes obj not found. Creating default parameters.");
-      }
-      let size = size_check
-        ? size_check
+      let size = variant.sizes
+        ? variant.sizes
         : {
             default: "default",
             font_size_14: "14",
@@ -59,7 +44,9 @@ export class FontSize extends HTMLElement {
 
       let urlparam = variant.urlparam ? variant.urlparam : "fontsize";
 
-      var value = (document.getElementById(id) as HTMLSelectElement).value;
+      var value = (
+        document.getElementById(id ? id : "font-size") as HTMLSelectElement
+      ).value;
 
       var css_class = variant.css_class ? variant.css_class : "font-size-";
 
@@ -102,20 +89,14 @@ export class FontSize extends HTMLElement {
   render() {
     let data = "fontsize";
     let storage: string | null = sessionStorage.getItem(data);
-
-    var options: FontFamilyType = JSON.parse(storage);
+    if (storage === null) return;
+    var options: FontSizeType = JSON.parse(storage);
 
     let opt = this.getAttribute("opt");
-    try {
-      var variant_check: FontVariant = options.variants.find(
-        (v) => v.opt === opt
-      );
-    } catch (err) {
-      console.log(
-        "No option parameters found. Creating default parameters to continue."
-      );
-    }
-    var variant = variant_check ? variant_check : { opt: opt };
+    var variant_check = options.variants.find((v) => v.opt === opt);
+    var variant = variant_check
+      ? variant_check
+      : { opt: opt ? opt : "font-size" };
     let size = variant.sizes
       ? variant.sizes
       : {

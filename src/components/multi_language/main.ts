@@ -1,8 +1,5 @@
-import { uptState, paramCheck } from "../../utils/utils";
-import type {
-  MultiLanguageType,
-  MultiLanguageVariant,
-} from "../../utils/types";
+import { uptState } from "../../utils/utils";
+import type { MultiLanguageType } from "../../utils/types";
 
 export class MultiLanguage extends HTMLElement {
   static get observedAttributes() {
@@ -29,36 +26,27 @@ export class MultiLanguage extends HTMLElement {
       let urlParam = new URLSearchParams(url.search);
 
       // get id of rendered html element. opt value of custom element is used as ID.
-      let id = this.getAttribute("id").split("ml_")[1];
-      if (!id) {
+      let id = this.getAttribute("id");
+      if (id) id.split("ml_")[1];
+      if (!id)
         console.log(
           "ID of multi language custom child element not found. \
-                Make sure the annotation-slider element holds the attribute 'opt' with \
-                a defined string value."
+              Make sure the annotation-slider element holds the attribute 'opt' with \
+              a defined string value."
         );
-      }
 
       // configuration holds an array with variants with at least one variant object.
       // to match the custom element with the configuration the opt value must match.
       // variant is found by comparing variant config opt with custom element attr opt
-      try {
-        var variant_check: MultiLanguageVariant = options.variants.find(
-          (v) => v.opt === id
-        );
-      } catch (err) {
-        console.log(
-          "No option parameters found. Creating default parameters to continue."
-        );
-      }
+      var variant_check = options.variants.find((v) => v.opt === id);
       // variant as selected in UI
-      let variant = variant_check ? variant_check : { opt: id };
-      if (!variant) {
+      let variant = variant_check ? variant_check : { opt: id ? id : "en" };
+      if (!variant)
         console.log(
           "No variant found! Please define a variant object that contains \
-                and 'opt' key holding a string value that matches the 'opt' value of custom \
-                element 'annotation#slider'."
+              and 'opt' key holding a string value that matches the 'opt' value of custom \
+              element 'annotation#slider'."
         );
-      }
 
       /* check if language mappings is available */
       var map = variant.map ? variant.map : { "index.html": "index-en.html" };
@@ -105,7 +93,7 @@ export class MultiLanguage extends HTMLElement {
   render() {
     let data = "multi_language";
     let storage = sessionStorage.getItem(data);
-
+    if (storage === null) return;
     let options: MultiLanguageType = JSON.parse(storage);
 
     let opt = this.getAttribute("opt");
@@ -115,19 +103,11 @@ export class MultiLanguage extends HTMLElement {
     }
 
     // variant is found by comparing variant config opt with custom element attr opt
-    try {
-      var variant_check: MultiLanguageVariant = options.variants.find(
-        (v) => v.opt === opt
-      );
-    } catch (err) {
-      console.log(
-        "No option parameters found. Creating default parameters to continue."
-      );
-    }
+    var variant_check = options.variants.find((v) => v.opt === opt);
     var variant = variant_check
       ? variant_check
       : {
-          opt: opt,
+          opt: opt ? opt : "en",
         };
 
     let title = variant.title ? variant.title : "English";

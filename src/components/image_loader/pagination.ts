@@ -1,6 +1,5 @@
 import { uptState } from "../../utils/utils";
 import type { PageUrlType } from "../../utils/types";
-// @ts-ignore
 import { OpenSeadragon } from "openseadragon";
 
 type Config = {
@@ -33,7 +32,8 @@ export class EditionPagination extends HTMLElement {
       let urlParam = new URLSearchParams(url.search);
 
       // get selected href
-      var href = this.getAttribute("href");
+      var get_href = this.getAttribute("href");
+      var href = get_href ? get_href : "provide-href";
       // check if user set opt attribute
       if (typeof href !== "string") {
         console.log("No 'href' attribute in custom element pagination found!");
@@ -78,26 +78,26 @@ export class EditionPagination extends HTMLElement {
         ? options.pag_link
         : ".pagination-tab.tab-pane";
 
-      link.forEach(function (el: HTMLElement) {
+      link.forEach((el) => {
         el.classList.remove(active);
         el.classList.remove(bootstrap_class);
       });
 
       // get all nav tabs matching the href and set to active
       var ref = document.querySelectorAll(`${pag_link}[href="${href}"]`);
-      ref.forEach(function (el: HTMLElement) {
+      ref.forEach((el) => {
         el.classList.add(active);
       });
 
       // active tab
       var tab = document.querySelectorAll(`${pag_tab}[data-tab="${dataTab}"]`);
-      tab.forEach(function (el: HTMLElement) {
+      tab.forEach((el) => {
         el.classList.remove(active);
       });
 
       // get pagination tab with selected link
       var tab_ref = document.querySelectorAll(`${pag_tab}${href}`);
-      tab_ref.forEach(function (el: HTMLElement) {
+      tab_ref.forEach((el) => {
         el.classList.add(active);
         el.classList.add(bootstrap_class);
       });
@@ -107,17 +107,11 @@ export class EditionPagination extends HTMLElement {
       // ###############
       let id = this.getAttribute("id");
       // variant is found by comparing variant config opt with custom element attr opt
-      try {
-        var variant_check = config.find((v: any) => v.opt === id);
-      } catch (err) {
-        console.log(
-          "No option parameters found. Creating default parameters to continue."
-        );
-      }
-      var variant = variant_check ? variant_check : { opt: id };
+      var variant_check = config.find((v) => v.opt === id);
+      var variant = variant_check ? variant_check : { opt: id ? id : "page" };
 
       let opt_url = options.url ? options.url : "provide-url";
-      let opt_urlparam = options.url_param ? options.url_param : "";
+      let opt_urlparam = options.url_param ? options.url_param : "pg";
       let opt_osd_target = options.osd_target
         ? options.osd_target
         : "container";
@@ -131,9 +125,8 @@ export class EditionPagination extends HTMLElement {
       let targetID1 = `${variant.dataType}_${opt_img_source}_${variant.pos}`;
 
       // remove static images
-      if (document.getElementById(targetID1)) {
-        document.getElementById(targetID1).remove();
-      }
+      var tmp = document.getElementById(targetID1);
+      if (tmp) tmp.remove();
 
       let target = document.getElementById(targetID0) as HTMLElement;
       if (target.childNodes.length === 0) {
@@ -159,19 +152,15 @@ export class EditionPagination extends HTMLElement {
         // see issue: https://github.com/openseadragon/openseadragon/issues/1262
         viewer.addHandler("open", function () {
           let tiledImage = viewer.world.getItemAt(0);
-          if (tiledImage.getFullyLoaded()) {
-            hideLoading();
-          } else {
-            tiledImage.addOnceHandler("fully-loaded-change", hideLoading);
-          }
+          tiledImage.getFullyLoaded()
+            ? hideLoading()
+            : tiledImage.addOnceHandler("fully-loaded-change", hideLoading);
         });
         function hideLoading() {
           // var container = $(osd_container_id).attr("id");
           let spinnerID = "spinner_" + targetID0;
-          if (document.getElementById(spinnerID)) {
-            // console.log(spinnerID);
-            document.getElementById(spinnerID).remove();
-          }
+          let tmp = document.getElementById(spinnerID);
+          if (tmp) tmp.remove();
         }
       }
     }
@@ -179,13 +168,6 @@ export class EditionPagination extends HTMLElement {
 
   render() {
     let data_type = this.getAttribute("data-type");
-    // check if user set opt attribute
-    if (typeof data_type !== "string") {
-      console.log(
-        "No 'data-type' attribute in custom element pagination found!"
-      );
-    }
-
     let pos = this.getAttribute("pos");
     // check if user set opt attribute
     if (typeof pos !== "string") {
@@ -200,9 +182,9 @@ export class EditionPagination extends HTMLElement {
 
     config.push({
       opt: `${data_type}_link_${pos}`,
-      dataType: data_type,
-      dataSource: facs,
-      pos: pos,
+      dataType: data_type ? data_type : "paginate",
+      dataSource: facs ? facs : "facs",
+      pos: pos ? pos : "1",
     });
 
     this.innerHTML = `

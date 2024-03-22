@@ -14,7 +14,7 @@ export class ImageLoader extends HTMLElement {
   render() {
     let data = "image_loader";
     let storage = sessionStorage.getItem(data);
-
+    if (storage === null) return;
     // get session storage (not all variables are required)
     let options: ImageLoaderType = JSON.parse(storage);
 

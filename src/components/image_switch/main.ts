@@ -1,6 +1,5 @@
 import { uptState, hideLoading } from "../../utils/utils";
-import type { ImageSwitchType, ImageSwitchVariant } from "../../utils/types";
-// @ts-ignore
+import type { ImageSwitchType } from "../../utils/types";
 import { OpenSeadragon } from "openseadragon";
 
 export class ImageSwitch extends HTMLElement {
@@ -19,33 +18,22 @@ export class ImageSwitch extends HTMLElement {
 
     let id = this.getAttribute("id");
     // check if user set opt attribute
-    if (typeof id !== "string") {
+    if (typeof id !== "string")
       console.log("No 'opt' attribute in custom element font-family found!");
-    }
 
     let storage = sessionStorage.getItem(data);
 
     if (storage) {
       let options: ImageSwitchType = JSON.parse(storage);
 
-      if (!options) {
-        alert("Please turn on cookies to display content!");
-      }
+      if (!options) alert("Please turn on cookies to display content!");
 
       let url = new URL(location.href);
       let urlParam = new URLSearchParams(url.search);
 
       // variant is found by comparing variant config opt with custom element attr opt
-      try {
-        var variant_check: ImageSwitchVariant = options.variants.find(
-          (v) => v.opt === id
-        );
-      } catch (err) {
-        console.log(
-          "No option parameters found. Creating default parameters to continue."
-        );
-      }
-      var variant = variant_check ? variant_check : { opt: id };
+      var variant_check = options.variants.find((v) => v.opt === id);
+      var variant = variant_check ? variant_check : { opt: id ? id : "image" };
 
       // check for option param or return default value
       var active = options.active_class ? options.active_class : "active";
@@ -62,7 +50,6 @@ export class ImageSwitch extends HTMLElement {
           };
 
       // get classes from params for container to hide and show
-      let hidden = hide_checked.hidden ? hide_checked.hidden : true;
       let hide = hide_checked.class_to_hide
         ? hide_checked.class_to_hide
         : "hide-container1";
@@ -70,11 +57,6 @@ export class ImageSwitch extends HTMLElement {
         ? hide_checked.class_to_show
         : "show-container1";
       let resize = hide_checked.resize ? hide_checked.resize : "resize-hide";
-
-      // get class for wrapper of hide show container
-      let parent = hide_checked.class_parent
-        ? hide_checked.class_parent
-        : "hide-show-wrapper";
 
       // get urlparam key
       var urlparam = variant.urlparam ? variant.urlparam : "image";
@@ -110,39 +92,39 @@ export class ImageSwitch extends HTMLElement {
 
       if (urlParam.get(urlparam) == "on") {
         urlParam.set(urlparam, "off");
-        document.querySelectorAll(`.${hide}`).forEach((el: HTMLElement) => {
+        document.querySelectorAll(`.${hide}`).forEach((el) => {
           el.classList.add(fade);
           el.classList.remove(column_small[0]);
-          el.style.maxWidth = `${column_full[1]}%`;
+          // el.style.maxWidth = `${column_full[1]}%`;
           el.classList.remove(active);
         });
-        document.querySelectorAll(`.${show}`).forEach((el: HTMLElement) => {
+        document.querySelectorAll(`.${show}`).forEach((el) => {
           el.classList.remove(column_small[0]);
           el.classList.add(column_full[0]);
-          el.style.maxWidth = `${column_full[1]}%`;
+          // el.style.maxWidth = `${column_full[1]}%`;
           el.classList.remove(active);
         });
-        document.querySelectorAll(`.${resize}`).forEach((el: HTMLElement) => {
+        document.querySelectorAll(`.${resize}`).forEach((el) => {
           el.classList.add(fade);
         });
         this.classList.remove(active);
       } else {
         urlParam.set(urlparam, "on");
-        document.querySelectorAll(`.${hide}`).forEach((el: HTMLElement) => {
+        document.querySelectorAll(`.${hide}`).forEach((el) => {
           el.classList.remove(fade);
           el.classList.add(column_small[0]);
-          el.style.maxWidth = `${column_small[1]}%`;
+          // el.style.maxWidth = `${column_small[1]}%`;
           el.classList.add(active);
         });
-        document.querySelectorAll(`.${show}`).forEach((el: HTMLElement) => {
+        document.querySelectorAll(`.${show}`).forEach((el) => {
           el.classList.add(column_small[0]);
           el.classList.remove(column_full[0]);
-          el.style.maxWidth = `${
-            parseInt(column_full[1]) - parseInt(column_small[1])
-          }%`;
+          // el.style.maxWidth = `${
+          //   parseInt(column_full[1]) - parseInt(column_small[1])
+          // }%`;
           el.classList.add(active);
         });
-        document.querySelectorAll(`.${resize}`).forEach((el: HTMLElement) => {
+        document.querySelectorAll(`.${resize}`).forEach((el) => {
           el.classList.remove(fade);
         });
 
@@ -172,21 +154,31 @@ export class ImageSwitch extends HTMLElement {
           );
 
           /* get text container to set proper container height for osd viewer */
-          var text_container_height = document.getElementById(
+          var text_container_height_get = document.getElementById(
             `text-resize-${image_loader_pos}`
-          ).offsetHeight;
+          );
+          var text_container_height = text_container_height_get
+            ? text_container_height_get.offsetHeight
+            : 0;
 
           /* get img container to set proper container width for osd viewer */
-          var image_container_width = document.getElementById(
+          var image_container_width_get = document.getElementById(
             `img-resize-${image_loader_pos}`
-          ).offsetWidth;
+          );
+
+          var image_container_width = image_container_width_get
+            ? image_container_width_get.offsetWidth
+            : 0;
 
           /* set osd container width and height */
-          osd_container.style.height = `${text_container_height / 1.2}px`;
-          osd_container.style.width = `${image_container_width}px`;
+          if (osd_container)
+            (osd_container.style.height = `${text_container_height / 1.2}px`),
+              (osd_container.style.width = `${image_container_width}px`);
 
           /* get image url of iiif server */
-          let image_src = image.getAttribute("data-src");
+          let image_src = image
+            ? image.getAttribute("data-src")
+            : "no-image-url-found-in-data-src";
           let image_url = { type: "image", url: image_src };
 
           /* initialize OpenSeadragon viewer */
@@ -206,7 +198,7 @@ export class ImageSwitch extends HTMLElement {
           });
 
           // hides static images
-          osd_container_2.remove();
+          if (osd_container_2) osd_container_2.remove();
 
           // hide loading spinner if image fully loaded status changes
           // see issue: https://github.com/openseadragon/openseadragon/issues/1262
@@ -217,9 +209,8 @@ export class ImageSwitch extends HTMLElement {
             } else {
               tiledImage.addOnceHandler("fully-loaded-change", function () {
                 let spinnerID2 = "spinner_" + _osd_container_id;
-                if (document.getElementById(spinnerID2)) {
-                  document.getElementById(spinnerID2).remove();
-                }
+                let tmp = document.getElementById(spinnerID2);
+                if (tmp) tmp.remove();
               });
             }
           });
@@ -281,33 +272,19 @@ export class ImageSwitch extends HTMLElement {
   render() {
     let data = "image_switch";
     let storage = sessionStorage.getItem(data);
-
+    if (storage === null) return;
     let options: ImageSwitchType = JSON.parse(storage);
 
     let opt = this.getAttribute("opt");
     // check if user set opt attribute
-    if (typeof opt !== "string") {
+    if (typeof opt !== "string")
       console.log("No 'opt' attribute in custom element font-family found!");
-    }
 
     // variant is found by comparing variant config opt with custom element attr opt
-    try {
-      var variant_check: ImageSwitchVariant = options.variants.find(
-        (v) => v.opt === opt
-      );
-    } catch (err) {
-      console.log(
-        "No option parameters found. Creating default parameters to continue."
-      );
-    }
-    var variant = variant_check ? variant_check : { opt: opt };
+    var variant_check = options.variants.find((v) => v.opt === opt);
+    var variant = variant_check ? variant_check : { opt: opt ? opt : "image" };
 
     // check if sizes object with font sizes is not null or undefined
-    try {
-      var render_check = options.rendered_element;
-    } catch (err) {
-      console.log("Sizes obj not found. Creating default parameters.");
-    }
     let rendered_element = options.rendered_element
       ? options.rendered_element
       : {

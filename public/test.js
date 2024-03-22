@@ -1,4 +1,6 @@
-var editor = new LoadEditor({
+import { LoadEditor } from "../dist/index";
+
+new LoadEditor({
   aot: {
     title: "Text Annotations",
     variants: [
@@ -121,62 +123,6 @@ var editor = new LoadEditor({
       },
     ],
   },
-  // is: {
-  //   name: "enable/disable right window",
-  //   variants: [
-  //     {
-  //       opt: "edition-switch1",
-  //       title: "Hide Right Window",
-  //       hide: {
-  //         hidden: true,
-  //         class_to_hide: "is-hide-container1",
-  //         class_to_show: "is-show-container1",
-  //         class_parent: "is-hide-show-wrapper",
-  //         resize: "resize-hide",
-  //       },
-  //       image_size: "1000px",
-  //     },
-  //   ],
-  //   rendered_element: {
-  //     a_class: "nav-link btn btn-round",
-  //     svg: "ON / OFF",
-  //   },
-  // },
-  // il: {
-  //     name: "load images in OSD viewer",
-  //     opt: "image-loader",
-  //     title: "Faksimiles",
-  //     urlparam: "page",
-  //     chg_citation: "citation-url",
-  //     pag_link: ".pagination .nav-tabs .nav-item .nav-link",
-  //     pag_tab: ".pagination-tab.tab-pane",
-  //     img_size: "1000px",
-  //     url: "https://id.acdh.oeaw.ac.at/auden-musulin-papers/",
-  //     url_param: ".jpg?format=iiif",
-  //     osd_target: "container",
-  //     img_source: "container2",
-  //     img_types: ["envelope", "sheet"],
-  //     active_class: "active",
-  //     inactive_class: "fade",
-  //     bootstrap_class: "show",
-  // },
-  // ep: {
-  //     name: "Page Pagination",
-  //     opt: "edition-pagination",
-  //     title: "Page Pagination",
-  //     urlparam: "page",
-  //     chg_citation: "citation-url",
-  //     pag_link: ".pagination-link",
-  //     pag_tab: ".pagination-tab.tab-pane",
-  //     img_size: "1000px",
-  //     active_class: "active",
-  //     inactive_class: "fade",
-  //     bootstrap_class: "show",
-  //     url: "https://id.acdh.oeaw.ac.at/auden-musulin-papers/",
-  //     url_param: ".jpg?format=iiif",
-  //     osd_target: "container",
-  //     img_source: "container2"
-  // },
   wr: false,
   up: true,
   lang: {

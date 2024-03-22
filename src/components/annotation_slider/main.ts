@@ -1,5 +1,5 @@
 import { addMarkup, removeMarkup, uptState } from "../../utils/utils";
-import type { AnnotationType, Features, Variant } from "../../utils/types";
+import type { AnnotationType } from "../../utils/types";
 
 export class AnnotationSlider extends HTMLElement {
   options: AnnotationType | null | undefined;
@@ -23,7 +23,7 @@ export class AnnotationSlider extends HTMLElement {
     let data = "annotation_slider";
     let storage = sessionStorage.getItem(data);
     if (storage) {
-      let options: AnnotationType | null | undefined = JSON.parse(storage);
+      let options: AnnotationType = JSON.parse(storage);
 
       // get current url parameters
       let url = new URL(window.location.href);
@@ -44,21 +44,12 @@ export class AnnotationSlider extends HTMLElement {
       // configuration holds an array with variants with at least one variant object.
       // to match the custom element with the configuration the opt value must match.
       // variant is found by comparing variant config opt with custom element attr opt
-      try {
-        var variant_check: Variant = options.variants.find(
-          (v: any) => v.opt === id
-        );
-      } catch (err) {
-        console.log(
-          "Error 002 in component annotation slider:\
-          No option parameters found. Creating default parameters to continue."
-        );
-      }
+      var variant_check = options.variants.find((v) => v.opt === id);
       // variant as selected in UI
-      let variant: Variant = variant_check
+      let variant = variant_check
         ? variant_check
         : {
-            opt: id,
+            opt: id ? id : "text-features-1",
             features: {
               all: false,
               class: "single-feature",
@@ -74,39 +65,23 @@ export class AnnotationSlider extends HTMLElement {
       }
 
       // use try/catch to verify if object exists in options
-      try {
-        var features_check: Features = variant.features;
-      } catch (err) {
-        console.log(
-          "Message 004 in component annotation slider:\
-          Features object in variant not found. Creating default parameters."
-        );
-      }
       // check if features params of UI variant are available
-      var features: Features = features_check
-        ? features_check
+      var features = variant.features
+        ? variant.features
         : {
             all: false,
             class: "single-feature",
           };
 
-      // use try/catch to verify if object exists in options
-      try {
-        var variants_check = options.variants.filter(
-          (v: any) => v.features.all === false
-        );
-      } catch (err) {
-        console.log(
-          "Message 005 in component annotation slider:\
-          No option parameters found. Creating default parameters to continue."
-        );
-      }
+      var variants_check = options.variants.filter(
+        (v) => v.features.all === false
+      );
       // all variants except all features
       var variants = variants_check
         ? variants_check
         : [
             {
-              opt: id,
+              opt: id ? id : "text-features-all",
               features: {
                 all: false,
                 class: "single-feature",
@@ -115,16 +90,10 @@ export class AnnotationSlider extends HTMLElement {
           ];
 
       // use try/catch to verify if object exists in options
-      try {
-        var none_variant_check = options.variants.filter(
-          (v: any) => v.features.all === true
-        );
-      } catch (err) {
-        console.log(
-          "Message 006 in component annotation slider:\
-          No option parameters found. Creating default parameters to continue."
-        );
-      }
+      var none_variant_check = options.variants.filter(
+        (v: any) => v.features.all === true
+      );
+
       // all-features variant
       var none_variant = none_variant_check
         ? none_variant_check
@@ -139,16 +108,8 @@ export class AnnotationSlider extends HTMLElement {
           ];
 
       // use try/catch to verify if object exists in options
-      try {
-        var style_check = options.span_element;
-      } catch (err) {
-        console.log(
-          "Message 007 in component annotation slider:\
-        style obj not found. Creating default parameters."
-        );
-      }
-      var style = style_check
-        ? style_check
+      var style = options.span_element
+        ? options.span_element
         : {
             css_class: "badge-item",
           };
@@ -174,7 +135,7 @@ export class AnnotationSlider extends HTMLElement {
 
           // if current state is active remove class/state
           // find all element classes in DOM and remove CSS class
-          [...variants].forEach((el: any) => {
+          [...variants].forEach((el) => {
             if (
               (document.getElementById(el.opt) as HTMLInputElement).checked ===
                 true &&
@@ -189,17 +150,11 @@ export class AnnotationSlider extends HTMLElement {
               let css_class = el.css_class
                 ? el.css_class
                 : `css-class-${el.opt}`;
-              let hide = el.hide ? el.hide : false;
+              let hide = el.hide ? el.hide : { hidden: false, class: "" };
 
               // besides removing marktup the function 'removemarkup()' returns
               // the number of elements nodes found as string
-              let selected = removeMarkup(
-                html_class,
-                css_class,
-                color,
-                hide,
-                style
-              );
+              removeMarkup(html_class, css_class, color, hide, style);
 
               // the color class is also removed from the slider element
               var slider_str = el.opt_slider
@@ -415,7 +370,8 @@ export class AnnotationSlider extends HTMLElement {
     let data = "annotation_slider";
     let storage = sessionStorage.getItem(data);
 
-    let options: AnnotationType | null | undefined = JSON.parse(storage);
+    if (storage === null) return;
+    let options: AnnotationType = JSON.parse(storage);
 
     let opt = this.getAttribute("opt");
     // check if user set opt attribute
@@ -430,34 +386,19 @@ export class AnnotationSlider extends HTMLElement {
     var dme_onclick = this.getAttribute("onclick");
 
     // variant is found by comparing variant config opt with custom element attr opt
-    try {
-      var variant_check = options.variants.find((v: any) => v.opt === opt);
-    } catch (err) {
-      console.log(
-        "Message 014 in component annotation slider: \
-        No option parameters found. Creating default parameters to continue."
-      );
-    }
+    var variant_check = options.variants.find((v) => v.opt === opt);
     var variant = variant_check
       ? variant_check
       : {
-          opt: opt,
+          opt: opt ? opt : "text-features-1",
           features: {
             class: "features-1",
             all: false,
           },
         };
 
-    try {
-      var features_check = variant.features;
-    } catch (err) {
-      console.log(
-        "Message 015 in component annotation slider: \
-        Features object in variant not found. Creating default parameters."
-      );
-    }
-    let features = features_check
-      ? features_check
+    let features = variant.features
+      ? variant.features
       : {
           all: false,
           class: "feature-1",
@@ -467,16 +408,8 @@ export class AnnotationSlider extends HTMLElement {
     let opt_slider = variant.opt_slider ? variant.opt_slider : `${opt}-slider`;
 
     // check if sizes object with font sizes is not null or undefined
-    try {
-      var rendered_element_check = options.rendered_element;
-    } catch (err) {
-      console.log(
-        "Message 017 in component annotation slider: \
-      Hide object not found. Creating default parameters."
-      );
-    }
-    let rendered_element = rendered_element_check
-      ? rendered_element_check
+    let rendered_element = options.rendered_element
+      ? options.rendered_element
       : {
           label_class: "switch",
           slider_class: "i-slider round",
@@ -489,17 +422,17 @@ export class AnnotationSlider extends HTMLElement {
       ? rendered_element.slider_class
       : "i-slider round";
     this.innerHTML = `
-            <label>${title}</label>
-            <label class="${render_class}">
-                <input title="${title}"
-                    onclick="${dme_onclick}"
-                    type="checkbox"
-                    id="${opt}"
-                    data-target="${data}"
-                    class="${features.class}"
-                    aot-type="${String(features.all)}"/>
-                <span id="${opt_slider}" class="${slider_class}"></span>
-            </label>
+          <label>${title}</label>
+          <label class="${render_class}">
+              <input title="${title}"
+                  onclick="${dme_onclick}"
+                  type="checkbox"
+                  id="${opt}"
+                  data-target="${data}"
+                  class="${features.class}"
+                  aot-type="${String(features.all)}"/>
+              <span id="${opt_slider}" class="${slider_class}"></span>
+          </label>
         `;
   }
 

@@ -1,239 +1,180 @@
-export type String_misc = string | null | undefined;
-export type Bool_misc = boolean | null | undefined;
+export type Rendered_element = {
+  label_class: string;
+  slider_class: string;
+};
 
-export type Rendered_element =
-  | {
-      label_class: String_misc;
-      slider_class: String_misc;
-    }
-  | null
-  | undefined;
+export type Span_element = {
+  css_class: string;
+};
 
-export type Span_element =
-  | {
-      css_class: String_misc;
-    }
-  | null
-  | undefined;
-export type Title = String_misc;
+export type Title = string;
 
 export type Hide = {
   hidden: boolean;
   class: string;
-} | null;
+};
 
 export type Features = {
-  all: Bool_misc;
-  class: String_misc;
-} | null;
+  all: Boolean;
+  class: string;
+};
 
 export type Variant = {
-  opt: String_misc;
-  opt_slider?: String_misc;
-  title?: String_misc;
-  color?: String_misc;
-  html_class?: String_misc;
-  css_class?: String_misc;
+  opt: string;
+  opt_slider?: string;
+  title?: string;
+  color?: string;
+  html_class?: string;
+  css_class?: string;
   hide?: Hide;
-  chg_citation?: String_misc;
+  chg_citation?: string;
   features: Features;
-  default?: Bool_misc;
+  default?: Boolean;
   custom_function?: Object;
 };
 
-export type Variants = [Variant] | null | undefined;
-
-export type AnnotationType =
-  | {
-      title: Title;
-      variants: Variants;
-      span_element: Span_element;
-      active_class: String_misc;
-      rendered_element: Rendered_element;
-    }
-  | null
-  | undefined;
+export type AnnotationType = {
+  title?: Title;
+  variants: Array<Variant>;
+  span_element?: Span_element;
+  active_class?: string;
+  rendered_element?: Rendered_element;
+};
 
 export type FullScreenVariant = {
-  opt: String_misc;
-  title?: String_misc;
-  hide?: String_misc;
-  to_hide?: String_misc;
-  chg_citation?: String_misc;
-  urlparam?: String_misc;
+  opt: string;
+  title?: string;
+  hide?: string;
+  to_hide?: string;
+  chg_citation?: string;
+  urlparam?: string;
 };
 
-export type FullScreenVariants = [FullScreenVariant] | null;
+export type FullScreenType = {
+  name: string;
+  variants: Array<FullScreenVariant>;
+  active_class?: string;
+  render_class?: string;
+  render_svg?: string;
+};
 
-export type FullScreenType =
-  | {
-      name: String_misc;
-      variants: FullScreenVariants;
-      active_class: String_misc;
-      render_class: String_misc;
-      render_svg: String_misc;
-    }
-  | null
-  | undefined;
-export type Sizes =
-  | {
-      default: String_misc;
-      font_size_14: String_misc;
-      font_size_18: String_misc;
-      font_size_22: String_misc;
-      font_size_26: String_misc;
-    }
-  | null
-  | undefined;
-export type Fonts =
-  | {
-      default: String_misc;
-      font1: String_misc;
-      font2: String_misc;
-      font3: String_misc;
-    }
-  | null
-  | undefined;
+export type Sizes = {
+  default: string;
+  [key: string]: string;
+};
+
+export type Fonts = {
+  default: string;
+  [key: string]: string;
+};
 
 export type FontVariant = {
-  opt: String_misc;
-  title?: String_misc;
-  urlparam?: String_misc;
+  opt: string;
+  title?: string;
+  urlparam?: string;
   sizes?: Sizes;
   fonts?: Fonts;
-  paragraph?: String_misc;
-  p_class?: String_misc;
-  css_class?: String_misc;
-  chg_citation?: String_misc;
+  paragraph?: string;
+  p_class?: string;
+  css_class?: string;
+  chg_citation?: string;
 };
 
-export type FontVariants = [FontVariant] | null | undefined;
+export type FontSizeType = {
+  name: string;
+  variants: Array<FontVariant>;
+  active_class?: string;
+  html_class?: string;
+};
 
-export type FontSizeType =
-  | {
-      name: String_misc;
-      variants: FontVariants;
-      active_class: String_misc;
-      html_class: String_misc;
-    }
-  | null
-  | undefined;
-
-export type FontFamilyType =
-  | {
-      name: String_misc;
-      variants: FontVariants;
-      active_class: String_misc;
-      html_class: String_misc;
-    }
-  | null
-  | undefined;
+export type FontFamilyType = {
+  name: string;
+  variants: Array<FontVariant>;
+  active_class?: string;
+  html_class?: string;
+};
 
 export type ImageSwitchVariant = {
-  opt: String_misc;
-  title?: String_misc;
-  urlparam?: String_misc;
-  chg_citation?: String_misc;
-  fade?: String_misc;
-  column_small?:
-    | {
-        class: String_misc;
-        percent: String_misc;
-      }
-    | null
-    | undefined;
-  column_full?:
-    | {
-        class: String_misc;
-        percent: String_misc;
-      }
-    | null
-    | undefined;
-  hide?:
-    | {
-        hidden: true;
-        class_to_hide: String_misc;
-        class_to_show: String_misc;
-        class_parent: String_misc;
-        resize: String_misc;
-      }
-    | null
-    | undefined;
-  image_size?: String_misc;
+  opt: string;
+  title?: string;
+  urlparam?: string;
+  chg_citation?: string;
+  fade?: string;
+  column_small?: {
+    class: string;
+    percent: string;
+  };
+  column_full?: {
+    class: string;
+    percent: string;
+  };
+  hide?: {
+    class_to_hide: string;
+    class_to_show: string;
+    resize?: string;
+  };
+  image_size?: string;
 };
 
-export type ImageSwitchType =
-  | {
-      name: String_misc;
-      variants: [ImageSwitchVariant];
-      active_class: String_misc;
-      rendered_element:
-        | {
-            a_class: String_misc;
-            svg: String_misc;
-          }
-        | null
-        | undefined;
-    }
-  | null
-  | undefined;
+export type ImageSwitchType = {
+  name: string;
+  variants: Array<ImageSwitchVariant>;
+  active_class?: string;
+  rendered_element?: {
+    a_class: string;
+    svg: string;
+  };
+};
 
-export type PageUrlType =
-  | {
-      name: String_misc;
-      opt: String_misc;
-      title: String_misc;
-      urlparam: String_misc;
-      chg_citation: String_misc;
-      pag_link: String_misc;
-      pag_tab: String_misc;
-      img_size: String_misc; // to be deprecated
-      url: String_misc;
-      url_param: String_misc;
-      osd_target: String_misc;
-      img_source: String_misc;
-      img_types: [] | null | undefined;
-      active_class: String_misc;
-      inactive_class: String_misc;
-      bootstrap_class: String_misc;
-    }
-  | null
-  | undefined;
+export type PageUrlType = {
+  name: string;
+  opt: string;
+  title: string;
+  urlparam: string;
+  chg_citation: string;
+  pag_link: string;
+  pag_tab: string;
+  url: string;
+  img_size: string;
+  url_param: string;
+  osd_target: string;
+  img_source: string;
+  img_types?: Array<string>;
+  active_class: string;
+  inactive_class: string;
+  bootstrap_class: string;
+};
 
 export type MultiLanguageVariant = {
-  opt: String_misc;
-  title?: String_misc;
-  class?: String_misc;
-  map?: object | null | undefined;
+  opt: string;
+  title?: string;
+  class?: string;
+  map?: {
+    [key: string]: string;
+  };
 };
 
-export type MultiLanguageType =
-  | {
-      title: String_misc;
-      variants: [MultiLanguageVariant] | null | undefined;
-      active_class: String_misc;
-    }
-  | null
-  | undefined;
+export type MultiLanguageType = {
+  title: string;
+  variants: Array<MultiLanguageVariant>;
+  active_class?: string;
+};
 
-export type ImageLoaderType =
-  | {
-      name: string | null | undefined;
-      opt: string | null | undefined;
-      title: string | null | undefined;
-      urlparam: string | null | undefined;
-      chg_citation: string | null | undefined;
-      pag_link: string | null | undefined;
-      pag_tab: string | null | undefined;
-      img_size: string | null | undefined;
-      url: string | null | undefined;
-      url_param: string | null | undefined;
-      osd_target: string | null | undefined;
-      img_source: string | null | undefined;
-      img_types: [] | null | undefined;
-      active_class: string | null | undefined;
-      inactive_class: string | null | undefined;
-      bootstrap_class: string | null | undefined;
-    }
-  | null
-  | undefined;
+export type ImageLoaderType = {
+  name: string;
+  opt: string;
+  title?: string;
+  urlparam: string;
+  chg_citation?: string;
+  pag_link: string;
+  pag_tab: string;
+  img_size?: string;
+  url: string;
+  url_param: string;
+  osd_target: string;
+  img_source: string;
+  img_types?: Array<string>;
+  active_class?: string;
+  inactive_class?: string;
+  bootstrap_class?: string;
+};

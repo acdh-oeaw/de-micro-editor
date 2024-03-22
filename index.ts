@@ -22,30 +22,30 @@ import { MultiLanguage } from "./src/components/multi_language/main";
 
 ("use strict");
 
-class LoadEditor {
-  aot: AnnotationType | boolean;
-  fs: FullScreenType | boolean;
-  fos: FontSizeType | boolean;
-  ff: FontFamilyType | boolean;
-  is: ImageSwitchType | boolean;
-  il: ImageLoaderType | boolean;
-  ep: PageUrlType | boolean;
-  wr: boolean;
-  up: boolean;
-  upc: any;
-  lang: MultiLanguageType | boolean;
+export class LoadEditor {
+  aot: AnnotationType | false;
+  fs: FullScreenType | false;
+  fos: FontSizeType | false;
+  ff: FontFamilyType | false;
+  is: ImageSwitchType | false;
+  il: ImageLoaderType | false;
+  ep: PageUrlType | false;
+  wr: boolean | false;
+  up: boolean | false;
+  upc: UrlSearchParamUpdate;
+  lang: MultiLanguageType | false;
 
   constructor(options: {
-    aot: AnnotationType | boolean;
-    fs: FullScreenType | boolean;
-    fos: FontSizeType | boolean;
-    ff: FontFamilyType | boolean;
-    is: ImageSwitchType | boolean;
-    il: ImageLoaderType | boolean;
-    ep: PageUrlType | boolean;
-    wr: boolean;
-    up: boolean;
-    lang: MultiLanguageType | boolean;
+    aot?: AnnotationType;
+    fs?: FullScreenType;
+    fos?: FontSizeType;
+    ff?: FontFamilyType;
+    is?: ImageSwitchType;
+    il?: ImageLoaderType;
+    ep?: PageUrlType;
+    wr?: boolean;
+    up?: boolean;
+    lang?: MultiLanguageType;
   }) {
     /*
         define configuration options
@@ -53,50 +53,21 @@ class LoadEditor {
         if options are not available all key hold default values
         if one or several keys are not available, only these keys will hold default values
         */
-    if (options && "aot" in options) {
-      this.aot = options.aot;
-    }
-    if (options && "fs" in options) {
-      this.fs = options.fs;
-    }
-    if (options && "fos" in options) {
-      this.fos = options.fos;
-    }
-    if (options && "ff" in options) {
-      this.ff = options.ff;
-    }
-    if (options && "is" in options) {
-      this.is = options.is;
-      console.log(
-        "Warning 001: ImageSwitch parameter 'is' requires OpenSeadragon library: https://openseadragon.github.io/"
-      );
-    }
-    if (options && "il" in options) {
-      this.il = options.il;
-      console.log(
-        "Warning 002: ImageLoader parameter 'il' requires OpenSeadragon library: https://openseadragon.github.io/"
-      );
-    }
-    if (options && "ep" in options) {
-      this.ep = options.ep;
-      console.log(
-        "Warning 003: Edition Pagination parameter 'ep' requires OpenSeadragon library: https://openseadragon.github.io/"
-      );
-    }
-    if (options && "wr" in options && options.wr === true) {
-      this.wr = options.wr;
-    }
-    if (options && "up" in options && options.up === true) {
-      this.up = options.up;
-      // initialize imported functions
-      this.upc = new UrlSearchParamUpdate();
-    }
-    if (options && "lang" in options) {
-      this.lang = options.lang;
-    }
+
+    this.aot = options.aot ? options.aot : false;
+    this.fs = options.fs ? options.fs : false;
+    this.fos = options.fos ? options.fos : false;
+    this.ff = options.ff ? options.ff : false;
+    this.is = options.is ? options.is : false;
+    this.il = options.il ? options.il : false;
+    this.ep = options.ep ? options.ep : false;
+    this.wr = options.wr ? options.wr : false;
+    this.up = options.up ? options.up : false;
+    this.upc = new UrlSearchParamUpdate();
+    this.lang = options.lang ? options.lang : false;
 
     // set cookies if config options is available
-    if (typeof this.aot === "object") {
+    if (this.aot) {
       [...this.aot.variants].forEach((variant) => {
         if (variant.custom_function instanceof Function) {
           variant.custom_function = variant.custom_function.toString();
@@ -108,49 +79,49 @@ class LoadEditor {
         console.log(e);
       }
     }
-    if (typeof this.fs === "object") {
+    if (this.fs) {
       try {
         new SetDataCookie("fullsize", this.fs).build();
       } catch (e) {
         console.log(e);
       }
     }
-    if (typeof this.fos === "object") {
+    if (this.fos) {
       try {
         new SetDataCookie("fontsize", this.fos).build();
       } catch (e) {
         console.log(e);
       }
     }
-    if (typeof this.ff === "object") {
+    if (this.ff) {
       try {
         new SetDataCookie("font_family", this.ff).build();
       } catch (e) {
         console.log(e);
       }
     }
-    if (typeof this.il === "object") {
+    if (this.il) {
       try {
         new SetDataCookie("image_loader", this.il).build();
       } catch (e) {
         console.log(e);
       }
     }
-    if (typeof this.is === "object") {
+    if (this.is) {
       try {
         new SetDataCookie("image_switch", this.is).build();
       } catch (e) {
         console.log(e);
       }
     }
-    if (typeof this.ep === "object") {
+    if (this.ep) {
       try {
         new SetDataCookie("ed_pagination", this.ep).build();
       } catch (e) {
         console.log(e);
       }
     }
-    if (typeof this.lang === "object") {
+    if (this.lang) {
       try {
         new SetDataCookie("multi_language", this.lang).build();
       } catch (e) {
@@ -172,7 +143,7 @@ class LoadEditor {
       try {
         window.customElements.define("annotation-slider", AnnotationSlider);
         if (this.up) {
-          window.onload = this.upc.textFeatures();
+          window.onload = this.upc.textFeatures;
         }
       } catch (e) {
         console.log(e);
@@ -182,7 +153,7 @@ class LoadEditor {
       try {
         window.customElements.define("full-size", FullSize);
         if (this.up) {
-          window.onload = this.upc.fullSreen();
+          window.onload = this.upc.fullScreen;
         }
       } catch (e) {
         console.log(e);
@@ -192,7 +163,7 @@ class LoadEditor {
       try {
         window.customElements.define("font-size", FontSize);
         if (this.up) {
-          window.onload = this.upc.fontSize();
+          window.onload = this.upc.fontSize;
         }
       } catch (e) {
         console.log(e);
@@ -202,7 +173,7 @@ class LoadEditor {
       try {
         window.customElements.define("font-family", FontFamily);
         if (this.up) {
-          window.onload = this.upc.fontFamily();
+          window.onload = this.upc.fontFamily;
         }
       } catch (e) {
         console.log(e);
@@ -219,7 +190,7 @@ class LoadEditor {
       try {
         window.customElements.define("image-switch", ImageSwitch);
         if (this.up) {
-          window.onload = this.upc.viewerSwitch();
+          window.onload = this.upc.viewerSwitch;
         }
       } catch (e) {
         console.log(e);
@@ -229,7 +200,7 @@ class LoadEditor {
       try {
         window.customElements.define("image-loader", ImageLoader);
         if (this.up) {
-          window.onload = this.upc.pageUrl();
+          window.onload = this.upc.pageUrl;
         }
       } catch (e) {
         console.log(e);
@@ -239,7 +210,7 @@ class LoadEditor {
       try {
         window.customElements.define("multi-language", MultiLanguage);
         if (this.up) {
-          window.onload = this.upc.multiLanguage();
+          window.onload = this.upc.multiLanguage;
         }
       } catch (e) {
         console.log(e);
@@ -257,7 +228,7 @@ class LoadEditor {
       }
       if (this.fs && this.up) {
         try {
-          this.upc.fullSreen();
+          this.upc.fullScreen();
         } catch (e) {
           console.log(e);
         }
@@ -317,5 +288,3 @@ class LoadEditor {
     };
   }
 }
-
-module.exports = LoadEditor;
