@@ -1,6 +1,6 @@
 import { uptState } from "../../utils/utils";
 import type { PageUrlType } from "../../utils/types";
-import { OpenSeadragon } from "openseadragon";
+import OpenSeadragon from "openseadragon";
 
 type Config = {
   opt: string;

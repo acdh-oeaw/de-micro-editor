@@ -1,4 +1,4 @@
-import { LoadEditor } from "/index";
+import { LoadEditor } from "./index.js";
 
 new LoadEditor({
   aot: {

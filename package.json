@@ -1,12 +1,13 @@
 {
   "name": "de-micro-editor",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "license": "MIT",
   "type": "module",
   "description": "Digital Edition Editor building blocks",
   "main": "./dist/index.js",
   "exports": {
-    ".": "./dist/index.js"
+    "import": "./dist/index.js",
+    "require": "./dist/index.global.js"
   },
   "files": [
     "dist",

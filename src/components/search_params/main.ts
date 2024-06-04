@@ -14,7 +14,7 @@ import type {
   PageUrlType,
   MultiLanguageType,
 } from "../../utils/types";
-import { OpenSeadragon } from "openseadragon";
+import OpenSeadragon from "openseadragon";
 
 export class UrlSearchParamUpdate {
   fullScreen() {

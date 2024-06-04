@@ -1,6 +1,6 @@
 import { uptState, hideLoading } from "../../utils/utils";
 import type { ImageSwitchType } from "../../utils/types";
-import { OpenSeadragon } from "openseadragon";
+import OpenSeadragon from "openseadragon";
 
 export class ImageSwitch extends HTMLElement {
   static get observedAttributes() {
