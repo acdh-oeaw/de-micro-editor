@@ -1,5 +1,3 @@
-import { LoadEditor } from "./index.js";
-
 new LoadEditor({
   aot: {
     title: "Text Annotations",
