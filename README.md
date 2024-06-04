@@ -33,8 +33,8 @@ import { LoadEditor } from "de-micro-editor";
 In HTML:
 
 ```HTML
-<script src="https://unpkg.com/de-micro-editor@0.2.84/dist/de-editor.min.js"></script>
-<link href="https://unpkg.com/de-micro-editor@0.2.84/src/css/style.css" rel="stylesheet" type="text/css"/>
+<script src="https://unpkg.com/de-micro-editor@0.4.0/dist/de-editor.min.js"></script>
+<link href="https://unpkg.com/de-micro-editor@0.4.0/src/css/style.css" rel="stylesheet" type="text/css"/>
 ```
 
 ## HTML / JS / CSS Example
